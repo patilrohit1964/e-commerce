@@ -12,7 +12,9 @@ import { z } from 'zod'
 import Logo from '@/public/next.svg'
 import ButtonLoading from '@/components/application/ButtonLoading'
 import { EyeClosedIcon, EyeIcon } from 'lucide-react'
-const page = () => {
+import Link from 'next/link'
+import { WEBSITE_REGISTER } from '@/routes/websiteRoute'
+const LoginPage = () => {
   const [loading, setLoading] = useState(false)
   const [istypePassword, setIsTypePassword] = useState(false)
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
@@ -72,12 +74,21 @@ const page = () => {
                         <EyeIcon color='gray' size={'25'} />
                       }
                     </button>
+                    <div className='text-right text-sm'>
+                      <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}>
                 </FormField>
               </div>
-              <div><ButtonLoading type={'submit'} text={'Login'} loading={loading} className={'w-full cursor-pointer'}></ButtonLoading></div>
+              <div><ButtonLoading type={'submit'} text={'Login'} loading={loading} className={'w-full cursor-pointer'} /></div>
+              <div className='text-center mt-3'>
+                <p>
+                  Don't have account ?
+                </p>
+                <Link href={WEBSITE_REGISTER} className='underline text-primary'>Create account</Link>
+              </div>
             </form>
           </Form>
         </div>
@@ -86,4 +97,4 @@ const page = () => {
   )
 }
 
-export default page
+export default LoginPage
