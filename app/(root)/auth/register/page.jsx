@@ -1,36 +1,37 @@
 'use client'
-import { Card, CardContent } from '@/components/ui/card'
-import { zSchmea } from '@/lib/zodSchema'
-import Image from 'next/image'
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import Logo from '@/public/next.svg'
 import ButtonLoading from '@/components/application/ButtonLoading'
-import { EyeClosedIcon, EyeIcon } from 'lucide-react'
-import Link from 'next/link'
+import { Card, CardContent } from '@/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { zSchmea } from '@/lib/zodSchema'
+import Logo from '@/public/next.svg'
 import { WEBSITE_LOGIN } from '@/routes/websiteRoute'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { EyeClosedIcon, EyeIcon } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 const RegisterPage = () => {
     const [loading, setLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(false)
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
-        email: true,
+        email: true, password: true, name: true
     }).extend({
-        password: z.string().min(3, 'password field is required') //using this we can set type of any field and add extra field
-    })
+        confirmPassword: z.string() //using this we can set type of any field and add extra field
+    }).refine(data => data.password === data.confirmPassword, { message: "password not match", path: ['confirmPassword'] }) //using this we can add our custom logic
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            name: '',
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         }
     })
 
-    const handleLoginSubmit = async (values) => {
+    const handleRegisterSubmit = async (values) => {
         console.log('values', values);
     }
     return (
@@ -47,13 +48,13 @@ const RegisterPage = () => {
                 </CardContent>
                 <div>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleLoginSubmit)}>
-                            <div>
-                                <FormField control={form.control} name='fullname' render={({ field }) => (
+                        <form onSubmit={form.handleSubmit(handleRegisterSubmit)}>
+                            <div className='mb-3'>
+                                <FormField control={form.control} name='name' render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>FullName</FormLabel>
                                         <FormControl>
-                                            <Input type={'text'} placeholder="enter your fullname" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                            <Input type={'text'} placeholder="enter your name" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -72,7 +73,7 @@ const RegisterPage = () => {
                                 )}>
                                 </FormField>
                             </div>
-                            <div className='my-5 relative'>
+                            <div className='my-3 relative'>
                                 <FormField control={form.control} name='password' render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
@@ -86,20 +87,32 @@ const RegisterPage = () => {
                                                 <EyeIcon color='gray' size={'25'} />
                                             }
                                         </button>
-                                        <div className='text-right text-sm'>
-                                            <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
-                                        </div>
                                         <FormMessage />
                                     </FormItem>
                                 )}>
                                 </FormField>
                             </div>
-                            <div><ButtonLoading type={'submit'} text={'Login'} loading={loading} className={'w-full cursor-pointer'} /></div>
-                            <div className='text-center mt-3'>
+                            <div className='mb-3'>
+                                <FormField control={form.control} name='confirmPassword' render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Confirm Password</FormLabel>
+                                        <FormControl>
+                                            <Input type={istypePassword ? 'password' : 'text'} placeholder="enter your confirm password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}>
+                                </FormField>
+                            </div>
+                            <div><ButtonLoading type={'submit'} text={'Create Account'} loading={loading} className={'w-full cursor-pointer'} /></div>
+                            <div className='text-center mt-3 flex items-center justify-center gap-2'>
                                 <p>
-                                    Alreadt have account ?
+                                    Already have account ?
                                 </p>
                                 <Link href={WEBSITE_LOGIN} className='underline text-primary'>Login</Link>
+                            </div>
+                            <div>
+                                <p className='text-primary text-center cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
                             </div>
                         </form>
                     </Form>
