@@ -44,7 +44,7 @@ export async function POST(req) {
       "Email Verification from Developer Rp",
       email,
       emailVerificationLink(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${token}`
       )
     );
     return responce(

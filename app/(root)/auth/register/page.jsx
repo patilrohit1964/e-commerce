@@ -16,7 +16,6 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 const RegisterPage = () => {
-    console.log('process.env.NEXT_PUBLIC_NODEMAILER_PASSWORD',process.env.NEXT_PUBLIC_NODEMAILER_PASSWORD);
     const [loading, setLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(false)
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema

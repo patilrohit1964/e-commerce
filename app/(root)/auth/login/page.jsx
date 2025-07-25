@@ -31,7 +31,6 @@ const LoginPage = () => {
   })
 
   const handleLoginSubmit = async (values) => {
-    console.log('values', values);
   }
   return (
     <div>
