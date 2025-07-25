@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono, Assistant } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         className={`${assistantFont.className} antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

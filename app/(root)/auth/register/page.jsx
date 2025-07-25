@@ -7,13 +7,16 @@ import { zSchmea } from '@/lib/zodSchema'
 import Logo from '@/public/next.svg'
 import { WEBSITE_LOGIN } from '@/routes/websiteRoute'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 const RegisterPage = () => {
+    console.log('process.env.NEXT_PUBLIC_NODEMAILER_PASSWORD',process.env.NEXT_PUBLIC_NODEMAILER_PASSWORD);
     const [loading, setLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(false)
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
@@ -32,7 +35,21 @@ const RegisterPage = () => {
     })
 
     const handleRegisterSubmit = async (values) => {
-        console.log('values', values);
+        try {
+            setLoading(true)
+            const { data: registerResponce } = await axios.post('/api/auth/register', values);
+            if (!registerResponce.success) {
+                throw new Error(registerResponce.message)
+            }
+            form.reset()
+            toast(registerResponce?.message || 'Account Created', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
+        }
+        catch (error) {
+            console.log(error)
+            alert(error)
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <div>
