@@ -65,19 +65,21 @@ const LoginPage = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type={istypePassword ? 'password' : 'text'} placeholder="enter your password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                      <Input type={istypePassword ? 'text' : 'password'} placeholder="enter your password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                     </FormControl>
+                    <div className='flex justify-between items-center'>
+                      <FormMessage />
+                      <div className='text-sm ml-auto'>
+                        <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
+                      </div>
+                    </div>
                     <button className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>
                       {istypePassword ?
-                        <EyeClosedIcon color='gray' />
-                        :
                         <EyeIcon color='gray' size={'25'} />
+                        :
+                        <EyeClosedIcon color='gray' />
                       }
                     </button>
-                    <div className='text-right text-sm'>
-                      <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
-                    </div>
-                    <FormMessage />
                   </FormItem>
                 )}>
                 </FormField>

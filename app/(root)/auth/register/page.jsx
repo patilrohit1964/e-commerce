@@ -78,16 +78,16 @@ const RegisterPage = () => {
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input type={istypePassword ? 'password' : 'text'} placeholder="enter your password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                            <Input type={istypePassword ? 'text' : 'password'} placeholder="enter your password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                         </FormControl>
+                                        <FormMessage />
                                         <button className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>
                                             {istypePassword ?
-                                                <EyeClosedIcon color='gray' />
-                                                :
                                                 <EyeIcon color='gray' size={'25'} />
+                                                :
+                                                <EyeClosedIcon color='gray' />
                                             }
                                         </button>
-                                        <FormMessage />
                                     </FormItem>
                                 )}>
                                 </FormField>
