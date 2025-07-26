@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { WEBSITE_HOME } from '@/routes/websiteRoute'
+import { WEBSITE_HOME, WEBSITE_REGISTER } from '@/routes/websiteRoute'
 import axios from 'axios'
 import Link from 'next/link'
 import React, { use, useEffect, useState } from 'react'
@@ -21,7 +21,7 @@ const EmailVerification = ({ params }) => {
   return (
     <Card className={'w-[400px]'}>
       <CardContent>
-        {!isVerified ?
+        {isVerified ?
           (
             <div>
               <div className='flex justify-center items-center mb-5'>
@@ -33,7 +33,14 @@ const EmailVerification = ({ params }) => {
             </div>
           ) :
           <div>
-
+            <div>
+              <div className='flex justify-center items-center mb-5'>
+                <h1 className='text-3xl text-red-500'>Error! Try again</h1>
+              </div>
+              <Link href={WEBSITE_REGISTER} className='cursor-pointer'>
+                <Button className='w-full'>Try Again</Button>
+              </Link>
+            </div>
           </div>}
       </CardContent>
     </Card>

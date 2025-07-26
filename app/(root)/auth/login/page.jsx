@@ -14,6 +14,7 @@ import ButtonLoading from '@/components/application/ButtonLoading'
 import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import Link from 'next/link'
 import { WEBSITE_REGISTER } from '@/routes/websiteRoute'
+import axios from 'axios'
 const LoginPage = () => {
   const [loading, setLoading] = useState(false)
   const [istypePassword, setIsTypePassword] = useState(false)
@@ -31,6 +32,21 @@ const LoginPage = () => {
   })
 
   const handleLoginSubmit = async (values) => {
+    try {
+      setLoading(true)
+      const { data: registerResponce } = await axios.post('/api/auth/login', values);
+      if (!registerResponce.success) {
+        throw new Error(registerResponce.message)
+      }
+      form.reset()
+      toast(registerResponce?.message || 'logged successfully', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
+    }
+    catch (error) {
+      console.log(error)
+      alert(error)
+    } finally {
+      setLoading(false)
+    }
   }
   return (
     <div>
