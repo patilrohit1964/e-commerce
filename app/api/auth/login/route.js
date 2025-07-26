@@ -1,6 +1,8 @@
 import { emailVerificationLink } from "@/email/emailVerification";
+import { generateOTPEmail } from "@/email/otpEmail";
 import connectDb from "@/lib/dbConnect";
-import { responce } from "@/lib/helper";
+import { catchError, generatOtp, responce } from "@/lib/helper";
+import { sendMail } from "@/lib/sendMail";
 import { zSchmea } from "@/lib/zodSchema";
 import OTPModel from "@/model/opt.model";
 import User from "@/model/user.model";
@@ -64,8 +66,24 @@ export async function POST(request) {
     }
     // otp generation
     await OTPModel.deleteMany({ email }); //delet old otps
-    
+    const otp = generatOtp();
+    // storing otp modal
+    const newOtpData = new OTPModel({
+      email,
+      otp,
+    });
+    await newOtpData.save();
+    const otpEmailStatus = await sendMail(
+      "your login verification code",
+      email,
+      generateOTPEmail(otp, getUser?.name)
+    );
+    if (!otpEmailStatus.success) {
+      return responce(false, 400, "failed to send otp");
+    }
+    return responce(true, 200, "please verify your device");
   } catch (error) {
     console.log(error);
+    return catchError(error);
   }
 }
