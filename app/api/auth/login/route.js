@@ -36,6 +36,7 @@ export async function POST(request) {
     if (!getUser) {
       return responce(false, 404, "invalid login credentails");
     }
+    const otp = generatOtp();
 
     // resend email
     if (!getUser.isEmailVerified) {
@@ -66,7 +67,6 @@ export async function POST(request) {
     }
     // otp generation
     await OTPModel.deleteMany({ email }); //delet old otps
-    const otp = generatOtp();
     // storing otp modal
     const newOtpData = new OTPModel({
       email,

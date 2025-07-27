@@ -53,8 +53,7 @@ const LoginPage = () => {
     }
   }
 
-  const handleOtpVerification = async (values) => {
-    console.log('calling');
+  const handleOtpVerification = (values) => {
     console.log('values',values);
     // try {
     //   setOtpLoading(true)
@@ -79,7 +78,7 @@ const LoginPage = () => {
           <div className='flex justify-center'>
             <Image src={Logo} width={Logo.width} height={Logo.height} alt='logo' className='max-w-[150px]' />
           </div>
-          {otpEmail ?
+          {!otpEmail ?
             <>
               <div className='text-center'>
                 <h1 className='text-3xl font-bold'>Log into Account</h1>
