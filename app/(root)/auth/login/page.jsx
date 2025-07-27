@@ -14,6 +14,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 const LoginPage = () => {
   const [loading, setLoading] = useState(false)
@@ -53,27 +54,27 @@ const LoginPage = () => {
   }
 
   const handleOtpVerification = async (values) => {
-    console.log('values', values);
-    try {
-      setOtpLoading(true)
-      const { data: registerResponce } = await axios.post('/api/auth/verify-otp', values);
-      if (!registerResponce.success) {
-        throw new Error(registerResponce.message)
-      }
-      setOtpEmail('')
-      form.reset()
-      toast(registerResponce?.message || 'confirm', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
-    }
-    catch (error) {
-      console.log(error)
-      alert(error)
-    } finally {
-      setOtpLoading(false)
-    }
+    console.log('calling');
+    console.log('values',values);
+    // try {
+    //   setOtpLoading(true)
+    //   const { data: registerResponce } = await axios.post("/api/auth/verify-otp", values)
+    //   if (!registerResponce.success) {
+    //     throw new Error(registerResponce.message)
+    //   }
+    //   setOtpEmail('')
+    //   toast('success', registerResponce.message)
+    // }
+    // catch (error) {
+    //   console.log(error)
+    // } finally {
+    //   setOtpLoading(false)
+    // }
   }
+
   return (
     <div>
-      <Card className={'w-[400px] px-4'}>
+      <Card className={'w-[400px]'}>
         <CardContent>
           <div className='flex justify-center'>
             <Image src={Logo} width={Logo.width} height={Logo.height} alt='logo' className='max-w-[150px]' />
