@@ -51,9 +51,7 @@ export async function POST(request) {
       await sendMail(
         "Email Verification from Developer Rp",
         email,
-        generateOTPEmail(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${token}`
-        )
+        generateOTPEmail(otp, getUser?.name)
       );
       return responce(
         false,

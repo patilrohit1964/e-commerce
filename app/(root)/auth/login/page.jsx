@@ -18,6 +18,7 @@ import { z } from 'zod'
 const LoginPage = () => {
   const [loading, setLoading] = useState(false)
   const [istypePassword, setIsTypePassword] = useState(false)
+  const [otpLoading, setOtpLoading] = useState(false)
   const [otpEmail, setOtpEmail] = useState()
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
     email: true,
@@ -48,6 +49,26 @@ const LoginPage = () => {
       alert(error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleOtpVerification = async (values) => {
+    console.log('values', values);
+    try {
+      setOtpLoading(true)
+      const { data: registerResponce } = await axios.post('/api/auth/verify-otp', values);
+      if (!registerResponce.success) {
+        throw new Error(registerResponce.message)
+      }
+      setOtpEmail('')
+      form.reset()
+      toast(registerResponce?.message || 'confirm', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
+    }
+    catch (error) {
+      console.log(error)
+      alert(error)
+    } finally {
+      setOtpLoading(false)
     }
   }
   return (
@@ -115,7 +136,7 @@ const LoginPage = () => {
             </>
             :
             <>
-              <OtpVerification />
+              <OtpVerification email={otpEmail} loading={otpLoading} onSubmit={handleOtpVerification} />
             </>
           }
         </CardContent>
