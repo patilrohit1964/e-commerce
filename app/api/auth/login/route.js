@@ -30,7 +30,9 @@ export async function POST(request) {
       );
     }
     const { email, password } = validatedData.data;
-    const getUser = await User.findOne({ email });
+    const getUser = await User.findOne({ deletedAt: null, email }).select(
+      "+password"
+    );
     if (!getUser) {
       return responce(false, 404, "invalid login credentails");
     }
@@ -49,7 +51,7 @@ export async function POST(request) {
       await sendMail(
         "Email Verification from Developer Rp",
         email,
-        emailVerificationLink(
+        generateOTPEmail(
           `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${token}`
         )
       );
