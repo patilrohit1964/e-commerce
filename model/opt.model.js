@@ -20,5 +20,5 @@ const optSchema = new mongoose.Schema(
 );
 // we use here mongo ttl-time to limit this delete data after their time period
 optSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-const OTPModel = mongoose.model.Otp || mongoose.model("Otp", optSchema);
+const OTPModel = mongoose.models.Otp || mongoose.model("Otp", optSchema);
 export default OTPModel;

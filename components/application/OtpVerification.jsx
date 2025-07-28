@@ -22,7 +22,6 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
 
     const handleOtpVerification = async (values) => {
         onSubmit(values)
-        console.log('values', values);
     }
 
     const resendOtp = async () => {
@@ -57,36 +56,28 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
                                 <FormControl className='mx-auto'>
                                     <InputOTP maxLength={6} {...field}>
                                         <InputOTPGroup>
-                                            <InputOTPSlot className={'border border-gray-400 focus:border-none'} index={0} />
-                                            <InputOTPSlot className={'border border-gray-400 focus:border-none'} index={1} />
-                                            <InputOTPSlot className={'border border-gray-400 focus:border-none'} index={2} />
-                                            <InputOTPSlot className={'border border-gray-400 focus:border-none'} index={3} />
-                                            <InputOTPSlot className={'border border-gray-400 focus:border-none'} index={4} />
-                                            <InputOTPSlot className={'border border-gray-400 focus:border-none'} index={5} />
+                                            {[...Array(6)].map((_, idx) => (
+                                                <InputOTPSlot index={idx} />
+                                            ))}
                                         </InputOTPGroup>
                                     </InputOTP>
                                 </FormControl>
                                 <FormMessage className={'text-center'} />
                             </FormItem>
-                        )}>
-                        </FormField>
+                        )} />
                     </div>
+
                     <div className='mt-5 flex flex-col items-center justify-center'>
-                        <ButtonLoading type={'submit'} text={'Verify OTP'} className={'w-full cursor-pointer'} />
+                        <ButtonLoading type='submit' text='Verify OTP' className='w-full cursor-pointer' loading={loading} />
                         <div>
-                            <Button onClick={resendOtp} variant={'link'} className={'cursor-pointer hover:text-blue-400 transition-all delay-150'} disabled={resendOtpLoading}>
-                                {!resendOtpLoading ?
-                                    (
-                                        "Resend OTP ?"
-                                    )
-                                    :
-                                    <span className='text-lg text-gray-700'>resending...</span>
-                                }
+                            <Button onClick={resendOtp} variant='link' className='cursor-pointer hover:text-blue-400 transition-all delay-150' disabled={resendOtpLoading}>
+                                {!resendOtpLoading ? 'Resend OTP ?' : <span className='text-lg text-gray-700'>resending...</span>}
                             </Button>
                         </div>
                     </div>
                 </form>
             </Form>
+
         </div>
     )
 }

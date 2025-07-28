@@ -12,6 +12,7 @@ import axios from 'axios'
 import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -21,6 +22,7 @@ const LoginPage = () => {
   const [istypePassword, setIsTypePassword] = useState(false)
   const [otpLoading, setOtpLoading] = useState(false)
   const [otpEmail, setOtpEmail] = useState()
+  const router = useRouter()
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
     email: true,
   }).extend({
@@ -53,22 +55,22 @@ const LoginPage = () => {
     }
   }
 
-  const handleOtpVerification = (values) => {
-    console.log('values',values);
-    // try {
-    //   setOtpLoading(true)
-    //   const { data: registerResponce } = await axios.post("/api/auth/verify-otp", values)
-    //   if (!registerResponce.success) {
-    //     throw new Error(registerResponce.message)
-    //   }
-    //   setOtpEmail('')
-    //   toast('success', registerResponce.message)
-    // }
-    // catch (error) {
-    //   console.log(error)
-    // } finally {
-    //   setOtpLoading(false)
-    // }
+  const handleOtpVerification = async (values) => {
+    try {
+      setOtpLoading(true)
+      const { data: registerResponce } = await axios.post("/api/auth/verify-otp", values)
+      if (!registerResponce.success) {
+        throw new Error(registerResponce.message)
+      }
+      setOtpEmail('')
+      toast('success', registerResponce.message)
+      router.push('/')
+    }
+    catch (error) {
+      console.log(error)
+    } finally {
+      setOtpLoading(false)
+    }
   }
 
   return (
@@ -135,9 +137,7 @@ const LoginPage = () => {
               </div>
             </>
             :
-            <>
-              <OtpVerification email={otpEmail} loading={otpLoading} onSubmit={handleOtpVerification} />
-            </>
+            <OtpVerification email={otpEmail} loading={otpLoading} onSubmit={handleOtpVerification} />
           }
         </CardContent>
       </Card >

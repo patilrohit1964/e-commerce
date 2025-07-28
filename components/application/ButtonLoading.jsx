@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 const ButtonLoading = ({ type, text, loading, className, onClick, ...props }) => {
     return (
-        <Button type={type} disabled={loading} onClick={onclick} {...props} className={cn('', className)}>
+        <Button type={type} disabled={loading} {...props} className={cn('', className)}>
             {loading &&
                 <Loader2 className='animate-spin' />
             }

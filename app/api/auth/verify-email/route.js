@@ -14,7 +14,7 @@ export async function POST(req) {
     const decoded = await jwtVerify(token, secret);
     const userId = decoded.payload.userId;
 
-    const user = await User.findById(userId);
+    const user = await User.findById({ _id: userId });
     if (!user) {
       return responce(false, 404, "user not found");
     }

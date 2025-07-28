@@ -62,10 +62,10 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods = {
-  comaprePassword: async function (password) {
+  comparePassword: async function (password) {
     return await bcryptjs.compare(password, this.password);
   },
 };
 
-const User = mongoose.model.User || mongoose.model("User", userSchema); //here we can write collection name as passing 3 argument
+const User = mongoose.models.User || mongoose.model("User", userSchema); //here we can write collection name as passing 3 argument
 export default User;

@@ -43,7 +43,7 @@ export async function POST(request) {
       const secret = new TextEncoder().encode(
         process.env.NEXT_PUBLIC_JWT_SECRET
       );
-      const token = await new SignJWT({ userId: getUser._id })
+      const token = await new SignJWT({ userId: getUser._id.toString() })
         .setIssuedAt()
         .setExpirationTime("1h")
         .setProtectedHeader({ alg: "HS256" })
@@ -52,7 +52,9 @@ export async function POST(request) {
       await sendMail(
         "Email Verification from Developer Rp",
         email,
-        generateOTPEmail(otp, getUser?.name)
+        emailVerificationLink(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${token}`
+        )
       );
       return responce(
         false,
@@ -66,7 +68,7 @@ export async function POST(request) {
       return responce(false, 400, "invalid login credentials");
     }
     // otp generation
-    await OTPModel.deleteMany({ email }); //delet old otps
+    await OTPModel.deleteMany({ email }); //delete old otps
     // storing otp modal
     const newOtpData = new OTPModel({
       email,
