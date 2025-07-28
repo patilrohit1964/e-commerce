@@ -8,6 +8,7 @@ import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '../ui/
 import { Button } from '../ui/button'
 import { useState } from 'react'
 import axios from 'axios'
+import { showToast } from '@/lib/toast'
 
 const OtpVerification = ({ email, onSubmit, loading }) => {
     const formSchema = zSchmea.pick({ otp: true, email: true })
@@ -27,17 +28,17 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
     const resendOtp = async () => {
         try {
             setresendOtpLoading(true)
-            const { data: registerResponce } = await axios.post('/api/auth/resend-otp', {
+            const { data: resendOtpResponce } = await axios.post('/api/auth/resend-otp', {
                 email
             });
-            if (!registerResponce.success) {
-                throw new Error(registerResponce.message)
+            if (!resendOtpResponce.success) {
+                throw new Error(resendOtpResponce.message)
             }
-            toast(registerResponce?.message || 'logged successfully', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
+            showToast('success', resendOtpResponce?.message || 'logged successfully')
         }
         catch (error) {
             console.log(error)
-            alert(error)
+            showToast('error', resendOtpResponce?.message || 'logged successfully')
         } finally {
             setresendOtpLoading(false)
         }

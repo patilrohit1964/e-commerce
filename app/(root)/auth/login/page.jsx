@@ -4,6 +4,7 @@ import OtpVerification from '@/components/application/OtpVerification'
 import { Card, CardContent } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { showToast } from '@/lib/toast'
 import { zSchmea } from '@/lib/zodSchema'
 import Logo from '@/public/next.svg'
 import { WEBSITE_REGISTER } from '@/routes/websiteRoute'
@@ -45,11 +46,11 @@ const LoginPage = () => {
       }
       setOtpEmail(values.email)
       form.reset()
-      toast(registerResponce?.message || 'logged successfully', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
+      showToast("success", registerResponce.message)
     }
     catch (error) {
       console.log(error)
-      alert(error)
+      showToast('error', error)
     } finally {
       setLoading(false)
     }
@@ -58,16 +59,17 @@ const LoginPage = () => {
   const handleOtpVerification = async (values) => {
     try {
       setOtpLoading(true)
-      const { data: registerResponce } = await axios.post("/api/auth/verify-otp", values)
-      if (!registerResponce.success) {
-        throw new Error(registerResponce.message)
+      const { data: otpResponce } = await axios.post("/api/auth/verify-otp", values)
+      if (!otpResponce.success) {
+        throw new Error(otpResponce.message)
       }
       setOtpEmail('')
-      toast('success', registerResponce.message)
+      showToast('success', otpResponce.message)
       router.push('/')
     }
     catch (error) {
       console.log(error)
+      showToast('error', error)
     } finally {
       setOtpLoading(false)
     }

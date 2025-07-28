@@ -3,6 +3,7 @@ import ButtonLoading from '@/components/application/ButtonLoading'
 import { Card, CardContent } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { showToast } from '@/lib/toast'
 import { zSchmea } from '@/lib/zodSchema'
 import Logo from '@/public/next.svg'
 import { WEBSITE_LOGIN } from '@/routes/websiteRoute'
@@ -41,11 +42,11 @@ const RegisterPage = () => {
                 throw new Error(registerResponce.message)
             }
             form.reset()
-            toast(registerResponce?.message || 'Account Created', { position: 'top-right', style: { backgroundColor: "gray", color: 'white' } })
+            showToast("success", registerResponce?.message || 'Account Created')
         }
         catch (error) {
             console.log(error)
-            alert(error)
+            showToast('error', error)
         } finally {
             setLoading(false)
         }
