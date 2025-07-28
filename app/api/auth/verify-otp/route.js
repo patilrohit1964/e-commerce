@@ -55,7 +55,12 @@ export async function POST(request) {
     });
 
     await getOtpData.deleteOne();
-    return responce(true, 200, "login successfull", loggedInUserData);
+    return responce(
+      true,
+      200,
+      "otp verified login successfull",
+      loggedInUserData
+    );
   } catch (error) {
     console.log("error", error);
   }
