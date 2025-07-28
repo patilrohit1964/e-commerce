@@ -34,11 +34,11 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
             if (!resendOtpResponce.success) {
                 throw new Error(resendOtpResponce.message)
             }
-            showToast('success', resendOtpResponce?.message || 'logged successfully')
+            showToast('success', resendOtpResponce?.message || 'Resend otp success')
         }
         catch (error) {
             console.log(error)
-            showToast('error', resendOtpResponce?.message || 'logged successfully')
+            showToast('error', error)
         } finally {
             setresendOtpLoading(false)
         }

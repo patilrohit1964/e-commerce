@@ -40,13 +40,13 @@ const LoginPage = () => {
   const handleLoginSubmit = async (values) => {
     try {
       setLoading(true)
-      const { data: registerResponce } = await axios.post('/api/auth/login', values);
-      if (!registerResponce.success) {
-        throw new Error(registerResponce.message)
+      const { data: loginResponce } = await axios.post('/api/auth/login', values);
+      if (!loginResponce.success) {
+        throw new Error(loginResponce.message)
       }
       setOtpEmail(values.email)
       form.reset()
-      showToast("success", registerResponce.message)
+      showToast("success", loginResponce.message || "logged in Successfull")
     }
     catch (error) {
       console.log(error)
@@ -64,7 +64,7 @@ const LoginPage = () => {
         throw new Error(otpResponce.message)
       }
       setOtpEmail('')
-      showToast('success', otpResponce.message)
+      showToast('success', otpResponce.message || "otp verified")
       router.push('/')
     }
     catch (error) {
