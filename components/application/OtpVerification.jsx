@@ -1,14 +1,13 @@
+import { showToast } from '@/lib/toast'
 import { zSchmea } from '@/lib/zodSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from '../ui/form'
-import { Input } from '../ui/input'
-import ButtonLoading from './ButtonLoading'
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '../ui/input-otp'
-import { Button } from '../ui/button'
-import { useState } from 'react'
 import axios from 'axios'
-import { showToast } from '@/lib/toast'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Button } from '../ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
+import ButtonLoading from './ButtonLoading'
 
 const OtpVerification = ({ email, onSubmit, loading }) => {
     const formSchema = zSchmea.pick({ otp: true, email: true })

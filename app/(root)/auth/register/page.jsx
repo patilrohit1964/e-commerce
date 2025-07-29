@@ -128,9 +128,6 @@ const RegisterPage = () => {
                                 </p>
                                 <Link href={WEBSITE_LOGIN} className='underline text-primary'>Login</Link>
                             </div>
-                            <div>
-                                <p className='text-primary text-center cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
-                            </div>
                         </form>
                     </Form>
                 </div>
