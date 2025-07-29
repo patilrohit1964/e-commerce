@@ -10,9 +10,12 @@ import { z } from 'zod'
 import Logo from '@/public/next.svg'
 import Image from 'next/image'
 import ButtonLoading from '@/components/application/ButtonLoading'
+import { EyeClosedIcon, EyeIcon } from 'lucide-react'
+import axios from 'axios'
 
 const ForgotPassword = () => {
     const [passResetLoading, setPassResetLoading] = useState(false)
+    const [istypePassword, setIsTypePassword] = useState(false)
     const forgotSchema = zSchmea.pick({
         password: true,
     }).extend({
@@ -28,7 +31,14 @@ const ForgotPassword = () => {
     })
 
     const handleForgotPassword = async (values) => {
-
+        try {
+            const res = await axios.post("/api/auth/forgot-pass", values)
+            console.log(res, "responce form backedn")
+            forgotForm.reset()
+        }
+        catch (error) {
+            console.log(error)
+        }
     }
     return (
         <div>
@@ -40,26 +50,40 @@ const ForgotPassword = () => {
                     <div>
                         <Form {...forgotForm}>
                             <form onSubmit={forgotForm.handleSubmit(handleForgotPassword)}>
-                                <div>
+                                <div className='relative'>
                                     <FormField control={forgotForm.control} name="password" render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Password</FormLabel>
                                             <FormControl>
-                                                <Input type={'text'} placeholder='enter your password' {...field} />
+                                                <Input type={istypePassword ? 'text' : 'password'} placeholder='enter your password' {...field} />
                                             </FormControl>
                                             <FormMessage />
+                                            <button className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>
+                                                {istypePassword ?
+                                                    <EyeIcon color='gray' size={'25'} />
+                                                    :
+                                                    <EyeClosedIcon color='gray' />
+                                                }
+                                            </button>
                                         </FormItem>
                                     )}>
                                     </FormField>
                                 </div>
-                                <div className='my-3'>
+                                <div className='my-3 relative'>
                                     <FormField control={forgotForm.control} name="confirmPassword" render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Confirm Password</FormLabel>
                                             <FormControl>
-                                                <Input type={'text'} placeholder='confirm your password' {...field} />
+                                                <Input type={istypePassword ? 'text' : 'password'} placeholder='confirm your password' {...field} />
                                             </FormControl>
                                             <FormMessage />
+                                            <button className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>
+                                                {istypePassword ?
+                                                    <EyeIcon color='gray' size={'25'} />
+                                                    :
+                                                    <EyeClosedIcon color='gray' />
+                                                }
+                                            </button>
                                         </FormItem>
                                     )}>
                                     </FormField>
