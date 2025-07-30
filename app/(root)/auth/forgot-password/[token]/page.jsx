@@ -35,17 +35,22 @@ const ForgotPassword = () => {
     })
 
     const handleForgotPassword = async (values) => {
+        setPassResetLoading(true)
         try {
             const { data: forgotPassResponce } = await axios.post("/api/auth/forgot-pass", values)
             if (!forgotPassResponce.success) {
                 return responce(false, 400, "something wrong");
             }
             forgotForm.reset()
+            setPassResetLoading(false)
             showToast('success', "Password reset successfull")
             router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`)
         }
         catch (error) {
             console.log(error)
+        }
+        finally {
+            setPassResetLoading(false)
         }
     }
     return (

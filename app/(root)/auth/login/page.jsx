@@ -89,16 +89,22 @@ const LoginPage = () => {
   }
 
   const handleForgotPasswordEmail = async (value) => {
+    setForgotLoading(true)
     try {
       const { data: forgotEmailResponce } = await axios.post(`/api/auth/forgot-send-email`, value)
       if (!forgotEmailResponce.success) {
         throw new Error(forgotEmailResponce.message)
       }
+      forgotPassForm.reset()
+      setForgotLoading(false)
       showToast('success', forgotEmailResponce.message)
       forgotPassForm.reset()
     }
     catch (error) {
       console.log(error)
+    }
+    finally {
+      setForgotLoading(false)
     }
   }
 

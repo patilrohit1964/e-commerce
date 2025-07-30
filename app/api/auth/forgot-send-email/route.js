@@ -13,7 +13,7 @@ export async function POST(req) {
     if (!validateData.success) {
       return responce(false, 401, "some fields missing");
     }
-    const userExist = await User.findOne({ email: validateData.data.email });
+    const userExist = await User.findOne(validateData.data.email);
     if (!userExist) {
       return responce(false, 404, "user not found");
     }
