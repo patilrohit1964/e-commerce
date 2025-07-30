@@ -14,7 +14,7 @@ import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 const LoginPage = () => {
@@ -25,6 +25,9 @@ const LoginPage = () => {
   const [forgotPass, setForgotPass] = useState(false)
   const [forgotLoading, setForgotLoading] = useState(false)
   const router = useRouter()
+  const emailInputId = useId();
+  const passwordInputId = useId();
+  const forgotEmailInputId = useId();
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
     email: true,
   }).extend({
@@ -63,7 +66,7 @@ const LoginPage = () => {
     }
     catch (error) {
       console.log(error)
-      showToast('error', error)
+      showToast('error', error?.message)
     } finally {
       setLoading(false)
     }
@@ -82,7 +85,7 @@ const LoginPage = () => {
     }
     catch (error) {
       console.log(error)
-      showToast('error', error)
+      showToast('error', error?.message)
     } finally {
       setOtpLoading(false)
     }
@@ -97,7 +100,7 @@ const LoginPage = () => {
       }
       forgotPassForm.reset()
       setForgotLoading(false)
-      showToast('success', forgotEmailResponce.message)
+      showToast('success', forgotEmailResponce.message || 'verify your email for forgot password')
       forgotPassForm.reset()
     }
     catch (error) {
@@ -128,9 +131,9 @@ const LoginPage = () => {
                       <div>
                         <FormField control={form.control} name='email' render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel htmlFor={'email-id'}>Email</FormLabel>
                             <FormControl>
-                              <Input type={'email'} placeholder="enter your email" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                              <Input type={'email'} id={'email-id'} placeholder="enter your email" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -140,9 +143,9 @@ const LoginPage = () => {
                       <div className='my-5 relative'>
                         <FormField control={form.control} name='password' render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel htmlFor={'password-id'}>Password</FormLabel>
                             <FormControl>
-                              <Input type={istypePassword ? 'text' : 'password'} placeholder="enter your password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                              <Input type={istypePassword ? 'text' : 'password'} placeholder="enter your password" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} id={'password-id'} />
                             </FormControl>
                             <div className='flex justify-between items-center'>
                               <FormMessage />
@@ -184,9 +187,9 @@ const LoginPage = () => {
                 <div>
                   <FormField control={forgotPassForm.control} name='email' render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel htmlFor={'forgot-email-id'}>Email</FormLabel>
                       <FormControl>
-                        <Input type={'email'} placeholder="enter your email" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                        <Input type={'email'} id={'forgot-email-id'} placeholder="enter your email" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

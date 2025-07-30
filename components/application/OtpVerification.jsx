@@ -37,7 +37,7 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
         }
         catch (error) {
             console.log(error)
-            showToast('error', error)
+            showToast('error', error?.message)
         } finally {
             setresendOtpLoading(false)
         }

@@ -21,17 +21,20 @@ export async function POST(req) {
         validatedData.error
       );
     }
-    const { password } = validatedData.data;
+    const { password, token } = payload;
     const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
-    const decoded = await jwtVerify(payload.token, secret);
+    const decoded = await jwtVerify(token, secret);
     const user = await User.findByIdAndUpdate(
       decoded.payload.userId,
-      password,
+      { password },
       { new: true }
     );
-    return responce(true, 200, "password updated", validatedData.data);
+    if (!user) {
+      return responce(false, 404, "User not found", null);
+    }
+    return responce(true, 200, "Password updated", { userId: user._id });
   } catch (error) {
-    responce(false, 500, "internal server error", error);
     console.log(error);
+    return responce(false, 500, "internal server error", error);
   }
 }

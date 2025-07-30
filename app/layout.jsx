@@ -28,8 +28,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${assistantFont.className} antialiased`}
       >
-        {children}
         <Toaster />
+        {children}
       </body>
     </html>
   );

@@ -45,7 +45,7 @@ const RegisterPage = () => {
         }
         catch (error) {
             console.log(error)
-            showToast('error', error)
+            showToast('error', error?.message)
         } finally {
             setLoading(false)
         }
