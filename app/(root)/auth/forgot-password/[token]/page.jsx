@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { zSchmea } from '@/lib/zodSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import Logo from '@/public/next.svg'
@@ -16,9 +16,10 @@ import { responce } from '@/lib/helper'
 import { showToast } from '@/lib/toast'
 import { useRouter } from 'next/navigation'
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ params }) => {
     const [passResetLoading, setPassResetLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(false)
+    const { token } = use(params)
     const router = useRouter()
     const forgotSchema = zSchmea.pick({
         password: true,
@@ -37,7 +38,7 @@ const ForgotPassword = () => {
     const handleForgotPassword = async (values) => {
         setPassResetLoading(true)
         try {
-            const { data: forgotPassResponce } = await axios.post("/api/auth/forgot-pass", values)
+            const { data: forgotPassResponce } = await axios.post("/api/auth/forgot-pass", { ...values, token })
             if (!forgotPassResponce.success) {
                 return responce(false, 400, "something wrong");
             }

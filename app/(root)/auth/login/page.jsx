@@ -22,7 +22,7 @@ const LoginPage = () => {
   const [istypePassword, setIsTypePassword] = useState(false)
   const [otpLoading, setOtpLoading] = useState(false)
   const [otpEmail, setOtpEmail] = useState()
-  const [forgotPass, setForgotPass] = useState(true)
+  const [forgotPass, setForgotPass] = useState(false)
   const [forgotLoading, setForgotLoading] = useState(false)
   const router = useRouter()
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
@@ -147,7 +147,7 @@ const LoginPage = () => {
                             <div className='flex justify-between items-center'>
                               <FormMessage />
                               <div className='text-sm ml-auto'>
-                                <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150'>Forgot Password ?</p>
+                                <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150' onClick={() => setForgotPass(true)}>Forgot Password ?</p>
                               </div>
                             </div>
                             <button className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>

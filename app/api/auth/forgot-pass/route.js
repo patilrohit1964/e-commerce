@@ -10,19 +10,20 @@ export async function POST(req) {
     const validationSchema = zSchmea.pick({
       password: true,
     });
-    const { token } = await req.json();
-    // const validatedData = validationSchema.safeParse(payload);
-    // if (!validatedData.success) {
-    //   return responce(
-    //     false,
-    //     401,
-    //     "invalid or missing fields",
-    //     validatedData.error
-    //   );
-    // }
+    const payload = await req.json();
+    console.log("payload", payload);
+    const validatedData = validationSchema.safeParse(payload);
+    if (!validatedData.success) {
+      return responce(
+        false,
+        401,
+        "invalid or missing fields",
+        validatedData.error
+      );
+    }
     const { password } = validatedData.data;
     const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
-    const decoded = await jwtVerify(token, secret);
+    const decoded = await jwtVerify(payload.token, secret);
     const user = await User.findByIdAndUpdate(
       decoded.payload.userId,
       password,

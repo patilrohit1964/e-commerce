@@ -1,4 +1,5 @@
 import { generateForgotPasswordEmail } from "@/email/forgotPassword";
+import connectDb from "@/lib/dbConnect";
 import { responce } from "@/lib/helper";
 import { sendMail } from "@/lib/sendMail";
 import { zSchmea } from "@/lib/zodSchema";
@@ -7,13 +8,14 @@ import { SignJWT } from "jose";
 
 export async function POST(req) {
   try {
+    await connectDb();
     const validateSchema = zSchmea.pick({ email: true });
     const payload = await req.json();
     const validateData = validateSchema.safeParse(payload);
     if (!validateData.success) {
       return responce(false, 401, "some fields missing");
     }
-    const userExist = await User.findOne(validateData.data.email);
+    const userExist = await User.findOne({ email: payload.email.toString() });
     if (!userExist) {
       return responce(false, 404, "user not found");
     }

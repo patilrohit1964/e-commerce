@@ -12,7 +12,6 @@ const EmailVerification = ({ params }) => {
   useEffect(() => {
     const verify = async () => {
       const { data } = await axios.post(`/api/auth/verify-email`, { token })
-      console.log('data', data);
       if (data.success) {
         setIsVerified(true)
     }
