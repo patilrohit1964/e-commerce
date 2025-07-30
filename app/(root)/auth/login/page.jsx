@@ -88,8 +88,18 @@ const LoginPage = () => {
     }
   }
 
-  const handleForgotPassword=async(valuee)=>{
-    
+  const handleForgotPasswordEmail = async (value) => {
+    try {
+      const { data: forgotEmailResponce } = await axios.post(`/api/auth/forgot-send-email`, value)
+      if (!forgotEmailResponce.success) {
+        throw new Error(forgotEmailResponce.message)
+      }
+      showToast('success', forgotEmailResponce.message)
+      forgotPassForm.reset()
+    }
+    catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -164,7 +174,7 @@ const LoginPage = () => {
               <div className='text-center text-sm text-gray-600 my-3'>
                 Forgot Your Password
               </div>
-              <form onSubmit={forgotPassForm.handleSubmit(handleForgotPassword)}>
+              <form onSubmit={forgotPassForm.handleSubmit(handleForgotPasswordEmail)}>
                 <div>
                   <FormField control={forgotPassForm.control} name='email' render={({ field }) => (
                     <FormItem>

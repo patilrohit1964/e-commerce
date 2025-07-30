@@ -12,10 +12,14 @@ import Image from 'next/image'
 import ButtonLoading from '@/components/application/ButtonLoading'
 import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import axios from 'axios'
+import { responce } from '@/lib/helper'
+import { showToast } from '@/lib/toast'
+import { useRouter } from 'next/navigation'
 
 const ForgotPassword = () => {
     const [passResetLoading, setPassResetLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(false)
+    const router = useRouter()
     const forgotSchema = zSchmea.pick({
         password: true,
     }).extend({
@@ -32,9 +36,13 @@ const ForgotPassword = () => {
 
     const handleForgotPassword = async (values) => {
         try {
-            const res = await axios.post("/api/auth/forgot-pass", values)
-            console.log(res, "responce form backedn")
+            const { data: forgotPassResponce } = await axios.post("/api/auth/forgot-pass", values)
+            if (!forgotPassResponce.success) {
+                return responce(false, 400, "something wrong");
+            }
             forgotForm.reset()
+            showToast('success', "Password reset successfull")
+            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`)
         }
         catch (error) {
             console.log(error)
