@@ -14,7 +14,7 @@ import { EyeClosedIcon, EyeIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 const LoginPage = () => {
@@ -25,9 +25,6 @@ const LoginPage = () => {
   const [forgotPass, setForgotPass] = useState(false)
   const [forgotLoading, setForgotLoading] = useState(false)
   const router = useRouter()
-  const emailInputId = useId();
-  const passwordInputId = useId();
-  const forgotEmailInputId = useId();
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
     email: true,
   }).extend({
@@ -95,12 +92,13 @@ const LoginPage = () => {
     setForgotLoading(true)
     try {
       const { data: forgotEmailResponce } = await axios.post(`/api/auth/forgot-send-email`, value)
+      console.log('forgotEmailResponce', forgotEmailResponce);
       if (!forgotEmailResponce.success) {
+        showToast('success', forgotEmailResponce.message || 'verify your email for forgot password')
         throw new Error(forgotEmailResponce.message)
       }
       forgotPassForm.reset()
       setForgotLoading(false)
-      showToast('success', forgotEmailResponce.message || 'verify your email for forgot password')
       forgotPassForm.reset()
     }
     catch (error) {

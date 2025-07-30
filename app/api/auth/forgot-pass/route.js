@@ -11,7 +11,6 @@ export async function POST(req) {
       password: true,
     });
     const payload = await req.json();
-    console.log("payload", payload);
     const validatedData = validationSchema.safeParse(payload);
     if (!validatedData.success) {
       return responce(
@@ -24,14 +23,12 @@ export async function POST(req) {
     const { password, token } = payload;
     const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
     const decoded = await jwtVerify(token, secret);
-    const user = await User.findByIdAndUpdate(
-      decoded.payload.userId,
-      { password },
-      { new: true }
-    );
+    const user = await User.findById(decoded.payload.userId);
     if (!user) {
       return responce(false, 404, "User not found", null);
     }
+    user.password = password;
+    await user.save();
     return responce(true, 200, "Password updated", { userId: user._id });
   } catch (error) {
     console.log(error);
