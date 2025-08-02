@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
     Sidebar,
     SidebarContent,
@@ -10,17 +10,18 @@ import {
     SidebarMenuItem,
     SidebarMenuSub,
     SidebarMenuSubButton,
-    SidebarMenuSubItem
+    SidebarMenuSubItem,
+    useSidebar
 } from "@/components/ui/sidebar"
 import { adminAppSidebarMenu } from '@/lib/adminSidebarMenu'
 import Logo from '@/public/next.svg'
-import { Collapsible } from '@/components/ui/collapsible'
 import { LucideChevronRight, X } from "lucide-react"
 import Image from 'next/image'
 import Link from 'next/link'
 
 
 const AppSidebar = () => {
+    const { toggleSidebar } = useSidebar()
     return (
         <div>
             <Sidebar className={'z-50'}>
@@ -28,7 +29,7 @@ const AppSidebar = () => {
                     <div className='flex justify-between'>
                         {/* <Image src={Logo} alt='logo' height={Logo.height} width={Logo.width} className='dark:hidden' /> */}
                         <Image src={Logo} alt='logo' height={50} width={Logo.width} className='dark:block' />
-                        <Button type="button" size={'icon'} className={'md:hidden'}>
+                        <Button type="button" size={'icon'} className={'md:hidden'} variant={'secondary'} onClick={toggleSidebar}>
                             {/* <LucideChevronRight /> */}
                             <X />
                         </Button>
