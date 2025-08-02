@@ -7,17 +7,22 @@ import { Input } from '@/components/ui/input'
 import { showToast } from '@/lib/toast'
 import { zSchmea } from '@/lib/zodSchema'
 import Logo from '@/public/next.svg'
-import { WEBSITE_REGISTER } from '@/routes/websiteRoute'
+import { ADMIN_DASHBOARD } from '@/routes/adminPaneRoute'
+import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_REGISTER } from '@/routes/websiteRoute'
+import { login } from '@/store/reducers/authReducer'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { EyeClosedIcon, EyeIcon } from 'lucide-react'
+import { EyeClosedIcon, EyeIcon, MoveLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { z } from 'zod'
 const LoginPage = () => {
+  const dispatch = useDispatch()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
   const [istypePassword, setIsTypePassword] = useState(false)
   const [otpLoading, setOtpLoading] = useState(false)
@@ -78,7 +83,13 @@ const LoginPage = () => {
       }
       setOtpEmail('')
       showToast('success', otpResponce.message || "otp verified")
-      router.push('/')
+      dispatch(login(otpResponce?.data))
+      if (searchParams.has('callback')) {
+        router.push(searchParams.get('callback'))
+      } else {
+        otpResponce.data.role === 'admin' ? router.push(ADMIN_DASHBOARD) : router.push(USER_DASHBOARD)
+      }
+      router.push(WEBSITE_HOME)
     }
     catch (error) {
       console.log(error)
@@ -177,26 +188,32 @@ const LoginPage = () => {
               <OtpVerification email={otpEmail} loading={otpLoading} onSubmit={handleOtpVerification} />)
           }
           {forgotPass && (
-            <Form {...forgotPassForm}>
-              <div className='text-center text-sm text-gray-600 my-3'>
-                Forgot Your Password
-              </div>
-              <form onSubmit={forgotPassForm.handleSubmit(handleForgotPasswordEmail)}>
-                <div>
-                  <FormField control={forgotPassForm.control} name='email' render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor={'forgot-email-id'}>Email</FormLabel>
-                      <FormControl>
-                        <Input type={'email'} id={'forgot-email-id'} placeholder="enter your email" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}>
-                  </FormField>
+            <>
+              <Form {...forgotPassForm}>
+                <div className='text-center text-sm text-gray-600 my-3'>
+                  Forgot Your Password
                 </div>
-                <ButtonLoading loading={forgotLoading} text={"Forgot Password"} className={'w-full my-3'} />
-              </form>
-            </Form>
+                <form onSubmit={forgotPassForm.handleSubmit(handleForgotPasswordEmail)}>
+                  <div>
+                    <FormField control={forgotPassForm.control} name='email' render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor={'forgot-email-id'}>Email</FormLabel>
+                        <FormControl>
+                          <Input type={'email'} id={'forgot-email-id'} placeholder="enter your email" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}>
+                    </FormField>
+                  </div>
+                  <ButtonLoading loading={forgotLoading} text={"Forgot Password"} className={'w-full my-3'} />
+                </form>
+              </Form>
+              <div className='flex gap-1 p-2 text-gray-500 cursor-pointer' onClick={() => setForgotPass(false)}>
+                <MoveLeft />
+                <p>Back to Login</p>
+              </div>
+            </>
           )
           }
         </CardContent>
