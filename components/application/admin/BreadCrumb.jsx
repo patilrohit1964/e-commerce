@@ -14,12 +14,12 @@ const BreadCrumb = ({ breadcrumbData }) => {
             <BreadcrumbList>
                 {
                     breadcrumbData?.length && breadcrumbData?.map((el, idx) => (
-                        <>
+                        <div key={idx} className='flex items-center'>
                             <BreadcrumbItem key={idx}>
                                 <BreadcrumbLink href={el.href}>{el.label}</BreadcrumbLink>
                             </BreadcrumbItem>
-                            {idx !== breadcrumbData.length - 1 && <BreadcrumbSeparator />}
-                        </>
+                            {idx !== breadcrumbData.length - 1 && <BreadcrumbSeparator className={'ml-2'} />}
+                        </div>
                     ))
                 }
             </BreadcrumbList>

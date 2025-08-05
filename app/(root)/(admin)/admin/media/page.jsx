@@ -1,4 +1,5 @@
 import BreadCrumb from "@/components/application/admin/BreadCrumb"
+import UploadMedia from "@/components/application/admin/UploadMedia"
 import { ADMIN_DASHBOARD } from "@/routes/adminPaneRoute"
 
 const breadcrumbData = [
@@ -10,6 +11,7 @@ const MediaPage = () => {
     return (
         <div>
             <BreadCrumb breadcrumbData={breadcrumbData} />
+            <UploadMedia isMultiple={true} />
         </div>
     )
 }
