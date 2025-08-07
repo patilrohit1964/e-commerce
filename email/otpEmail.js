@@ -301,8 +301,3 @@ export const generateOTPEmail = (
 </html>
   `;
 };
-
-// Example usage:
-// const { generateOTPEmail } = require('./email/otpEmail');
-// const emailHTML = generateOTPEmail('123456', 'John Doe', 'MyCompany');
-// console.log(emailHTML);

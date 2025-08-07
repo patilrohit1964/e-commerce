@@ -103,7 +103,6 @@ const LoginPage = () => {
     setForgotLoading(true)
     try {
       const { data: forgotEmailResponce } = await axios.post(`/api/auth/forgot-send-email`, value)
-      console.log('forgotEmailResponce', forgotEmailResponce);
       if (!forgotEmailResponce.success) {
         showToast('success', forgotEmailResponce.message || 'verify your email for forgot password')
         throw new Error(forgotEmailResponce.message)

@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { showToast } from '@/lib/toast'
 import axios from 'axios'
+import { Plus } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
 const UploadMedia = ({ isMultiple }) => {
@@ -50,7 +51,7 @@ const UploadMedia = ({ isMultiple }) => {
         >
             {({ open }) => (
                 <Button variant="secondary" onClick={() => open()}>
-                    Upload
+                    <Plus /> Upload
                 </Button>
             )}
         </CldUploadWidget>
