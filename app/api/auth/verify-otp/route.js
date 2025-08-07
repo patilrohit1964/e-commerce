@@ -33,7 +33,7 @@ export async function POST(request) {
       return responce(false, 404, "user not found");
     }
     const loggedInUserData = {
-      _id: getUser._id,
+      _id: getUser._id.toString(),
       role: getUser.role,
       name: getUser.name,
       avatar: getUser.avatar,

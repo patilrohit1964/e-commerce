@@ -14,14 +14,14 @@ export async function POST(req) {
     const newMedia = await MEDIAModel.insertMany(payload);
     return responce(true, 200, "media upload successfully", newMedia);
   } catch (error) {
-    console.log(error,'error from cloudinary insert');
+    console.log(error, "error from cloudinary insert");
     if (payload && payload.length > 0) {
       const publicIds = payload.map((data) => data.public_id);
       try {
         await cloudinary.api.delete_resources(publicIds);
       } catch (deleteError) {
         error.cloudinary = deleteError;
-        console.log(error,'error from cloudinary delete');
+        console.log(error, "error from cloudinary delete");
       }
     }
     return catchError(error);
