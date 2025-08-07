@@ -14,7 +14,7 @@ export async function GET(req) {
     const page = parseInt(searchParams.get("page"), 10) || 0;
     const limit = parseInt(searchParams.get("limit"), 10) || 10;
     const deleteType = parseInt(searchParams.get("deleteType")); //sd=>soft del,rsd=>restore del,pd=>permenent del;
-    const filter = {};
+    let filter = {};
     if (deleteType === "SD") {
       filter = { deletedAt: null };
     } else if (deleteType === "PD") {

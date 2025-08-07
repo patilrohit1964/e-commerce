@@ -1,10 +1,11 @@
+'use client'
 import BreadCrumb from "@/components/application/admin/BreadCrumb"
 import UploadMedia from "@/components/application/admin/UploadMedia"
-import { Card, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/adminPaneRoute"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { useState } from "react"
+import React, { useState } from "react"
 
 const breadcrumbData = [
     { href: ADMIN_DASHBOARD, label: "Home" },
@@ -13,11 +14,10 @@ const breadcrumbData = [
 const MediaPage = () => {
     const [deleteType, setDeleteType] = useState('SD')
     const fetchMedia = async (page, deleteType) => {
-        const { data: responce } = await axios.get(`/api/media?page=${page}&&limit=10&&deleteType=${deleteType}`)
-        console.log('responce', responce);
-        return responce()
+        const { data: mediaGetResponce } = await axios.get(`/api/media?page=${page}&&limit=10&&deleteType=${deleteType}`)
+        return mediaGetResponce
     }
-    const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery({
+    const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
         queryKey: ['media-data', deleteType],
         queryFn: async ({ pageParam }) => await fetchMedia(pageParam, deleteType),
         initialPageParam: 0,
@@ -38,8 +38,30 @@ const MediaPage = () => {
                         </div>
                     </div>
                 </CardHeader>
+                <CardContent>
+                    {
+                        status === 'pending'
+                            ?
+                            <div>loading</div>
+                            :
+                            status === 'error'
+                                ?
+                                <div className="text-red-500 text-sm">
+                                    {error.message}
+                                </div>
+                                :
+                                <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-2 gap-2 mb-5">
+                                    {data?.pages?.map((page, idx) => (
+                                        <React.Fragment key={idx}>
+                                            {page?.mediaData?.map((media) => (
+                                                <div>{media?._id}</div>
+                                            ))}
+                                        </React.Fragment>
+                                    ))}
+                                </div>}
+                </CardContent>
             </Card>
-        </div>
+        </div >
     )
 }
 
