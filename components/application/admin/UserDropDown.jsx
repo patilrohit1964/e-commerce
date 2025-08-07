@@ -34,8 +34,8 @@ const UserDropDown = () => {
   const logoutHandler = async () => {
     try {
       const { data: logoutResponce } = await axios.post('/api/auth/logout')
-      if (!data.success) {
-        throw new Error(data?.message)
+      if (!logoutResponce.success) {
+        throw new Error(logoutResponce?.message)
       }
       dispatch(logout())
       showToast('success', logoutResponce?.message)

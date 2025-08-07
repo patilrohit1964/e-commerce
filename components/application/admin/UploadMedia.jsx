@@ -6,57 +6,54 @@ import { CldUploadWidget } from 'next-cloudinary'
 
 const UploadMedia = ({ isMultiple }) => {
     const handleOnError = (error) => {
-        showToast("error", error.statusText)
+        showToast("error", error?.statusText || "Upload error")
     }
-    const handleOnQueueEnd = async (results) => {
-        console.log('results', results);
-        const files = results.info.files
-        const uploadedFiles = files?.filter(el => el.uploadInfo).map(file => ({
-            assed_id: file.uploadInfo.assed_id,
-            public_id: file.uploadInfo.public_id,
-            secure_url: file.uploadInfo.secure_url,
-            path: file.uploadInfo.path,
-            thumbnail_url: file.uploadInfo.thumbnail_url,
-        }))
-        if (uploadedFiles?.length > 0) {
+
+    const handleOnUpload = async (result) => {
+        const file = result?.info;
+        const uploadedFiles = file ? [{
+            asset_id: file.asset_id,
+            public_id: file.public_id,
+            secure_url: file.secure_url,
+            path: file.path,
+            thumbnail_url: file.thumbnail_url,
+        }] : [];
+
+        if (uploadedFiles.length > 0) {
             try {
-                const { data: uploadResponce } = await axios.post('/api/media/create', uploadedFiles)
-                if (!uploadResponce.success) {
-                    throw new Error(uploadResponce.message)
-                }
-                showToast('success', uploadResponce.message)
-            }
-            catch (error) {
-                console.log(error)
-                showToast('error', error.message)
+                const { data: uploadResponse } = await axios.post('/api/media/create', uploadedFiles);
+                if (!uploadResponse.success) throw new Error(uploadResponse.message);
+                showToast('success', uploadResponse.message);
+            } catch (error) {
+                console.error(error);
+                showToast('error', error.message);
             }
         }
     }
+
     return (
         <CldUploadWidget
-            signatureEndpoint={'/api/cloudinary-signature'}
             uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-            onError={handleOnError} onQueuesEnd={handleOnQueueEnd}
+            onError={handleOnError}
+            onUpload={handleOnUpload}
+            options={{
+                multiple: isMultiple,
+                sources: ['local', 'url', 'unsplash', 'google_drive'],
+                maxFiles: isMultiple ? 10 : 1
+            }}
             config={{
                 cloud: {
                     cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
                     apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
                 }
             }}
-            options={{
-                multiple: isMultiple,
-                sources: ['local', 'url', 'unsplash', 'google_drive']
-            }
-            }
         >
-            {({ open }) => {
-                return (
-                    <Button variant={'secondary'} className="button" onClick={() => open()}>
-                        Upload
-                    </Button>
-                );
-            }}
-        </CldUploadWidget >
+            {({ open }) => (
+                <Button variant="secondary" onClick={() => open()}>
+                    Upload
+                </Button>
+            )}
+        </CldUploadWidget>
     )
 }
 
