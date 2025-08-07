@@ -1,6 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { showToast } from '@/lib/toast'
+import axios from 'axios'
 import { CldUploadWidget } from 'next-cloudinary'
 
 const UploadMedia = ({ isMultiple }) => {
@@ -8,16 +9,27 @@ const UploadMedia = ({ isMultiple }) => {
         showToast("error", error.statusText)
     }
     const handleOnQueueEnd = async (results) => {
+        console.log('results', results);
         const files = results.info.files
-        const uploadedFiles = files.filter(el => el.uploadInfo).map(file => ({
+        const uploadedFiles = files?.filter(el => el.uploadInfo).map(file => ({
             assed_id: file.uploadInfo.assed_id,
             public_id: file.uploadInfo.public_id,
             secure_url: file.uploadInfo.secure_url,
             path: file.uploadInfo.path,
             thumbnail_url: file.uploadInfo.thumbnail_url,
         }))
-        if (uploadedFiles.length > 0) {
-            
+        if (uploadedFiles?.length > 0) {
+            try {
+                const { data: uploadResponce } = await axios.post('/api/media/create', uploadedFiles)
+                if (!uploadResponce.success) {
+                    throw new Error(uploadResponce.message)
+                }
+                showToast('success', uploadResponce.message)
+            }
+            catch (error) {
+                console.log(error)
+                showToast('error', error.message)
+            }
         }
     }
     return (

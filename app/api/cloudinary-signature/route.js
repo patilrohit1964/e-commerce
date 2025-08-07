@@ -9,6 +9,7 @@ export async function POST(req) {
       paramsToSign,
       process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET
     );
+    console.log('signature',signature);
     return responce(true, 200, "upload successfull", signature);
   } catch (error) {
     console.log(error);
