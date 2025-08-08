@@ -1,5 +1,6 @@
 'use client'
 import BreadCrumb from "@/components/application/admin/BreadCrumb"
+import Media from "@/components/application/admin/Media"
 import UploadMedia from "@/components/application/admin/UploadMedia"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/adminPaneRoute"
@@ -13,6 +14,7 @@ const breadcrumbData = [
 ]
 const MediaPage = () => {
     const [deleteType, setDeleteType] = useState('SD')
+    const [selectedMedia, setSelectedMedia] = useState([])
     const fetchMedia = async (page, deleteType) => {
         const { data: mediaGetResponce } = await axios.get(`/api/media?page=${page}&&limit=10&&deleteType=${deleteType}`)
         return mediaGetResponce
@@ -26,6 +28,10 @@ const MediaPage = () => {
             return lastPage.hasMore ? nextPage : undefined
         }
     })
+
+    const handleDelete = () => {
+
+    }
     return (
         <div>
             <BreadCrumb breadcrumbData={breadcrumbData} />
@@ -54,7 +60,13 @@ const MediaPage = () => {
                                     {data?.pages?.map((page, idx) => (
                                         <React.Fragment key={idx}>
                                             {page?.mediaData?.map((media) => (
-                                                <div>{media?._id}</div>
+                                                <Media
+                                                    key={media?._id}
+                                                    media={media}
+                                                    handleDelete={handleDelete}
+                                                    deleteType={deleteType}
+                                                    selectedMedia={selectedMedia}
+                                                    setSelectedMedia={setSelectedMedia} />
                                             ))}
                                         </React.Fragment>
                                     ))}
