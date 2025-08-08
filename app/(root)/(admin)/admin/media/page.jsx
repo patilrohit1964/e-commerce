@@ -17,6 +17,7 @@ const MediaPage = () => {
     const [selectedMedia, setSelectedMedia] = useState([])
     const fetchMedia = async (page, deleteType) => {
         const { data: mediaGetResponce } = await axios.get(`/api/media?page=${page}&&limit=10&&deleteType=${deleteType}`)
+        console.log('mediaResponce', mediaGetResponce);
         return mediaGetResponce
     }
     const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
