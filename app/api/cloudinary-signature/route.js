@@ -1,5 +1,5 @@
 import cloudinary from "@/lib/cloudinary";
-import { responce } from "@/lib/helper";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -7,9 +7,9 @@ export async function POST(req) {
     const { paramsToSign } = payload;
     const signature = cloudinary.utils.api_sign_request(
       paramsToSign,
-      process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET
+      process.env.CLOUDINARY_API_SECRET
     );
-    return responce(true, 200, "upload successfull", signature);
+    return NextResponse.json({ signature });
   } catch (error) {
     console.log(error);
   }
