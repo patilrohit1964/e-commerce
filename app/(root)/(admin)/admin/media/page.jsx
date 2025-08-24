@@ -17,14 +17,14 @@ const MediaPage = () => {
     const [selectedMedia, setSelectedMedia] = useState([])
     const fetchMedia = async (page, deleteType) => {
         try {
-            const { data } = await axios.get(`/api/media?page=${page}&limit=10&deleteType=${deleteType}`);
-            return data;
+            const { data:mediaGetResponce } = await axios.get(`/api/media?page=${page}&limit=10&deleteType=${deleteType}`);
+            return mediaGetResponce;
         } catch (err) {
             console.error('Media fetch failed', err?.response?.data || err.message);
             throw new Error(err?.response?.data?.message || 'Failed to fetch media');
         }
     };
-
+    
     const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
         queryKey: ['media-data', deleteType],
         queryFn: async ({ pageParam }) => await fetchMedia(pageParam, deleteType),

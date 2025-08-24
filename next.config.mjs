@@ -8,7 +8,7 @@ const nextConfig = {
         port: "",
         pathname: "/**",
         search: "",
-      },
+      },//this is write if we use expternal images
     ],
   },
 };

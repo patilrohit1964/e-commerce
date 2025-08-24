@@ -6,13 +6,14 @@ const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedi
     const handleCheck = () => {
 
     }
+    console.log('media data',media);
     return (
         <div className='border border-gray-200 dark:border-gray-800 relative group rounded overflow-hidden'>
             <div className='absolute top-2 right-2 z-20'>
                 <Checkbox checked={selectedMedia.includes(media?._id)} onCheckedChange={handleCheck} />
             </div>
             <div>
-                <Image src={media?.thumbnail_url} alt={media?.alt || 'image'} height={300} width={300} className='' />
+                <Image src={media?.secure_url} alt={media?.alt || 'image'} height={300} width={300} className='object-cover w-full sm:h-[200px] h-[150px]' />
             </div>
         </div>
     )

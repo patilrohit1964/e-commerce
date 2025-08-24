@@ -8,7 +8,6 @@ import { CldUploadWidget } from 'next-cloudinary'
 
 const UploadMedia = ({ isMultiple }) => {
     const handleOnQueueEnd = async (result) => {
-        console.log('file uploaded result output:', result)
         const files = result?.info?.files
         const uploadedFiles = files.filter(file => file.uploadInfo).map((file) => ({
             asset_id: file.uploadInfo.asset_id,
