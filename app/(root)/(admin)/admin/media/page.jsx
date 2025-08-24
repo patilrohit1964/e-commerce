@@ -27,10 +27,11 @@ const MediaPage = () => {
 
     const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
         queryKey: ['media-data', deleteType],
-        queryFn: async ({ pageParam = 0 }) => await fetchMedia(pageParam, deleteType),
-        // initialPageParam: 0,
-        getNextPageParam: (lastPage, allPages) => {
-            return lastPage.hasMore ? allPages.length : undefined;
+        queryFn: async ({ pageParam }) => await fetchMedia(pageParam, deleteType),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, pages) => {
+            const nextPage = pages.length
+            return lastPage.hasMore ? nextPage : undefined;
         }
     })
 
