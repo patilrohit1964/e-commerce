@@ -1,14 +1,25 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { showToast } from '@/lib/toast'
 import { ADMIN_MEDIA_EDIT } from '@/routes/adminPaneRoute'
 import { Copy, EllipsisVertical, PencilIcon, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedia }) => {
-    const handleCheck = () => {
-
+    const handleCheck = (e) => {
+        let newSelectedMedia = []
+        if (selectedMedia.includes(media?._id)) {
+            newSelectedMedia = selectedMedia.filter(m => m !== media?._id)
+        } else {
+            newSelectedMedia = [...selectedMedia, media?._id]
+        }
+        setSelectedMedia(newSelectedMedia)
     }
+    const handleCopyLink = async (url) => {
+        await navigator.clipboard.writeText(url)
+        showToast("success", "link copied")
+    };
     return (
         <div className='border border-gray-200 dark:border-gray-800 relative group rounded overflow-hidden'>
             <div className='absolute top-2 left-2 z-20'>
@@ -29,7 +40,7 @@ const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedi
                                         <PencilIcon /> Edit
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className={'cursor-pointer'}>
+                                <DropdownMenuItem className={'cursor-pointer'} onClick={() => handleCopyLink(media?.secure_url)}>
                                     <Copy />
                                     Copy Link
                                 </DropdownMenuItem>
