@@ -46,8 +46,8 @@ const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedi
                                 </DropdownMenuItem>
                             </>
                         }
-                        <DropdownMenuItem>
-                            <Trash2 />
+                        <DropdownMenuItem onClick={() => handleDelete([media?._id], deleteType)} className={'text-red-500'}>
+                            <Trash2 color='red' />
                             {deleteType === "SD" ? 'Move Into Trash' : 'Delete Permentaly'}
                         </DropdownMenuItem>
                     </DropdownMenuContent>

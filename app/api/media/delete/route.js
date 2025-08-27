@@ -27,7 +27,7 @@ export const PUT = async (request) => {
     if (deleteType === "SD") {
       await MEDIAModel.updateMany(
         { _id: { $in: ids } },
-        { $set: { deletedAt: new Date.toISOString() } }
+        { $set: { deletedAt: new Date().toISOString() } }
       );
     } else {
       await MEDIAModel.updateMany(

@@ -55,13 +55,13 @@ const MediaPage = () => {
     })
 
     const deleteMutation = useDeleteMutation('media-data', '/api/media/delete')
-    const handleDelete = (selectedMedia, deleteType) => {
+    const handleDelete = (ids, deleteType) => {
         if (deleteType === 'PD') {
             if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
 
             }
         } else if (deleteType == 'SD') {
-            deleteMutation.mutate({ selectedMedia, deleteType })
+            deleteMutation.mutate({ ids, deleteType })
             setSelectedMedia([])
         }
         else {

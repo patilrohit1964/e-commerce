@@ -1,9 +1,9 @@
-const { showToast } = require("@/lib/toast");
-const { useQueryClient, useMutation } = require("@tanstack/react-query");
-const { default: axios } = require("axios");
+import { showToast } from "@/lib/toast";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 export const useDeleteMutation = (queryKey, deleteEndPoint) => {
-  const queryClient = useQueryClient;
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ ids, deleteType }) => {
       const { data: res } = await axios({
