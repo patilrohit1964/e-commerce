@@ -41,7 +41,7 @@ export async function POST(request) {
     const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
     const token = await new SignJWT(loggedInUserData)
       .setIssuedAt()
-      .setExpirationTime("24h")
+      .setExpirationTime("7d")
       .setProtectedHeader({ alg: "HS256" })
       .sign(secret);
     const cookieStore = await cookies();

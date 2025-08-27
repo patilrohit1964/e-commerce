@@ -17,8 +17,8 @@ const ThemeSwitch = () => {
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <Button type="button" variant={'ghost'} className={'cursor-pointer'}>
-                    <Sun className='dark:hidden' />
-                    <Moon className='hidden dark:block' />
+                    <Sun className='dark:hidden h-4 w-4' />
+                    <Moon className='hidden dark:block h-4 w-4' />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

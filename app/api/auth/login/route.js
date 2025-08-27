@@ -45,7 +45,7 @@ export async function POST(request) {
       );
       const token = await new SignJWT({ userId: getUser._id.toString() })
         .setIssuedAt()
-        .setExpirationTime("24h")
+        .setExpirationTime("7d")
         .setProtectedHeader({ alg: "HS256" })
         .sign(secret);
 
