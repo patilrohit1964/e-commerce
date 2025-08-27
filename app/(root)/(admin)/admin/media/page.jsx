@@ -53,6 +53,11 @@ const MediaPage = () => {
     const handleDelete = () => {
 
     }
+    const allMediaCount = data?.pages[0].mediaData.length === selectedMedia.length
+    const allMediaSelectHandler = (choice) => {
+        const allMedia = data?.pages[0].mediaData.map((page, idx) => page?._id)
+        choice === 'select all' ? setSelectedMedia(allMedia) : setSelectedMedia([])
+    }
     return (
         <div>
             <BreadCrumb breadcrumbData={breadcrumbData} />
@@ -61,7 +66,7 @@ const MediaPage = () => {
                     <div className="flex justify-between items-center">
                         <h4 className="font-semibold text-xl uppercase">Media</h4>
                         <div className="flex items-center gap-5">
-                            <UploadMedia />
+                            {deleteType === "SD" && <UploadMedia />}
                             <div className="flex gap-3">
                                 {deleteType === 'SD' ?
                                     <Button type="button" variant={'destructive'}>
@@ -77,6 +82,27 @@ const MediaPage = () => {
                     </div>
                 </CardHeader>
                 <CardContent>
+                    {
+                        selectedMedia.length > 0 &&
+                        <div className="mb-2 py-2 px-2 bg-gray-800 rounded-lg flex justify-between items-center">
+                            <Button
+                                variant={'secondary'}
+                                size={'sm'}
+                                onClick={() => allMediaSelectHandler(allMediaCount ? 'delesect all' : 'select all')}>
+                                {
+                                    allMediaCount
+                                        ?
+                                        'Deselect All'
+                                        :
+                                        "Select All"}
+                            </Button>
+                            <div className="flex gap-2">
+                                {
+                                    deleteType === 'SD' ? <Button>Move Into Trash</Button> :''
+                                    }
+                            </div>
+                        </div>
+                    }
                     {
                         status === 'pending'
                             ?
@@ -108,5 +134,4 @@ const MediaPage = () => {
         </div >
     )
 }
-
-export default MediaPage
+export default MediaPage;
