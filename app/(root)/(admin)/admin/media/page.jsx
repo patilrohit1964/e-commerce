@@ -4,6 +4,10 @@ import Media from "@/components/application/admin/Media"
 import UploadMedia from "@/components/application/admin/UploadMedia"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import { useDeleteMutation } from "@/hooks/useDeleteMutation"
+import { showToast } from "@/lib/toast"
 import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/adminPaneRoute"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
@@ -50,8 +54,19 @@ const MediaPage = () => {
         }
     })
 
-    const handleDelete = () => {
+    const deleteMutation = useDeleteMutation('media-data', '/api/media/delete')
+    const handleDelete = (selectedMedia, deleteType) => {
+        if (deleteType === 'PD') {
+            if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
 
+            }
+        } else if (deleteType == 'SD') {
+            deleteMutation.mutate({ selectedMedia, deleteType })
+            setSelectedMedia([])
+        }
+        else {
+
+        }
     }
     const allMediaCount = data?.pages[0].mediaData.length === selectedMedia.length
     const allMediaSelectHandler = (choice) => {
@@ -85,21 +100,35 @@ const MediaPage = () => {
                     {
                         selectedMedia.length > 0 &&
                         <div className="mb-2 py-2 px-2 bg-gray-800 rounded-lg flex justify-between items-center">
-                            <Button
-                                variant={'secondary'}
-                                size={'sm'}
-                                onClick={() => allMediaSelectHandler(allMediaCount ? 'delesect all' : 'select all')}>
+                            <Label
+                            >
+                                <Checkbox
+                                    checked={allMediaCount}
+                                    onCheckedChange={() => allMediaSelectHandler(allMediaCount ? 'delesect all' : 'select all')}
+                                />
                                 {
                                     allMediaCount
                                         ?
                                         'Deselect All'
                                         :
-                                        "Select All"}
-                            </Button>
+                                        "Select All"
+                                }
+                            </Label>
                             <div className="flex gap-2">
                                 {
-                                    deleteType === 'SD' ? <Button>Move Into Trash</Button> :''
-                                    }
+                                    deleteType === 'SD' ?
+                                        <Button
+                                            variant={'destructive'}
+                                            onClick={() => handleDelete(selectedMedia, deleteType)}
+                                        >
+                                            Move Into Trash
+                                        </Button> :
+                                        <Button
+                                            className='bg-green-500 hover:bg-green-600'
+                                            onClick={() => handleDelete(selectedMedia, "RSD")}>
+                                            Delete Permentely
+                                        </Button>
+                                }
                             </div>
                         </div>
                     }
