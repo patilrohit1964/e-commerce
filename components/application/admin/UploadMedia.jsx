@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Plus } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
-const UploadMedia = ({ isMultiple }) => {
+const UploadMedia = ({ isMultiple, queryClient }) => {
     const handleOnQueueEnd = async (result) => {
         const files = result?.info?.files
         const uploadedFiles = files.filter(file => file.uploadInfo).map((file) => ({
@@ -22,7 +22,10 @@ const UploadMedia = ({ isMultiple }) => {
         if (uploadedFiles?.length > 0) {
             try {
                 const { data: uploadResponse } = await axios.post('/api/media/create', uploadedFiles)
-                if (!uploadResponse.success) throw new Error(uploadResponse.message)
+                if (!uploadResponse.success) {
+                    throw new Error(uploadResponse.message)
+                }
+                queryClient.invalidateQueries(['media-data'])
                 showToast('success', uploadResponse.message)
             } catch (error) {
                 console.error(error)
@@ -44,9 +47,8 @@ const UploadMedia = ({ isMultiple }) => {
             onQueuesEnd={handleOnQueueEnd}
             options={{
                 multiple: isMultiple,
-                maxFiles: isMultiple ? 10 : 1,
                 sources: ['local', 'url', 'unsplash', 'google_drive'],
-                cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME
+                // cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME
             }}
             config={{
                 cloud: {

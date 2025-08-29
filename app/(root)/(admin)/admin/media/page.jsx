@@ -2,6 +2,7 @@
 import BreadCrumb from "@/components/application/admin/BreadCrumb"
 import Media from "@/components/application/admin/Media"
 import UploadMedia from "@/components/application/admin/UploadMedia"
+import ButtonLoading from "@/components/application/ButtonLoading"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -9,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { useDeleteMutation } from "@/hooks/useDeleteMutation"
 import { showToast } from "@/lib/toast"
 import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from "@/routes/adminPaneRoute"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -20,6 +21,7 @@ const breadcrumbData = [
     { href: ADMIN_MEDIA_SHOW, label: "Media" },
 ]
 const MediaPage = () => {
+    const queryClient = useQueryClient()
     const [deleteType, setDeleteType] = useState('SD');
     const [selectedMedia, setSelectedMedia] = useState([]);
     const searchParams = useSearchParams();
@@ -44,7 +46,7 @@ const MediaPage = () => {
         }
     };
 
-    const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
+    const { data, error, fetchNextPage, hasNextPage, isFetching, status } = useInfiniteQuery({
         queryKey: ['media-data', deleteType],
         queryFn: async ({ pageParam }) => await fetchMedia(pageParam, deleteType),
         initialPageParam: 0,
@@ -83,7 +85,7 @@ const MediaPage = () => {
                     <div className="flex justify-between items-center">
                         <h4 className="font-semibold text-xl uppercase">Media</h4>
                         <div className="flex items-center gap-5">
-                            {deleteType === "SD" && <UploadMedia />}
+                            {deleteType === "SD" && <UploadMedia isMultiple={true} queryClient={queryClient} />}
                             <div className="flex gap-3">
                                 {deleteType === 'SD' ?
                                     <Button type="button" variant={'destructive'}>
@@ -178,6 +180,12 @@ const MediaPage = () => {
                         :
                         <div className="text-center">
                             {!trashof ? 'No Media Found Upload Media' : 'No Trash Media Found Here'}
+                        </div>
+                    }
+                    {
+                        hasNextPage &&
+                        <div className="flex justify-center items-center mb-3">
+                            <ButtonLoading type={'button'} className={'cursor-pointer'} text={'Load More'} onClick={() => fetchNextPage()} loading={isFetching} />
                         </div>
                     }
                 </CardContent>
