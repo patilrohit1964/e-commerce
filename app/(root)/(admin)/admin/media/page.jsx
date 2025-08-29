@@ -20,12 +20,12 @@ const breadcrumbData = [
     { href: ADMIN_MEDIA_SHOW, label: "Media" },
 ]
 const MediaPage = () => {
-    const [deleteType, setDeleteType] = useState('SD')
-    const [selectedMedia, setSelectedMedia] = useState([])
-    const searchParams = useSearchParams()
+    const [deleteType, setDeleteType] = useState('SD');
+    const [selectedMedia, setSelectedMedia] = useState([]);
+    const searchParams = useSearchParams();
+    const trashof = searchParams.get('trashof');
     useEffect(() => {
         if (searchParams) {
-            const trashof = searchParams.get('trashof')
             setSelectedMedia([])
             if (trashof) {
                 setDeleteType("PD")
@@ -103,7 +103,7 @@ const MediaPage = () => {
                         (
                             <>
                                 {
-
+                                    // showing all media operation here
                                     selectedMedia?.length > 0 &&
                                     <div className="mb-2 py-2 px-2 bg-gray-800 rounded-lg flex justify-between items-center">
                                         <Label
@@ -146,6 +146,7 @@ const MediaPage = () => {
                                     </div>
                                 }
                                 {
+                                    // showing media comp here
                                     status === 'pending'
                                         ?
                                         <div>loading</div>
@@ -176,7 +177,7 @@ const MediaPage = () => {
                         )
                         :
                         <div className="text-center">
-                            No Trash Media Found Here
+                            {!trashof ? 'No Media Found Upload Media' : 'No Trash Media Found Here'}
                         </div>
                     }
                 </CardContent>
