@@ -1,8 +1,15 @@
+import { Button } from "@/components/ui/button"
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { showToast } from '@/lib/toast'
 import { ADMIN_MEDIA_EDIT } from '@/routes/adminPaneRoute'
-import { Copy, EllipsisVertical, PencilIcon, Trash2 } from 'lucide-react'
+import { Copy, EllipsisVertical, EyeIcon, PencilIcon, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -33,6 +40,7 @@ const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedi
                         </span>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='start'>
+                        <DialogDemo media={media} />
                         {deleteType === "SD" &&
                             <>
                                 <DropdownMenuItem asChild className={'cursor-pointer'}>
@@ -62,3 +70,22 @@ const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedi
 }
 
 export default Media
+
+
+function DialogDemo({ media }) {
+    return (
+        <Dialog>
+            <DialogTrigger >
+                <Button variant="ghost">
+                    <EyeIcon /> Preview
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px] p-3">
+                <DialogTitle>Preview</DialogTitle>
+                <div className='h-full w-full'>
+                    <Image src={media?.secure_url} alt={media?.alt || 'image'} height={300} width={300} className='object-cover w-full' />
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+}

@@ -14,11 +14,11 @@ export const PUT = async (request) => {
     const payload = await request.json();
     const ids = payload.ids || [];
     const deleteType = payload.deleteType;
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!Array.isArray(ids) || ids?.length === 0) {
       return responce(false, 400, "invalid or empty id list");
     }
     const media = await MEDIAModel.find({ _id: { $in: ids } }).lean();
-    if (!media.length) {
+    if (!media?.length) {
       return responce(false, 404, "data not found");
     }
     if (!["SD", "RSD"].includes(deleteType)) {
@@ -57,13 +57,13 @@ export const DELETE = async (request) => {
     const payload = await request.json();
     const ids = payload.ids || [];
     const deleteType = payload.deleteType;
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!Array.isArray(ids) || ids?.length === 0) {
       return responce(false, 400, "invalid or empty id list");
     }
     const media = await MEDIAModel.find({ _id: { $in: ids } })
       .session(session)
       .lean();
-    if (!media.length) {
+    if (!media?.length) {
       return responce(false, 404, "data not found");
     }
     if (!deleteType === "PD") {

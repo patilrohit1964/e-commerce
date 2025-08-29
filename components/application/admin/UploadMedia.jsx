@@ -19,7 +19,7 @@ const UploadMedia = ({ isMultiple }) => {
             // title: file.uploadInfo.title,
         }))
 
-        if (uploadedFiles.length > 0) {
+        if (uploadedFiles?.length > 0) {
             try {
                 const { data: uploadResponse } = await axios.post('/api/media/create', uploadedFiles)
                 if (!uploadResponse.success) throw new Error(uploadResponse.message)

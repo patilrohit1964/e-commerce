@@ -49,7 +49,7 @@ const MediaPage = () => {
         queryFn: async ({ pageParam }) => await fetchMedia(pageParam, deleteType),
         initialPageParam: 0,
         getNextPageParam: (lastPage, pages) => {
-            const nextPage = pages.length
+            const nextPage = pages?.length
             return lastPage.hasMore ? nextPage : undefined;
         }
     })
@@ -58,17 +58,19 @@ const MediaPage = () => {
     const handleDelete = (ids, deleteType) => {
         if (deleteType === 'PD') {
             if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
-
+                deleteMutation.mutate({ ids, deleteType })
+                setSelectedMedia([])
             }
         } else if (deleteType == 'SD') {
             deleteMutation.mutate({ ids, deleteType })
             setSelectedMedia([])
         }
         else {
-
+            deleteMutation.mutate({ ids, deleteType })
+            setSelectedMedia([])
         }
     }
-    const allMediaCount = data?.pages[0].mediaData.length === selectedMedia.length
+    const allMediaCount = data?.pages[0].mediaData?.length === selectedMedia?.length
     const allMediaSelectHandler = (choice) => {
         const allMedia = data?.pages[0].mediaData.map((page, idx) => page?._id)
         choice === 'select all' ? setSelectedMedia(allMedia) : setSelectedMedia([])
@@ -97,67 +99,86 @@ const MediaPage = () => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    {
-                        selectedMedia.length > 0 &&
-                        <div className="mb-2 py-2 px-2 bg-gray-800 rounded-lg flex justify-between items-center">
-                            <Label
-                            >
-                                <Checkbox
-                                    checked={allMediaCount}
-                                    onCheckedChange={() => allMediaSelectHandler(allMediaCount ? 'delesect all' : 'select all')}
-                                />
+                    {data?.pages?.[0]?.mediaData && data?.pages?.[0]?.mediaData.length > 0 ?
+                        (
+                            <>
                                 {
-                                    allMediaCount
-                                        ?
-                                        'Deselect All'
-                                        :
-                                        "Select All"
-                                }
-                            </Label>
-                            <div className="flex gap-2">
-                                {
-                                    deleteType === 'SD' ?
-                                        <Button
-                                            variant={'destructive'}
-                                            onClick={() => handleDelete(selectedMedia, deleteType)}
+
+                                    selectedMedia?.length > 0 &&
+                                    <div className="mb-2 py-2 px-2 bg-gray-800 rounded-lg flex justify-between items-center">
+                                        <Label
                                         >
-                                            Move Into Trash
-                                        </Button> :
-                                        <Button
-                                            className='bg-green-500 hover:bg-green-600'
-                                            onClick={() => handleDelete(selectedMedia, "RSD")}>
-                                            Delete Permentely
-                                        </Button>
+                                            <Checkbox
+                                                checked={allMediaCount}
+                                                onCheckedChange={() => allMediaSelectHandler(allMediaCount ? 'delesect all' : 'select all')}
+                                            />
+                                            {
+                                                allMediaCount
+                                                    ?
+                                                    'Deselect All'
+                                                    :
+                                                    "Select All"
+                                            }
+                                        </Label>
+                                        <div className="flex gap-2">
+                                            {
+                                                deleteType === 'SD' ?
+                                                    <Button
+                                                        variant={'destructive'}
+                                                        onClick={() => handleDelete(selectedMedia, deleteType)}
+                                                    >
+                                                        Move Into Trash
+                                                    </Button> :
+                                                    <>
+                                                        <Button
+                                                            className='bg-green-500 hover:bg-green-600'
+                                                            onClick={() => handleDelete(selectedMedia, "RSD")}>
+                                                            Restore
+                                                        </Button>
+                                                        <Button
+                                                            className='bg-red-600 hover:bg-red-500'
+                                                            onClick={() => handleDelete(selectedMedia, "PD")}>
+                                                            Delete Permentely
+                                                        </Button>
+                                                    </>
+                                            }
+                                        </div>
+                                    </div>
                                 }
-                            </div>
+                                {
+                                    status === 'pending'
+                                        ?
+                                        <div>loading</div>
+                                        :
+                                        status === 'error'
+                                            ?
+                                            <div className="text-red-500 text-sm">
+                                                {error.message}
+                                            </div>
+                                            :
+                                            <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-2 gap-2 mb-5">
+                                                {data?.pages?.map((page, idx) => (
+                                                    <React.Fragment key={idx}>
+                                                        {page?.mediaData?.map((media) => (
+                                                            <Media
+                                                                key={media?._id}
+                                                                media={media}
+                                                                handleDelete={handleDelete}
+                                                                deleteType={deleteType}
+                                                                selectedMedia={selectedMedia}
+                                                                setSelectedMedia={setSelectedMedia} />
+                                                        ))}
+                                                    </React.Fragment>
+                                                ))}
+                                            </div>
+                                }
+                            </>
+                        )
+                        :
+                        <div className="text-center">
+                            No Trash Media Found Here
                         </div>
                     }
-                    {
-                        status === 'pending'
-                            ?
-                            <div>loading</div>
-                            :
-                            status === 'error'
-                                ?
-                                <div className="text-red-500 text-sm">
-                                    {error.message}
-                                </div>
-                                :
-                                <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-2 gap-2 mb-5">
-                                    {data?.pages?.map((page, idx) => (
-                                        <React.Fragment key={idx}>
-                                            {page?.mediaData?.map((media) => (
-                                                <Media
-                                                    key={media?._id}
-                                                    media={media}
-                                                    handleDelete={handleDelete}
-                                                    deleteType={deleteType}
-                                                    selectedMedia={selectedMedia}
-                                                    setSelectedMedia={setSelectedMedia} />
-                                            ))}
-                                        </React.Fragment>
-                                    ))}
-                                </div>}
                 </CardContent>
             </Card>
         </div >
