@@ -5,30 +5,33 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useFetch } from '@/hooks/useFetch'
+import { showToast } from '@/lib/toast'
 import { zSchmea } from '@/lib/zodSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import Image from 'next/image'
-import { use, useEffect } from 'react'
+import { use, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import imgPlaceholder from '../../../../../../../public/download.png'
-import axios from 'axios'
+import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from '@/routes/adminPaneRoute'
 const breadCrumbData = [
     {
         label: "Home",
-        href: "Home",
+        href: ADMIN_DASHBOARD,
     },
     {
         label: "Media",
-        href: "Media",
+        href: ADMIN_MEDIA_SHOW,
     },
     {
         label: "Edit Media",
-        href: "Edit Media",
+        href: "",
     },
 ]
 const EditMedia = ({ params }) => {
     const { id } = use(params)
-    const { data: mediaData, loading } = useFetch(`/api/media/get/${id}`)
+    const { data: mediaData } = useFetch(`/api/media/get/${id}`)
+    const [loading, setLoading] = useState()
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
         _id: true,
         title: true,
@@ -56,20 +59,20 @@ const EditMedia = ({ params }) => {
         }
     }, mediaData)
     const handleMediaEdit = async (values) => {
-        console.log('values', values);
         try {
+            setLoading(true)
             const { data: editMediaResponce } = await axios.put('/api/media/update', values);
-            // if (!editMediaResponce.success) {
-            //     throw new Error(editMediaResponce.message)
-            // }
-            // form.reset()
-            console.log('editMediaResponce', editMediaResponce);
-            // showToast("success", editMediaResponce.message || "logged in Successfull")
+            if (!editMediaResponce.success) {
+                throw new Error(editMediaResponce.message)
+            }
+            setLoading(false)
+            showToast("success", editMediaResponce.message || "logged in Successfull")
         }
         catch (error) {
             console.log(error)
-            // showToast('error', error?.message)
+            showToast('error', error?.message)
         } finally {
+            setLoading(false)
         }
     }
 

@@ -1,11 +1,9 @@
-import React from 'react'
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
+    BreadcrumbSeparator
 } from "@/components/ui/breadcrumb"
 
 const BreadCrumb = ({ breadcrumbData }) => {
