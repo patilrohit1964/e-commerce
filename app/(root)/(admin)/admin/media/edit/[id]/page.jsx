@@ -1,8 +1,6 @@
 'use client'
 import BreadCrumb from '@/components/application/admin/BreadCrumb'
 import ButtonLoading from '@/components/application/ButtonLoading'
-import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -10,9 +8,10 @@ import { useFetch } from '@/hooks/useFetch'
 import { zSchmea } from '@/lib/zodSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
-import React, { use } from 'react'
+import { use, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-
+import imgPlaceholder from '../../../../../../../public/download.png'
+import axios from 'axios'
 const breadCrumbData = [
     {
         label: "Home",
@@ -46,23 +45,32 @@ const EditMedia = ({ params }) => {
         }
     })
 
-    const onSubmit = async (values) => {
-        // try {
-        //     setLoading(true)
-        //     const { data: loginResponce } = await axios.post('/api/auth/login', values);
-        //     if (!loginResponce.success) {
-        //         throw new Error(loginResponce.message)
-        //     }
-        //     setOtpEmail(values.email)
-        //     form.reset()
-        //     showToast("success", loginResponce.message || "logged in Successfull")
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     showToast('error', error?.message)
-        // } finally {
-        //     setLoading(false)
-        // }
+    useEffect(() => {
+        if (mediaData && mediaData?.success) {
+            const data = mediaData?.data
+            form.reset({
+                _id: data?._id,
+                alt: data?.alt,
+                title: data?.title
+            })
+        }
+    }, mediaData)
+    const handleMediaEdit = async (values) => {
+        console.log('values', values);
+        try {
+            const { data: editMediaResponce } = await axios.put('/api/media/update', values);
+            // if (!editMediaResponce.success) {
+            //     throw new Error(editMediaResponce.message)
+            // }
+            // form.reset()
+            console.log('editMediaResponce', editMediaResponce);
+            // showToast("success", editMediaResponce.message || "logged in Successfull")
+        }
+        catch (error) {
+            console.log(error)
+            // showToast('error', error?.message)
+        } finally {
+        }
     }
 
     return (
@@ -75,28 +83,28 @@ const EditMedia = ({ params }) => {
                 <CardContent className={'pb-5'}>
                     <div>
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onsubmit)}>
+                            <form onSubmit={form.handleSubmit(handleMediaEdit)}>
                                 <div className='mb-5'>
-                                    <Image src={mediaData?.data?.secure_url} width={300} height={300} alt={mediaData?.alt || 'image'} />
+                                    <Image src={mediaData?.data?.secure_url || imgPlaceholder} width={150} height={150} alt={mediaData?.alt || 'image'} />
                                 </div>
                                 <div>
                                     <FormField control={form.control} name='alt' render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel htmlFor={''}>Alt</FormLabel>
+                                            <FormLabel htmlFor={'alt-1'}>Alt</FormLabel>
                                             <FormControl>
-                                                <Input type={'text'} id={'alt'} placeholder="enter your alt" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                <Input type={'text'} id={'alt-1'} placeholder="enter your alt" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}>
                                     </FormField>
                                 </div>
-                                <div>
+                                <div className='my-5'>
                                     <FormField control={form.control} name='title' render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel htmlFor={''}>Title</FormLabel>
+                                            <FormLabel htmlFor={'title-1'}>Title</FormLabel>
                                             <FormControl>
-                                                <Input type={'text'} id={'title'} placeholder="enter your Title" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                <Input type={'text'} id={'title-1'} placeholder="enter your Title" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
