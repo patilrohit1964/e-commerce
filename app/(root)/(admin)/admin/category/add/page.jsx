@@ -4,10 +4,14 @@ import ButtonLoading from '@/components/application/ButtonLoading'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { showToast } from '@/lib/toast'
 import { zSchmea } from '@/lib/zodSchema'
 import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD } from '@/routes/adminPaneRoute'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import slugify from 'slugify'
 
 const breadCrumbData = [
     {
@@ -24,6 +28,7 @@ const breadCrumbData = [
     },
 ]
 const AddCategory = () => {
+    const [loading, setLoading] = useState(false)
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
         name: true,
         slug: true
@@ -40,24 +45,29 @@ const AddCategory = () => {
 
 
     const handleCategoryAdd = async (values) => {
-        console.log('values',values);
-        // try {
-        //     setLoading(true)
-        //     const { data: editMediaResponce } = await axios.put('/api/media/update', values);
-        //     if (!editMediaResponce.success) {
-        //         throw new Error(editMediaResponce.message)
-        //     }
-        //     setLoading(false)
-        //     showToast("success", editMediaResponce.message || "logged in Successfull")
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     showToast('error', error?.message)
-        // } finally {
-        //     setLoading(false)
-        // }
+        try {
+            setLoading(true)
+            const { data: categoryAddRes } = await axios.post('/api/category/create', values);
+            if (!categoryAddRes.success) {
+                throw new Error(categoryAddRes.message)
+            }
+            setLoading(false)
+            form.reset()
+            showToast("success", categoryAddRes.message || "category added Successfull")
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', error?.message)
+        } finally {
+            setLoading(false)
+        }
     }
-
+    useEffect(() => {
+        const name = form.getValues('name')
+        if (name) {
+            form.setValue('slug', slugify(name).toLowerCase())
+        }
+    }, [form.watch('name')]); //using this watch method we can do anything when input change,slug is very imp when we develop e-comm or other big project
     return (
         <div>
             <BreadCrumb breadcrumbData={breadCrumbData} />
@@ -94,7 +104,7 @@ const AddCategory = () => {
                                     </FormField>
                                 </div>
                                 <div>
-                                    <ButtonLoading type={'submit'} text={'Add Category'} className={'cursor-pointer'} />
+                                    <ButtonLoading type={'submit'} text={'Add Category'} loading={loading} className={'cursor-pointer'} />
                                 </div>
                             </form>
                         </Form>
