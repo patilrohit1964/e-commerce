@@ -1,10 +1,15 @@
 import DataTableWrapper from "@/components/application/admin/DataTableWrapper"
+import DeleteAction from "@/components/application/admin/DeleteAction"
+import EditAction from "@/components/application/admin/EditAction"
 import { Breadcrumb } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ADMIN_CATEGORY_ADD, ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "@/routes/adminPaneRoute"
+import { DT_CATEGORY_COLUMN } from "@/lib/column"
+import { columnConfig } from "@/lib/helper"
+import { ADMIN_CATEGORY_ADD, ADMIN_CATEGORY_EDIT, ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "@/routes/adminPaneRoute"
 import { FilePlus } from "lucide-react"
 import Link from "next/link"
+import { useCallback, useMemo } from "react"
 
 const breadCrumbData = [
   {
@@ -21,7 +26,15 @@ const breadCrumbData = [
   },
 ]
 const ShowCategory = () => {
-
+  const columns = useMemo(() => {
+    return columnConfig(DT_CATEGORY_COLUMN)
+  }, [])
+  const action = useCallback((row, deleteType, handleDelete) => {
+    let actionMenu = []
+    actionMenu.push(<EditAction key={'edit'} href={ADMIN_CATEGORY_EDIT(row?.original?._id)} />)
+    actionMenu.push(<DeleteAction key={'delete'} handleDelete={handleDelete} row={row} deleteType={deleteType} />)
+    return actionMenu
+  }, [])
   return (
     <div>
       <Breadcrumb breadcrumbData={breadCrumbData} />
@@ -40,12 +53,12 @@ const ShowCategory = () => {
             queryKey={'category-data'}
             fetchUrl={'/api/category'}
             initialPageSize={10}
-            columnsConfig={''}
+            columnsConfig={columns}
             exportEndPoint={'/api/category/export'}
             deleteEndPoint={'/api/category/delete'}
             deleteType={"SD"}
             trashView={`${ADMIN_TRASH}?trashof=category`}
-            createAction={'action'}
+            createAction={action}
           />
         </CardContent>
       </Card>
