@@ -25,6 +25,7 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
     }
 
     const resendOtp = async () => {
+        form.reset()
         try {
             setresendOtpLoading(true)
             const { data: resendOtpResponce } = await axios.post('/api/auth/resend-otp', {
