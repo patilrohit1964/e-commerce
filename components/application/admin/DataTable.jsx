@@ -1,15 +1,13 @@
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
-import { Delete, DeleteForever, Download, Recycling, Restore, RestoreFromTrash } from '@mui/icons-material'
+import { showToast } from '@/lib/toast'
+import { Delete, DeleteForever, Download, RestoreFromTrash } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { D } from '@tanstack/react-query-devtools/build/legacy/ReactQueryDevtools-DO8QvfQP'
 import axios from 'axios'
-import { MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import ButtonLoading from '../ButtonLoading'
-import { showToast } from '@/lib/toast'
 import { download, generateCsv, mkConfig } from 'export-to-csv'
+import { MaterialReactTable, MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
+import { useState } from 'react'
+import ButtonLoading from '../ButtonLoading'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
     const [columnFilters, setColumnFilters] = useState([])
@@ -19,10 +17,26 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         pageIndex: 0,
         pageSize: initialPageSize
     })
-    // row selection change
+    // row selection state
     const [rowSelection, setRowSelection] = useState({})
-    const [exportLoading, setExportLoading] = useState({})
+    const [exportLoading, setExportLoading] = useState(false)
+    // handle delete method
+    const deleteMutation = useDeleteMutation(queryKey, deleteEndPoint)
+    const handleDelete = (ids, deleteType) => {
+        if (deleteType === 'PD') {
+            if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
 
+            }
+        } else if (deleteType == 'SD') {
+            if (confirm("Are You Sure you want to move data into trash ?")) {
+
+            }
+        }
+        else {
+            deleteMutation.mutate({ ids, deleteType })
+            setRowSelection({})
+        }
+    }
     const handleExport = async (selectedRows) => {
         setExportLoading(true)
         try {
@@ -57,23 +71,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
 
     };
 
-    // handle delete method
-    const deleteMutation = useDeleteMutation(queryKey, deleteEndPoint)
-    const handleDelete = (ids, deleteType) => {
-        if (deleteType === 'PD') {
-            if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
 
-            }
-        } else if (deleteType == 'SD') {
-            if (confirm("Are You Sure you want to move data into trash ?")) {
-
-            }
-        }
-        else {
-            deleteMutation.mutate({ ids, deleteType })
-            setRowSelection({})
-        }
-    }
     // data fetcing logics
     const { data: { data: [], meta } = {}, isError, isRefetching, isLoading } = useQuery({
         queryKey: [queryKey, { columnFilters, globalFilter, pagination, sorting }],
@@ -164,7 +162,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         }
     })
     return (
-        <div>DataTable</div>
+        <MaterialReactTable table={table} />
     )
 }
 

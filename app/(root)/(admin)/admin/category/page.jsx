@@ -1,8 +1,55 @@
-import React from 'react'
+import DataTableWrapper from "@/components/application/admin/DataTableWrapper"
+import { Breadcrumb } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { ADMIN_CATEGORY_ADD, ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "@/routes/adminPaneRoute"
+import { FilePlus } from "lucide-react"
+import Link from "next/link"
 
+const breadCrumbData = [
+  {
+    label: "Home",
+    href: ADMIN_DASHBOARD,
+  },
+  {
+    label: "Category",
+    href: ADMIN_CATEGORY_SHOW,
+  },
+  {
+    label: "Edit Category",
+    href: "",
+  },
+]
 const ShowCategory = () => {
+
   return (
-    <div>ShowCategory</div>
+    <div>
+      <Breadcrumb breadcrumbData={breadCrumbData} />
+      <Card className={'py-0 rounded shadow-sm'}>
+        <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2 flex justify-between'}>
+          <h4 className='text-2xl font-semibold'>Show Category</h4>
+          <Button asChild>
+            <Link href={ADMIN_CATEGORY_ADD}>
+              <FilePlus />
+              New Category
+            </Link>
+          </Button>
+        </CardHeader>
+        <CardContent className={'pb-5'}>
+          <DataTableWrapper
+            queryKey={'category-data'}
+            fetchUrl={'/api/category'}
+            initialPageSize={10}
+            columnsConfig={''}
+            exportEndPoint={'/api/category/export'}
+            deleteEndPoint={'/api/category/delete'}
+            deleteType={"SD"}
+            trashView={`${ADMIN_TRASH}?trashof=category`}
+            createAction={'action'}
+          />
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 
