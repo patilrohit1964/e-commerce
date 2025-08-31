@@ -1,5 +1,5 @@
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
-import { Delete, DeleteForever, Recycling, Restore, RestoreFromTrash } from '@mui/icons-material'
+import { Delete, DeleteForever, Download, Recycling, Restore, RestoreFromTrash } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { D } from '@tanstack/react-query-devtools/build/legacy/ReactQueryDevtools-DO8QvfQP'
@@ -7,6 +7,9 @@ import axios from 'axios'
 import { MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import ButtonLoading from '../ButtonLoading'
+import { showToast } from '@/lib/toast'
+import { download, generateCsv, mkConfig } from 'export-to-csv'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
     const [columnFilters, setColumnFilters] = useState([])
@@ -18,6 +21,42 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
     })
     // row selection change
     const [rowSelection, setRowSelection] = useState({})
+    const [exportLoading, setExportLoading] = useState({})
+
+    const handleExport = async (selectedRows) => {
+        setExportLoading(true)
+        try {
+            const csvConfig = mkConfig({
+                fieldSeparator: ',',
+                decimalSeparator: '.',
+                useKeysAsHeaders: true,
+                filename: 'csv-data'
+            }) //download data in csv
+            let csv
+            if (Object.keys(rowSelection).length > 0) {
+                // export only selected rows 
+                const rowdata = selectedRows.map((row) => row.original);
+                csv = generateCsv(csvConfig)(rowdata);
+            } else {
+                // export all data
+                const { data: responce } = await axios.get(exportEndPoint)
+                if (!responce.success) {
+                    throw new Error(responce.message)
+                }
+                const rowData = responce.data
+                csv = generateCsv(csvConfig)(rowData);
+            }
+            download(csvConfig)(csv)
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', error?.message)
+        } finally {
+            setExportLoading(false)
+        }
+
+    };
+
     // handle delete method
     const deleteMutation = useDeleteMutation(queryKey, deleteEndPoint)
     const handleDelete = (ids, deleteType) => {
@@ -114,6 +153,14 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                     </>
                 }
             </>
+        },
+        enableRowActions: true, //add custom action
+        positionActionsColumn: 'last', //set custom action position
+        renderRowActionMenuItems: ({ row }) => createAction(row, deleteType, handleDelete), //take action on custom action like crud
+        renderTopToolbarCustomActions: ({ table }) => {
+            <Tooltip>
+                <ButtonLoading type={'button'} text={<><Download /> 'Export'</>} loading={exportLoading} onClick={() => handleExport(table?.getSelectedRowModel().rows())} />
+            </Tooltip>
         }
     })
     return (
