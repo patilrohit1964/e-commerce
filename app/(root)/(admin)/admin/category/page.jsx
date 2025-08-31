@@ -1,3 +1,4 @@
+'use client'
 import DataTableWrapper from "@/components/application/admin/DataTableWrapper"
 import DeleteAction from "@/components/application/admin/DeleteAction"
 import EditAction from "@/components/application/admin/EditAction"

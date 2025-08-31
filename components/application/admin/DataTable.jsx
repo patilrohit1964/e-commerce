@@ -73,7 +73,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
 
 
     // data fetcing logics
-    const { data: { data: [], meta } = {}, isError, isRefetching, isLoading } = useQuery({
+    const { data = {}, isError, isRefetching, isLoading } = useQuery({
         queryKey: [queryKey, { columnFilters, globalFilter, pagination, sorting }],
         queryFn: async () => {
             const url = new URL(fetchUrl, process.env.NEXT_PUBLIC_BASE_URL)
@@ -82,6 +82,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
             url.searchParams.set('filters', JSON.stringify(columnFilters ?? []));
             url.searchParams.set('globalFilter', globalFilter ?? '');
             url.searchParams.set('sorting', JSON.stringify(sorting ?? []));
+            
             const { data: responce } = await axios.get(url.href)
             return responce
         },
@@ -120,7 +121,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         },
         getRowId: (originalRow) => originalRow?._id,//for add manually id,
         renderToolbarInternalActions: ({ table }) => {
-            <>
+            return (<>
                 {/* builtins buttons */}
                 <MRT_ToggleGlobalFilterButton table={table} />
                 <MRT_ShowHideColumnsButton table={table} />
@@ -150,7 +151,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                         </Tooltip>
                     </>
                 }
-            </>
+            </>)
         },
         enableRowActions: true, //add custom action
         positionActionsColumn: 'last', //set custom action position
