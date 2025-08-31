@@ -1,4 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useDeleteMutation } from '@/hooks/useDeleteMutation'
+import { Delete, DeleteForever, Recycling, Restore, RestoreFromTrash } from '@mui/icons-material'
+import { IconButton, Tooltip } from '@mui/material'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { D } from '@tanstack/react-query-devtools/build/legacy/ReactQueryDevtools-DO8QvfQP'
+import axios from 'axios'
+import { MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
@@ -9,7 +16,25 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         pageIndex: 0,
         pageSize: initialPageSize
     })
+    // row selection change
+    const [rowSelection, setRowSelection] = useState({})
+    // handle delete method
+    const deleteMutation = useDeleteMutation(queryKey, deleteEndPoint)
+    const handleDelete = (ids, deleteType) => {
+        if (deleteType === 'PD') {
+            if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
 
+            }
+        } else if (deleteType == 'SD') {
+            if (confirm("Are You Sure you want to move data into trash ?")) {
+
+            }
+        }
+        else {
+            deleteMutation.mutate({ ids, deleteType })
+            setRowSelection({})
+        }
+    }
     // data fetcing logics
     const { data: { data: [], meta } = {}, isError, isRefetching, isLoading } = useQuery({
         queryKey: [queryKey, { columnFilters, globalFilter, pagination, sorting }],
@@ -19,9 +44,77 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
             url.searchParams.set('size', `${pagination.pageSize}`);
             url.searchParams.set('filters', JSON.stringify(columnFilters ?? []));
             url.searchParams.set('globalFilter', globalFilter ?? '');
-            url.searchParams.set('sorting', JSON.stringify(sorting ?? [])),
+            url.searchParams.set('sorting', JSON.stringify(sorting ?? []));
+            const { data: responce } = await axios.get(url.href)
+            return responce
+        },
+        placeholderData: keepPreviousData
+    })
+    //init table
+    const table = useMaterialReactTable({
+        columns: columnsConfig,
+        data,
+        enableRowSelection: true,
+        columnFilterDisplayMode: 'popover',
+        paginationDisplayMode: 'pages',
+        enableColumnOrdering: true,
+        enableStickyHeader: true,
+        enableStickyFooter: true,
+        initialState: { showColumnFilters: true },
+        manualFiltering: true,
+        manualPagination: true,
+        manualSorting: true,
+        muiToolbarAlertBannerProps: isError ? { color: 'error', children: 'error loading data' } : undefined,
+        onShowColumnFiltersChange: setColumnFilters,
+        onGlobalFilterChange: setglobalFilter,
+        onPaginationChange: Setpagination,
+        onSortingChange: setSorting,
+        rowCount: data?.meta?.totalRowCount ?? 0,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            columnFilters,
+            globalFilter,
+            isLoading,
+            pagination,
+            showAlertBanner: isError,
+            showProgressBars: isRefetching,
+            sorting,
+            rowSelection
+        },
+        getRowId: (originalRow) => originalRow?._id,//for add manually id,
+        renderToolbarInternalActions: ({ table }) => {
+            <>
+                {/* builtins buttons */}
+                <MRT_ToggleGlobalFilterButton table={table} />
+                <MRT_ShowHideColumnsButton table={table} />
+                <MRT_ToggleFullScreenButton table={table} />
+                <MRT_ToggleDensePaddingButton table={table} />
+                {deleteType === "SD" &&
+                    <>
+                        <Tooltip title="Delete All">
+                            <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
+                                <Delete />
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                }
 
-    }
+                {deleteType === "PD" &&
+                    <>
+                        <Tooltip title="Restore Data">
+                            <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), 'RSD')}>
+                                <RestoreFromTrash />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Permanently Delete Data">
+                            <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
+                                <DeleteForever />
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                }
+            </>
+        }
     })
     return (
         <div>DataTable</div>
