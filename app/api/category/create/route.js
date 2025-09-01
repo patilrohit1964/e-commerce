@@ -1,5 +1,6 @@
 import connectDb from "@/lib/dbConnect";
-import { isAuthenticated, responce } from "@/lib/helper";
+import { responce } from "@/lib/helper";
+import { isAuthenticated } from "@/lib/isAuth";
 import { zSchmea } from "@/lib/zodSchema";
 import CategoryModel from "@/model/category.model";
 export async function POST(req) {

@@ -1,8 +1,9 @@
 import connectDb from "@/lib/dbConnect";
-import { catchError, isAuthenticated, responce } from "@/lib/helper";
+import { catchError, responce } from "@/lib/helper";
+import { isAuthenticated } from "@/lib/isAuth";
 import { zSchmea } from "@/lib/zodSchema";
 import MEDIAModel from "@/model/media.model";
-import { get, isValidObjectId } from "mongoose";
+import { isValidObjectId } from "mongoose";
 export async function PUT(req) {
   try {
     const auth = await isAuthenticated("admin");
