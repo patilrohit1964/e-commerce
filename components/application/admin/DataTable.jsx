@@ -82,7 +82,8 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
             url.searchParams.set('filters', JSON.stringify(columnFilters ?? []));
             url.searchParams.set('globalFilter', globalFilter ?? '');
             url.searchParams.set('sorting', JSON.stringify(sorting ?? []));
-            
+            url.searchParams.set('deleteType', deleteType);
+
             const { data: responce } = await axios.get(url.href)
             return responce
         },
