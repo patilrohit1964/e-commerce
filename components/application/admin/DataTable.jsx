@@ -47,7 +47,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                 filename: 'csv-data'
             }) //download data in csv
             let csv
-            if (Object.keys(rowSelection).length > 0) {
+            if (Object.keys(rowSelection)?.length > 0) {
                 // export only selected rows 
                 const rowdata = selectedRows.map((row) => row.original);
                 csv = generateCsv(csvConfig)(rowdata);
@@ -73,7 +73,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
 
 
     // data fetcing logics
-    const { data = {}, isError, isRefetching, isLoading } = useQuery({
+    const { data , isError, isRefetching, isLoading } = useQuery({
         queryKey: [queryKey, { columnFilters, globalFilter, pagination, sorting }],
         queryFn: async () => {
             const url = new URL(fetchUrl, process.env.NEXT_PUBLIC_BASE_URL)
@@ -85,6 +85,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
             url.searchParams.set('deleteType', deleteType);
 
             const { data: responce } = await axios.get(url.href)
+            console.log('responce', responce);
             return responce
         },
         placeholderData: keepPreviousData

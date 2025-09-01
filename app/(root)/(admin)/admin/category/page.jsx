@@ -1,8 +1,8 @@
 'use client'
+import BreadCrumb from "@/components/application/admin/BreadCrumb"
 import DataTableWrapper from "@/components/application/admin/DataTableWrapper"
 import DeleteAction from "@/components/application/admin/DeleteAction"
 import EditAction from "@/components/application/admin/EditAction"
-import { Breadcrumb } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { DT_CATEGORY_COLUMN } from "@/lib/column"
@@ -38,7 +38,7 @@ const ShowCategory = () => {
   }, [])
   return (
     <div>
-      <Breadcrumb breadcrumbData={breadCrumbData} />
+      <BreadCrumb breadcrumbData={breadCrumbData} />
       <Card className={'py-0 rounded shadow-sm'}>
         <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2 flex justify-between'}>
           <h4 className='text-2xl font-semibold'>Show Category</h4>

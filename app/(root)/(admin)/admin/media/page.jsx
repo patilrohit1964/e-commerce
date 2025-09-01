@@ -101,7 +101,7 @@ const MediaPage = () => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    {data?.pages?.[0]?.mediaData && data?.pages?.[0]?.mediaData.length > 0 ?
+                    {data?.pages?.[0]?.mediaData && data?.pages?.[0]?.mediaData?.length > 0 ?
                         (
                             <>
                                 {

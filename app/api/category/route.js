@@ -12,13 +12,12 @@ export async function GET(req) {
     }
     await connectDb();
     const searchParams = req.nextUrl.searchParams;
-    console.log(searchParams, "searchparams all here");
     // extract query parameters
     const start = parseInt(searchParams.get("start") || 0, 10);
     const size = parseInt(searchParams.get("size") || 10, 10);
-    const filters = parseInt(searchParams.get("filters") || "[]");
+    const filters = [];
     const globalFilter = parseInt(searchParams.get("globalFilter") || "");
-    const sorting = parseInt(searchParams.get("sorting") || "[]");
+    const sorting = [];
     const deleteType = parseInt(searchParams.get("deleteType"));
     // build match query
     let matchQuries = {};
@@ -27,7 +26,6 @@ export async function GET(req) {
     } else if (deleteType === "PD") {
       matchQuries = { deletedAt: { $ne: null } };
     }
-
     // global search
     if (globalFilter) {
       matchQuries["$or"] = [
