@@ -6,11 +6,11 @@ import React from 'react'
 const EditAction = ({ href }) => {
     return (
         <MenuItem key={'edit'}>
-            <Link href={href}>
+            <Link href={href} className='flex items-center justify-between'>
                 <ListItemIcon>
                     <Edit2 />
                 </ListItemIcon>
-                Delete
+                Edit
             </Link>
         </MenuItem>
     )

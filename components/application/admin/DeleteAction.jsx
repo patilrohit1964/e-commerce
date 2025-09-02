@@ -1,16 +1,13 @@
 import { ListItemIcon, MenuItem } from '@mui/material'
-import { Delete } from 'lucide-react'
-import Link from 'next/link'
+import { Trash } from 'lucide-react'
 
 const DeleteAction = ({ handleDelete, row, deleteType }) => {
     return (
         <MenuItem key={'delete'} onClick={() => handleDelete([row?.original?._id], deleteType)}>
-            <Link href={href}>
-                <ListItemIcon>
-                    <Delete />
-                </ListItemIcon>
-                Edit
-            </Link>
+            <ListItemIcon>
+                <Trash />
+            </ListItemIcon>
+            Delete
         </MenuItem>
     )
 }

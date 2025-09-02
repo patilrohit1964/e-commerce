@@ -64,7 +64,6 @@ export async function GET(req) {
     ];
     // execute query
     const getCategories = await CategoryModel.aggregate(aggregatePipeline);
-    console.log("getCategories", getCategories);
     // get total row count
     const totalRowCount = await CategoryModel.countDocuments(matchQuries);
     return NextResponse.json({

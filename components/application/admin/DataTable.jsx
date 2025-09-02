@@ -73,7 +73,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
 
 
     // data fetcing logics
-    const { data , isError, isRefetching, isLoading } = useQuery({
+    const { data = { data: [], meta: {} }, isError, isRefetching, isLoading } = useQuery({
         queryKey: [queryKey, { columnFilters, globalFilter, pagination, sorting }],
         queryFn: async () => {
             const url = new URL(fetchUrl, process.env.NEXT_PUBLIC_BASE_URL)
@@ -83,9 +83,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
             url.searchParams.set('globalFilter', globalFilter ?? '');
             url.searchParams.set('sorting', JSON.stringify(sorting ?? []));
             url.searchParams.set('deleteType', deleteType);
-
             const { data: responce } = await axios.get(url.href)
-            console.log('responce', responce);
             return responce
         },
         placeholderData: keepPreviousData
@@ -93,7 +91,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
     //init table
     const table = useMaterialReactTable({
         columns: columnsConfig,
-        data,
+        data: data?.data,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -159,9 +157,9 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         positionActionsColumn: 'last', //set custom action position
         renderRowActionMenuItems: ({ row }) => createAction(row, deleteType, handleDelete), //take action on custom action like crud
         renderTopToolbarCustomActions: ({ table }) => {
-            <Tooltip>
-                <ButtonLoading type={'button'} text={<><Download /> 'Export'</>} loading={exportLoading} onClick={() => handleExport(table?.getSelectedRowModel().rows())} />
-            </Tooltip>
+            return (<Tooltip>
+                <ButtonLoading type={'button'} text={<><Download /> Export</>} loading={exportLoading} onClick={() => handleExport(table?.getSelectedRowModel().rows)} />
+            </Tooltip>)
         }
     })
     return (
