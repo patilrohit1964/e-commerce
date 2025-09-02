@@ -38,7 +38,6 @@ export async function GET(req) {
     filters?.forEach((fil) => {
       matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
     });
-
     // sorting
     let sortQuery = {};
     sorting?.forEach((sort) => {

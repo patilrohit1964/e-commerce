@@ -1,13 +1,14 @@
+import { Button } from '@/components/ui/button'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { showToast } from '@/lib/toast'
-import { Delete, DeleteForever, Download, RestoreFromTrash } from '@mui/icons-material'
+import { Delete, DeleteForever, Download, Recycling, RestoreFromTrash } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { download, generateCsv, mkConfig } from 'export-to-csv'
 import { MaterialReactTable, MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
+import Link from 'next/link'
 import { useState } from 'react'
-import ButtonLoading from '../ButtonLoading'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
     const [columnFilters, setColumnFilters] = useState([])
@@ -127,30 +128,43 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                 <MRT_ShowHideColumnsButton table={table} />
                 <MRT_ToggleFullScreenButton table={table} />
                 <MRT_ToggleDensePaddingButton table={table} />
+
+                {deleteType !== "PD" &&
+                    <>
+                        <Tooltip title="Restore Data">
+                            <Link href={trashView}>
+                                <IconButton >
+                                    <Recycling />
+                                </IconButton>
+                            </Link>
+                        </Tooltip>
+                    </>
+                }
+
                 {deleteType === "SD" &&
                     <>
                         <Tooltip title="Delete All">
-                            <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
+                            <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
                                 <Delete />
                             </IconButton>
                         </Tooltip>
                     </>
                 }
-
                 {deleteType === "PD" &&
                     <>
                         <Tooltip title="Restore Data">
-                            <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), 'RSD')}>
+                            <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
                                 <RestoreFromTrash />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Permanently Delete Data">
-                            <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
+                            <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
                                 <DeleteForever />
                             </IconButton>
                         </Tooltip>
                     </>
                 }
+
             </>)
         },
         enableRowActions: true, //add custom action
@@ -158,7 +172,10 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         renderRowActionMenuItems: ({ row }) => createAction(row, deleteType, handleDelete), //take action on custom action like crud
         renderTopToolbarCustomActions: ({ table }) => {
             return (<Tooltip>
-                <ButtonLoading type={'button'} text={<><Download /> Export</>} loading={exportLoading} onClick={() => handleExport(table?.getSelectedRowModel().rows)} />
+                {/* <ButtonLoading type={'button'} text={<><Download /> Export</>} loading={exportLoading} onClick={() => handleExport(table?.getSelectedRowModel().rows)}  /> */}
+                <Button type={'button'} disabled={table?.getSelectedRowModel().rows?.length === 0} onClick={() => handleExport(table?.getSelectedRowModel().rows)} >
+                    <Download /> Export
+                </Button>
             </Tooltip>)
         }
     })

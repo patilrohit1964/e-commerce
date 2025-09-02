@@ -49,7 +49,7 @@ const ShowCategory = () => {
             </Link>
           </Button>
         </CardHeader>
-        <CardContent className={'pb-5'}>
+        <CardContent className={'pb-5 px-0'}>
           <DataTableWrapper
             queryKey={'category-data'}
             fetchUrl={'/api/category'}
