@@ -26,11 +26,13 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
     const handleDelete = (ids, deleteType) => {
         if (deleteType === 'PD') {
             if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
-
+                deleteMutation.mutate({ ids, deleteType })
+                setRowSelection({})
             }
         } else if (deleteType == 'SD') {
             if (confirm("Are You Sure you want to move data into trash ?")) {
-
+                deleteMutation.mutate({ ids, deleteType })
+                setRowSelection({})
             }
         }
         else {
@@ -150,6 +152,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                         </Tooltip>
                     </>
                 }
+                
                 {deleteType === "PD" &&
                     <>
                         <Tooltip title="Restore Data">
@@ -164,7 +167,6 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                         </Tooltip>
                     </>
                 }
-
             </>)
         },
         enableRowActions: true, //add custom action

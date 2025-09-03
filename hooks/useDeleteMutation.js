@@ -18,7 +18,7 @@ export const useDeleteMutation = (queryKey, deleteEndPoint) => {
     },
     onSuccess: (data) => {
       showToast("success", data.message);
-      queryClient.invalidateQueries([queryKey]);
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
     onError: (error) => {
       showToast("error", error.message);
