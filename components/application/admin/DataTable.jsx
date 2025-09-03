@@ -12,9 +12,9 @@ import { useState } from 'react'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
     const [columnFilters, setColumnFilters] = useState([])
-    const [globalFilter, setglobalFilter] = useState('')
+    const [globalFilter, setGlobalFilter] = useState('')
     const [sorting, setSorting] = useState([])
-    const [pagination, Setpagination] = useState({
+    const [pagination, SetPagination] = useState({
         pageIndex: 0,
         pageSize: initialPageSize
     })
@@ -24,18 +24,13 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
     // handle delete method
     const deleteMutation = useDeleteMutation(queryKey, deleteEndPoint)
     const handleDelete = (ids, deleteType) => {
+        let c;
         if (deleteType === 'PD') {
-            if (confirm("Are You Sure Permentely Delete Media This Action Can't Undone")) {
-                deleteMutation.mutate({ ids, deleteType })
-                setRowSelection({})
-            }
+            c = confirm("Are You Sure Permentely Delete Media This Action Can't Undone")
         } else if (deleteType == 'SD') {
-            if (confirm("Are You Sure you want to move data into trash ?")) {
-                deleteMutation.mutate({ ids, deleteType })
-                setRowSelection({})
-            }
+            c = confirm("Are You Sure you want to move data into trash ?")
         }
-        else {
+        if (c) {
             deleteMutation.mutate({ ids, deleteType })
             setRowSelection({})
         }
@@ -76,7 +71,12 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
 
 
     // data fetcing logics
-    const { data = { data: [], meta: {} }, isError, isRefetching, isLoading } = useQuery({
+    const {
+        data = { data: [], meta: {} },
+        isError,
+        isRefetching,
+        isLoading
+    } = useQuery({
         queryKey: [queryKey, { columnFilters, globalFilter, pagination, sorting }],
         queryFn: async () => {
             const url = new URL(fetchUrl, process.env.NEXT_PUBLIC_BASE_URL)
@@ -94,7 +94,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
     //init table
     const table = useMaterialReactTable({
         columns: columnsConfig,
-        data: data?.data,
+        data: data?.data ?? [],
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -107,8 +107,8 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         manualSorting: true,
         muiToolbarAlertBannerProps: isError ? { color: 'error', children: 'error loading data' } : undefined,
         onShowColumnFiltersChange: setColumnFilters,
-        onGlobalFilterChange: setglobalFilter,
-        onPaginationChange: Setpagination,
+        onGlobalFilterChange: setGlobalFilter,
+        onPaginationChange: SetPagination,
         onSortingChange: setSorting,
         rowCount: data?.meta?.totalRowCount ?? 0,
         onRowSelectionChange: setRowSelection,
@@ -123,8 +123,8 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
             rowSelection
         },
         getRowId: (originalRow) => originalRow?._id,//for add manually id,
-        renderToolbarInternalActions: ({ table }) => {
-            return (<>
+        renderToolbarInternalActions: ({ table }) => (
+            <>
                 {/* builtins buttons */}
                 <MRT_ToggleGlobalFilterButton table={table} />
                 <MRT_ShowHideColumnsButton table={table} />
@@ -133,7 +133,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
 
                 {deleteType !== "PD" &&
                     <>
-                        <Tooltip title="Restore Data">
+                        <Tooltip title="Go To Trash">
                             <Link href={trashView}>
                                 <IconButton >
                                     <Recycling />
@@ -142,44 +142,45 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                         </Tooltip>
                     </>
                 }
-
+                {/* data moved into trash situtaion */}
                 {deleteType === "SD" &&
                     <>
-                        <Tooltip title="Delete All">
+                        <Tooltip title="Delete Selected">
                             <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
                                 <Delete />
                             </IconButton>
                         </Tooltip>
                     </>
                 }
-                
+                {/* in trash situation */}
                 {deleteType === "PD" &&
                     <>
-                        <Tooltip title="Restore Data">
-                            <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
+                        <Tooltip title="Restore Selected">
+                            <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), "RSD")}>
                                 <RestoreFromTrash />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Permanently Delete Data">
+                        <Tooltip title="Permanently Delete Selected">
                             <IconButton disabled={!table?.getIsSomeRowsSelected() && !table?.getIsAllRowsSelected()} onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}>
                                 <DeleteForever />
                             </IconButton>
                         </Tooltip>
                     </>
                 }
-            </>)
-        },
+            </>
+        )
+        ,
         enableRowActions: true, //add custom action
         positionActionsColumn: 'last', //set custom action position
         renderRowActionMenuItems: ({ row }) => createAction(row, deleteType, handleDelete), //take action on custom action like crud
-        renderTopToolbarCustomActions: ({ table }) => {
-            return (<Tooltip>
-                {/* <ButtonLoading type={'button'} text={<><Download /> Export</>} loading={exportLoading} onClick={() => handleExport(table?.getSelectedRowModel().rows)}  /> */}
+        renderTopToolbarCustomActions: ({ table }) =>
+        (
+            <Tooltip>
                 <Button type={'button'} disabled={table?.getSelectedRowModel().rows?.length === 0} onClick={() => handleExport(table?.getSelectedRowModel().rows)} >
                     <Download /> Export
                 </Button>
-            </Tooltip>)
-        }
+            </Tooltip>
+        )
     })
     return (
         <MaterialReactTable table={table} />

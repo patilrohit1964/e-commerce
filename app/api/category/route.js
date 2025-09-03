@@ -15,14 +15,14 @@ export async function GET(req) {
     // extract query parameters
     const start = parseInt(searchParams.get("start") || 0, 10);
     const size = parseInt(searchParams.get("size") || 10, 10);
-    const filters = [];
-    const globalFilter = parseInt(searchParams.get("globalFilter") || "");
-    const sorting = [];
-    const deleteType = parseInt(searchParams.get("deleteType"));
+    const filters = JSON.parse(searchParams.get("filters") || []);
+    const sorting = JSON.parse(searchParams.get("sorting") || []);
+    const globalFilter = searchParams.get("globalFilter") || "";
+    const deleteType = searchParams.get("deleteType");
     // build match query
     let matchQuries = {};
     if (deleteType === "SD") {
-      matchQuries = { deletedAt: { $ne: null } };
+      matchQuries = { deletedAt: null };
     } else if (deleteType === "PD") {
       matchQuries = { deletedAt: { $ne: null } };
     }
