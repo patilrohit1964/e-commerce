@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { useDeleteMutation } from '@/hooks/useDeleteMutation'
 import { showToast } from '@/lib/toast'
 import { Delete, DeleteForever, Download, Recycling, RestoreFromTrash } from '@mui/icons-material'
@@ -9,6 +8,7 @@ import { download, generateCsv, mkConfig } from 'export-to-csv'
 import { MaterialReactTable, MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
 import Link from 'next/link'
 import { useState } from 'react'
+import ButtonLoading from '../ButtonLoading'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
     const [columnFilters, setColumnFilters] = useState([])
@@ -176,9 +176,8 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         renderTopToolbarCustomActions: ({ table }) =>
         (
             <Tooltip>
-                <Button type={'button'} disabled={table?.getSelectedRowModel().rows?.length === 0} onClick={() => handleExport(table?.getSelectedRowModel().rows)} >
-                    <Download /> Export
-                </Button>
+
+                <ButtonLoading type={'button'} loading={exportLoading} text={<><Download /> Export</>} onClick={() => handleExport(table?.getSelectedRowModel().rows)} />
             </Tooltip>
         )
     })

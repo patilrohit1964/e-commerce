@@ -20,10 +20,12 @@ export async function PUT(req) {
     if (!validate.success) {
       return responce(false, 400, "invalid or missing fields", validate.error);
     }
-    const newCategory = new CategoryModel.findOne({
+    const newCategory = await CategoryModel.findOne({
       deletedAt: null,
       _id: validate?.data?._id,
     });
+    newCategory.name = validate?.data?.name;
+    newCategory.slug = validate?.data?.slug;
     await newCategory.save();
     return responce(true, 200, "category update successfully");
   } catch (error) {
