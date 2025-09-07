@@ -5,18 +5,18 @@ import { USER_DASHBOARD, WEBSITE_LOGIN } from "./routes/websiteRoute";
 
 export async function middleware(req) {
   try {
-    const pathName = req.nextUrl.pathName;
+    const pathName = req.nextUrl.pathname;
     const hasToken = req.cookies.has("access_token");
     if (!hasToken) {
       if (!pathName.startsWith("/auth")) {
-        return NextResponse.redirect(new url(WEBSITE_LOGIN, req.nextUrl));
+        return NextResponse.redirect(new URL(WEBSITE_LOGIN, req.nextUrl));
       }
       return NextResponse.next();
     }
-    const access_token = req.cookies.get("access_token");
+    const access_token = req.cookies.get("access_token")?.value;
     const { payload } = await jwtVerify(
       access_token,
-      new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET)
+      new TextEncoder().encode(process.env.JWT_SECRET)
     );
     const role = payload?.role;
     if (pathName.startsWith("/auth")) {

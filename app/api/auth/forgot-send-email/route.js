@@ -19,7 +19,7 @@ export async function POST(req) {
     if (!userExist) {
       return responce(false, 404, "user not found");
     }
-    const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const token = await new SignJWT({
       userId: userExist._id.toString(),
     })

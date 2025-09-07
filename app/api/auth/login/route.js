@@ -41,7 +41,7 @@ export async function POST(request) {
     // resend email
     if (!getUser.isEmailVerified) {
       const secret = new TextEncoder().encode(
-        process.env.NEXT_PUBLIC_JWT_SECRET
+        process.env.JWT_SECRET
       );
       const token = await new SignJWT({ userId: getUser._id.toString() })
         .setIssuedAt()

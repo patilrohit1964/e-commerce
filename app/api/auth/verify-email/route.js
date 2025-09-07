@@ -10,7 +10,7 @@ export async function POST(req) {
     if (!token) {
       return responce(false, 400, "missing token");
     }
-    const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const decoded = await jwtVerify(token, secret);
     const userId = decoded.payload.userId;
 

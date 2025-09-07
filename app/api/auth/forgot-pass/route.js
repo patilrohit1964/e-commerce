@@ -21,7 +21,7 @@ export async function POST(req) {
       );
     }
     const { password, token } = payload;
-    const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const decoded = await jwtVerify(token, secret);
     const user = await User.findById(decoded.payload.userId);
     if (!user) {

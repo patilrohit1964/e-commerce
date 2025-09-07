@@ -89,7 +89,7 @@ const LoginPage = () => {
       } else {
         otpResponce.data.role === 'admin' ? router.push(ADMIN_DASHBOARD) : router.push(USER_DASHBOARD)
       }
-      router.push(WEBSITE_HOME)
+      // router.push(WEBSITE_HOME)
     }
     catch (error) {
       console.log(error)
