@@ -27,8 +27,10 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         let c;
         if (deleteType === 'PD') {
             c = confirm("Are You Sure Permentely Delete Media This Action Can't Undone")
-        } else if (deleteType == 'SD') {
+        } else if (deleteType === 'SD') {
             c = confirm("Are You Sure you want to move data into trash ?")
+        } else if (deleteType === "RSD") {
+            c = confirm("You Want Restore Data ?");
         }
         if (c) {
             deleteMutation.mutate({ ids, deleteType })
@@ -176,7 +178,6 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         renderTopToolbarCustomActions: ({ table }) =>
         (
             <Tooltip>
-
                 <ButtonLoading type={'button'} loading={exportLoading} text={<><Download /> Export</>} onClick={() => handleExport(table?.getSelectedRowModel().rows)} />
             </Tooltip>
         )
