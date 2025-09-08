@@ -1,6 +1,6 @@
-import connectDb from "@/lib/dbConnect";
-import { responce } from "@/lib/helper";
 import { cookies } from "next/headers";
+import connectDb from "../../../../lib/dbConnect";
+import { responce } from "../../../../lib/helper";
 
 export async function POST(req) {
   try {

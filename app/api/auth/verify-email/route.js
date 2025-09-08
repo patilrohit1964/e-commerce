@@ -1,7 +1,7 @@
-import connectDb from "@/lib/dbConnect";
-import { responce } from "@/lib/helper";
-import User from "@/model/user.model";
 import { jwtVerify } from "jose";
+import connectDb from "../../../../lib/dbConnect";
+import { responce } from "../../../../lib/helper";
+import User from "../../../../model/user.model";
 
 export async function POST(req) {
   try {

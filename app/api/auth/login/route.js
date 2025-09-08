@@ -1,11 +1,11 @@
-import { emailVerificationLink } from "@/email/emailVerification";
-import { generateOTPEmail } from "@/email/otpEmail";
-import connectDb from "@/lib/dbConnect";
-import { catchError, generatOtp, responce } from "@/lib/helper";
-import { sendMail } from "@/lib/sendMail";
-import { zSchmea } from "@/lib/zodSchema";
-import OTPModel from "@/model/opt.model";
-import User from "@/model/user.model";
+import { emailVerificationLink } from "../../../../email/emailVerification";
+import { generateOTPEmail } from "../../../../email/otpEmail";
+import connectDb from "../../../../lib/dbConnect";
+import { catchError, generatOtp, responce } from "../../../../lib/helper";
+import { sendMail } from "../../../../lib/sendMail";
+import { zSchmea } from "../../../../lib/zodSchema";
+import OTPModel from "../../../../model/opt.model";
+import User from "../../../../model/user.model";
 import { SignJWT } from "jose";
 import z from "zod";
 
@@ -40,9 +40,7 @@ export async function POST(request) {
 
     // resend email
     if (!getUser.isEmailVerified) {
-      const secret = new TextEncoder().encode(
-        process.env.JWT_SECRET
-      );
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       const token = await new SignJWT({ userId: getUser._id.toString() })
         .setIssuedAt()
         .setExpirationTime("7d")

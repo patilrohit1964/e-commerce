@@ -1,5 +1,5 @@
-import { showToast } from '@/lib/toast'
-import { zSchmea } from '@/lib/zodSchema'
+import { showToast } from '../../lib/toast'
+import { zSchmea } from '../../lib/zodSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useState } from 'react'

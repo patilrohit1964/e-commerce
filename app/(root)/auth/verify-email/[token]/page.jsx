@@ -1,10 +1,10 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { WEBSITE_HOME, WEBSITE_REGISTER } from '@/routes/websiteRoute'
 import axios from 'axios'
 import Link from 'next/link'
-import React, { use, useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
+import { Button } from '../../../../../components/ui/button'
+import { Card, CardContent } from '../../../../../components/ui/card'
+import { WEBSITE_HOME, WEBSITE_REGISTER } from '../../../../../routes/websiteRoute'
 
 const EmailVerification = ({ params }) => {
   const { token } = use(params)
@@ -14,7 +14,7 @@ const EmailVerification = ({ params }) => {
       const { data } = await axios.post(`/api/auth/verify-email`, { token })
       if (data.success) {
         setIsVerified(true)
-    }
+      }
     }
     verify()
   }, [])

@@ -1,11 +1,11 @@
 "use server";
 
-import { emailVerificationLink } from "@/email/emailVerification";
-import connectDb from "@/lib/dbConnect";
-import { catchError, responce } from "@/lib/helper";
-import { sendMail } from "@/lib/sendMail";
-import { zSchmea } from "@/lib/zodSchema";
-import User from "@/model/user.model";
+import { emailVerificationLink } from "../../../../email/emailVerification";
+import connectDb from "../../../../lib/dbConnect";
+import { catchError, responce } from "../../../../lib/helper";
+import { sendMail } from "../../../../lib/sendMail";
+import { zSchmea } from "../../../../lib/zodSchema";
+import User from "../../../../model/user.model";
 import { SignJWT } from "jose";
 
 export async function POST(req) {

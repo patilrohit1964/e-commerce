@@ -1,16 +1,16 @@
 'use client'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { showToast } from '@/lib/toast'
-import Logo from '@/public/next.svg'
-import { WEBSITE_LOGIN } from '@/routes/websiteRoute'
-import { logout } from '@/store/reducers/authReducer'
 import axios from 'axios'
 import { ClipboardList, LogOut, Shirt } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
+import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
+import { Button } from '../../../components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../../../components/ui/dropdown-menu'
+import { showToast } from '../../../lib/toast'
+import Logo from '../../../public/next.svg'
+import { WEBSITE_LOGIN } from '../../../routes/websiteRoute'
+import { logout } from '../../../store/reducers/authReducer'
 const userMenu = [
   {
     title: 'Product',

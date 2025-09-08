@@ -2,8 +2,8 @@
 import { ThemeProvider, } from '@mui/material'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import { darkTheme, lightTheme } from '../../../lib/materialTheme'
 import DataTable from './DataTable'
-import { darkTheme, lightTheme } from '@/lib/materialTheme'
 
 const DataTableWrapper = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
     const { resolvedTheme } = useTheme()

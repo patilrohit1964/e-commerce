@@ -1,11 +1,10 @@
-import connectDb from "@/lib/dbConnect";
-import { responce } from "@/lib/helper";
-import { zSchmea } from "@/lib/zodSchema";
-import OTPModel from "@/model/opt.model";
-import User from "@/model/user.model";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import connectDb from "../../../../lib/dbConnect";
+import { responce } from "../../../../lib/helper";
+import { zSchmea } from "../../../../lib/zodSchema";
+import OTPModel from "../../../../model/opt.model";
+import User from "../../../../model/user.model";
 
 export async function POST(request) {
   try {

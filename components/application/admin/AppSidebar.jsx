@@ -1,6 +1,9 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { LucideChevronRight, X } from "lucide-react"
+import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from '../../../components/ui/button'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../../components/ui/collapsible'
 import {
     Sidebar,
     SidebarContent,
@@ -12,12 +15,9 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
     useSidebar
-} from "@/components/ui/sidebar"
-import { adminAppSidebarMenu } from '@/lib/adminSidebarMenu'
-import Logo from '@/public/next.svg'
-import { LucideChevronRight, X } from "lucide-react"
-import Image from 'next/image'
-import Link from 'next/link'
+} from "../../../components/ui/sidebar"
+import { adminAppSidebarMenu } from '../../../lib/adminSidebarMenu'
+import Logo from '../../../public/next.svg'
 
 
 const AppSidebar = () => {

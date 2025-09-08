@@ -1,8 +1,8 @@
-import connectDb from "@/lib/dbConnect";
-import { responce } from "@/lib/helper";
-import { isAuthenticated } from "@/lib/isAuth";
-import CategoryModel from "@/model/category.model";
 import { NextResponse } from "next/server";
+import connectDb from "../../../lib/dbConnect";
+import { responce } from "../../../lib/helper";
+import { isAuthenticated } from "../../../lib/isAuth";
+import CategoryModel from "../../../model/category.model";
 
 export async function GET(req) {
   try {

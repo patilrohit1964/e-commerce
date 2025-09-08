@@ -1,8 +1,8 @@
-import connectDb from "@/lib/dbConnect";
-import { catchError, responce } from "@/lib/helper";
-import { isAuthenticated } from "@/lib/isAuth";
-import CategoryModel from "@/model/category.model";
 import { isValidObjectId } from "mongoose";
+import connectDb from "../../../../../lib/dbConnect";
+import { catchError, responce } from "../../../../../lib/helper";
+import { isAuthenticated } from "../../../../../lib/isAuth";
+import CategoryModel from "../../../../../model/category.model";
 
 export async function GET(request, { params }) {
   try {

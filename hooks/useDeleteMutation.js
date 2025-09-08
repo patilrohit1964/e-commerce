@@ -1,6 +1,6 @@
-import { showToast } from "@/lib/toast";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { showToast } from "../lib/toast";
 
 export const useDeleteMutation = (queryKey, deleteEndPoint) => {
   const queryClient = useQueryClient();

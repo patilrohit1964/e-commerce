@@ -1,10 +1,10 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { showToast } from '@/lib/toast'
 import axios from 'axios'
 import { Plus } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
+import { showToast } from '../../../lib/toast'
+import { Button } from '../../ui/button'
 
 const UploadMedia = ({ isMultiple, queryClient }) => {
     const handleOnQueueEnd = async (result) => {

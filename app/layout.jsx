@@ -1,17 +1,9 @@
-import { Geist, Geist_Mono, Assistant } from "next/font/google";
+// import GlobalProvider from "@/components/application/GlobalProvider";
+// import { Toaster } from "@/components/ui/sonner";
+import { Assistant } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import GlobalProvider from "@/components/application/GlobalProvider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import GlobalProvider from "../components/application/GlobalProvider";
+import { Toaster } from "../components/ui/sonner";
 
 const assistantFont = Assistant({
   weight: ['400', '500', '600', '700', '800'],

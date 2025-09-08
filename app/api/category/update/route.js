@@ -1,8 +1,8 @@
-import connectDb from "@/lib/dbConnect";
-import { responce } from "@/lib/helper";
-import { isAuthenticated } from "@/lib/isAuth";
-import { zSchmea } from "@/lib/zodSchema";
-import CategoryModel from "@/model/category.model";
+import connectDb from "../../../../lib/dbConnect";
+import { responce } from "../../../../lib/helper";
+import { isAuthenticated } from "../../../../lib/isAuth";
+import { zSchmea } from "../../../../lib/zodSchema";
+import CategoryModel from "../../../../model/category.model";
 export async function PUT(req) {
   try {
     const auth = await isAuthenticated("admin");

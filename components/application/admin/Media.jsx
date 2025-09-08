@@ -1,17 +1,17 @@
-import { Button } from "@/components/ui/button"
-import { Checkbox } from '@/components/ui/checkbox'
+import { Copy, EllipsisVertical, EyeIcon, PencilIcon, Trash2 } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from "../../../components/ui/button"
+import { showToast } from '../../../lib/toast'
+import { ADMIN_MEDIA_EDIT } from '../../../routes/adminPaneRoute'
+import { Checkbox } from '../../ui/checkbox'
 import {
     Dialog,
     DialogContent,
     DialogTitle,
     DialogTrigger
-} from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { showToast } from '@/lib/toast'
-import { ADMIN_MEDIA_EDIT } from '@/routes/adminPaneRoute'
-import { Copy, EllipsisVertical, EyeIcon, PencilIcon, Trash2 } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+} from "../../ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../ui/dropdown-menu'
 
 const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedia }) => {
     const handleCheck = (e) => {

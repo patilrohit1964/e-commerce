@@ -1,8 +1,8 @@
 'use client'
 
-import BreadCrumb from '@/components/application/admin/BreadCrumb'
-import ButtonLoading from '@/components/application/ButtonLoading'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import BreadCrumb from '../../../../../../../components/application/admin/BreadCrumb'
+import ButtonLoading from '../../../../../../../components/application/ButtonLoading'
+import { Card, CardContent, CardHeader } from '../../../../../../../components/ui/card'
 import {
     Form,
     FormControl,
@@ -10,12 +10,12 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useFetch } from '@/hooks/useFetch'
-import { showToast } from '@/lib/toast'
-import { zSchmea } from '@/lib/zodSchema'
-import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD } from '@/routes/adminPaneRoute'
+} from '../../../../../../../components/ui/form'
+import { Input } from '../../../../../../../components/ui/input'
+import { useFetch } from '../../../../../../../hooks/useFetch'
+import { showToast } from '../../../../../../../lib/toast'
+import { zSchmea } from '../../../../../../../lib/zodSchema'
+import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD } from '../../../../../../../routes/adminPaneRoute'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useEffect, useState } from 'react'

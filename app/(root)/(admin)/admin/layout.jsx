@@ -1,7 +1,7 @@
-import AppSidebar from '@/components/application/admin/AppSidebar'
-import ThemeProvider from '@/components/application/admin/ThemeProvider'
-import Topbar from '@/components/application/admin/Topbar'
-import { SidebarProvider } from '@/components/ui/sidebar'
+import AppSidebar from '../../../../components/application/admin/AppSidebar'
+import ThemeProvider from '../../../../components/application/admin/ThemeProvider'
+import Topbar from '../../../../components/application/admin/Topbar'
+import { SidebarProvider } from '../../../../components/ui/sidebar'
 
 const layout = ({ children }) => {
     return (

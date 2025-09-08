@@ -1,7 +1,7 @@
-import connectDb from "@/lib/dbConnect";
-import { catchError, responce } from "@/lib/helper";
-import { isAuthenticated } from "@/lib/isAuth";
-import CategoryModel from "@/model/category.model";
+import connectDb from "../../../../lib/dbConnect";
+import { catchError, responce } from "../../../../lib/helper";
+import { isAuthenticated } from "../../../../lib/isAuth";
+import CategoryModel from "../../../../model/category.model";
 
 export const PUT = async (request) => {
   try {

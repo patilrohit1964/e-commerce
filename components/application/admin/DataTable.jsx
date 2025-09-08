@@ -1,5 +1,3 @@
-import { useDeleteMutation } from '@/hooks/useDeleteMutation'
-import { showToast } from '@/lib/toast'
 import { Delete, DeleteForever, Download, Recycling, RestoreFromTrash } from '@mui/icons-material'
 import { IconButton, Tooltip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
@@ -8,6 +6,8 @@ import { download, generateCsv, mkConfig } from 'export-to-csv'
 import { MaterialReactTable, MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable } from 'material-react-table'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useDeleteMutation } from '../../../hooks/useDeleteMutation'
+import { showToast } from '../../../lib/toast'
 import ButtonLoading from '../ButtonLoading'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
