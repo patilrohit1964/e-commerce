@@ -14,6 +14,8 @@ import { zSchmea } from '../../../../../../lib/zodSchema'
 import { ADMIN_DASHBOARD, ADMIN_PRODUCT_SHOW } from '../../../../../../routes/adminPaneRoute'
 import { useFetch } from '../../../../../../hooks/useFetch'
 import Select from '../../../../../../components/application/Select'
+import Editor from '../../../../../../components/application/admin/Editor'
+import MediaModal from '../../../../../../components/application/admin/MediaModal'
 
 const breadCrumbData = [
     {
@@ -33,7 +35,9 @@ const AddProduct = () => {
     const [loading, setLoading] = useState(false)
     const [categoryOption, setCategoryOption] = useState([])
     const { data: getCategory } = useFetch('/api/category?deleteType=SD&&size=10000')
-
+    // media modal states
+    const [open, setOpen] = useState(false)
+    const [selectedMedia, setSelectedMedia] = useState([false])
     useEffect(() => {
         if (getCategory && getCategory?.success) {
             const data = getCategory?.data
@@ -65,6 +69,10 @@ const AddProduct = () => {
         }
     })
 
+    const editor = (e, editor) => {
+        const data = editor?.getData()
+        form.setValue('discription', data)
+    };
 
     const handleProductAdd = async (values) => {
         alert('j')
@@ -102,85 +110,98 @@ const AddProduct = () => {
                 <CardContent className={'pb-5'}>
                     <div>
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(handleProductAdd)} className='grid md:grid-cols-2 gap-5'>
-                                <div>
-                                    <FormField control={form.control} name='name' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'name-1'}>Name <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} id={'name-1'} placeholder="enter your category name" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
+                            <form onSubmit={form.handleSubmit(handleProductAdd)}>
+                                <div className='grid md:grid-cols-2 gap-5'>
+                                    <div>
+                                        <FormField control={form.control} name='name' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'name-1'}>Name <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input type={'text'} id={'name-1'} placeholder="enter your category name" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div >
+                                        <FormField control={form.control} name='slug' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'slug-1'}>Slug <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input type={'text'} id={'slug-1'} placeholder="enter your category slug" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div >
+                                        <FormField control={form.control} name='category' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'category-1'}>Category <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Select
+                                                        options={categoryOption}
+                                                        selected={field?.value}
+                                                        setSelected={field?.onChange}
+                                                        isMulti={false} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div>
+                                        <FormField control={form.control} name='mrp' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'mrp-1'}>Mrp <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input type={'text'} id={'mrp-1'} placeholder="enter your category mrp" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div>
+                                        <FormField control={form.control} name='selling-price' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'selling-price-1'}>Selling Price <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input type={'text'} id={'selling-price-1'} placeholder="enter your selling price" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div>
+                                        <FormField control={form.control} name='discount' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'discount-1'}>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input type={'text'} id={'discount-1'} placeholder="enter your discount percentage" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div className='md:col-span-2'>
+                                        <Editor onChange={editor} />
+                                        <FormMessage />
+                                    </div>
                                 </div>
-                                <div >
-                                    <FormField control={form.control} name='slug' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'slug-1'}>Slug <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} id={'slug-1'} placeholder="enter your category slug" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
+                                <div className='md:col-span-2 border border-dashed rounded p-5 text-center'>
+                                    <MediaModal open={open} setOpen={setOpen} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} isMulitple={true} />
+                                    <div onClick={() => setOpen(true)} className='bg-gray-50 dark:bg-card border w-[200px] mx-auto p-5 cursor-pointer'>
+                                        <span className='font-semibold'>Select Media</span>
+
+                                    </div>
                                 </div>
-                                <div >
-                                    <FormField control={form.control} name='category' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'Category-1'}>Category <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Select
-                                                    options={categoryOption}
-                                                    selected={field?.value}
-                                                    setSelected={field?.onChange}
-                                                    isMulti={false} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div>
-                                    <FormField control={form.control} name='mrp' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'mrp-1'}>Mrp <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} id={'mrp-1'} placeholder="enter your category mrp" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div>
-                                    <FormField control={form.control} name='selling-price' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'selling-price-1'}>Selling Price <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} id={'selling-price-1'} placeholder="enter your selling price" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div>
-                                    <FormField control={form.control} name='discount' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'discount-1'}>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} id={'discount-1'} placeholder="enter your discount percentage" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div>
-                                    <ButtonLoading type={'submit'} text={'Add Product'} loading={loading} className={'cursor-pointer'} />
+                                <div className='mt-3'>
+                                    <ButtonLoading type={'submit'} text={'Add Product'} loading={loading} className={'cursor-pointer w-full'} />
                                 </div>
                             </form>
                         </Form>

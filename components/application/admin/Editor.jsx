@@ -78,7 +78,7 @@ import {
     Underline,
     WordCount
 } from 'ckeditor5';
-import '@/app/ckeditor5.css';
+import '../../../app/ckeditor5.css';
  
 import { decode } from 'entities';
 
