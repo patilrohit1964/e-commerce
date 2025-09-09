@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^11.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@hookform/resolvers": "^5.1.1",
@@ -30,6 +31,7 @@
     "@tanstack/react-query-devtools": "^5.84.1",
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
+    "ckeditor5": "^46.0.3",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
