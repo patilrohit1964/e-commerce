@@ -1,13 +1,16 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Image from 'next/image';
 import React from 'react';
 import { Button } from '../../ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../ui/dialog';
+import ModalMediaBlock from './ModalMediaBlock';
 
 const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple }) => {
 
     const fetchMedia = async (page) => {
-        const { data: responce } = await axios.get(`/api/media?page=${page}&&limit=1&&deleteType=SD`)
+        const { data: responce } = await axios.get(`/api/media?page=${page}&&limit=10&&deleteType=SD`)
+        return responce
     }
     const { isPending, isError, error, data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
         queryKey: ["MediaModal"],
@@ -19,15 +22,14 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple
             return lastPage?.hasMore ? nextPage : undefined
         }
     })
-    console.log('data', data);
     const handleClick = () => {
-
+        selectedMedia([])
     };
     const handleSelect = () => {
-
+        setOpen(false)
     };
     const handleClose = () => {
-
+        setOpen(false)
     };
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -46,7 +48,13 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple
                                     {data?.pages?.map((page, idx) => (
                                         <React.Fragment key={idx}>
                                             {page?.mediaData?.map((media) => (
-                                                <span>jjj</span>
+                                                <ModalMediaBlock
+                                                    key={media?._id}
+                                                    selectedMedia={selectedMedia}
+                                                    setSelectedMedia={setSelectedMedia}
+                                                    isMulitple={isMulitple}
+                                                    media={media}
+                                                />
                                             ))}
                                         </React.Fragment>
                                     ))}
@@ -60,7 +68,7 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple
                         </div>
                         <div className='flex gap-5'>
                             <Button type='button' variant={'secondary'} onClick={handleClose}>Close</Button>
-                            <Button type='button' variant={'default'} onClick={handleSelect}>Select</Button>
+                            <Button type='button' variant={'default'} disabled={selectedMedia?.length === 0} onClick={handleSelect}>Select</Button>
                         </div>
                     </div>
                 </div>

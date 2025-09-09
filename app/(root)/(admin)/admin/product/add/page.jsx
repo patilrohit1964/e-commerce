@@ -16,6 +16,7 @@ import { useFetch } from '../../../../../../hooks/useFetch'
 import Select from '../../../../../../components/application/Select'
 import Editor from '../../../../../../components/application/admin/Editor'
 import MediaModal from '../../../../../../components/application/admin/MediaModal'
+import Image from 'next/image'
 
 const breadCrumbData = [
     {
@@ -37,7 +38,7 @@ const AddProduct = () => {
     const { data: getCategory } = useFetch('/api/category?deleteType=SD&&size=10000')
     // media modal states
     const [open, setOpen] = useState(false)
-    const [selectedMedia, setSelectedMedia] = useState([false])
+    const [selectedMedia, setSelectedMedia] = useState([])
     useEffect(() => {
         if (getCategory && getCategory?.success) {
             const data = getCategory?.data
@@ -195,9 +196,17 @@ const AddProduct = () => {
                                 </div>
                                 <div className='md:col-span-2 border border-dashed rounded p-5 text-center'>
                                     <MediaModal open={open} setOpen={setOpen} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} isMulitple={true} />
+                                    {selectedMedia?.length > 0 &&
+                                        <div className='grid lg:grid-cols-10 grid-cols-4 gap-3 mb-3 flex-wrap'>
+                                            {selectedMedia?.map(m => (
+                                                <div key={m?._id} className='h-24 w-24 border'>
+                                                    <Image src={m?.url} height={100} width={100} alt='' className='size-full object-cover' />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    }
                                     <div onClick={() => setOpen(true)} className='bg-gray-50 dark:bg-card border w-[200px] mx-auto p-5 cursor-pointer'>
                                         <span className='font-semibold'>Select Media</span>
-
                                     </div>
                                 </div>
                                 <div className='mt-3'>
