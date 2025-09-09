@@ -15,8 +15,8 @@ export async function GET(req) {
     // extract query parameters
     const start = parseInt(searchParams.get("start") || 0, 10);
     const size = parseInt(searchParams.get("size") || 10, 10);
-    const filters = JSON.parse(searchParams.get("filters") || []);
-    const sorting = JSON.parse(searchParams.get("sorting") || []);
+    const filters = JSON.parse(searchParams.get("filters") || "[]");
+    const sorting = JSON.parse(searchParams.get("sorting") || "[]");
     const globalFilter = searchParams.get("globalFilter") || "";
     const deleteType = searchParams.get("deleteType");
     // build match query
@@ -66,6 +66,7 @@ export async function GET(req) {
     // get total row count
     const totalRowCount = await CategoryModel.countDocuments(matchQuries);
     return NextResponse.json({
+      success: true,
       data: getCategories,
       meta: { totalRowCount },
     });
