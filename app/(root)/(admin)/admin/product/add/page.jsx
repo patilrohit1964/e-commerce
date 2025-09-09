@@ -13,6 +13,7 @@ import { showToast } from '../../../../../../lib/toast'
 import { zSchmea } from '../../../../../../lib/zodSchema'
 import { ADMIN_DASHBOARD, ADMIN_PRODUCT_SHOW } from '../../../../../../routes/adminPaneRoute'
 import { useFetch } from '../../../../../../hooks/useFetch'
+import Select from '../../../../../../components/application/Select'
 
 const breadCrumbData = [
     {
@@ -30,7 +31,17 @@ const breadCrumbData = [
 ]
 const AddProduct = () => {
     const [loading, setLoading] = useState(false)
+    const [categoryOption, setCategoryOption] = useState([])
     const { data: getCategory } = useFetch('/api/category?deleteType=SD&&size=10000')
+
+    useEffect(() => {
+        if (getCategory && getCategory?.success) {
+            const data = getCategory?.data
+            const options = data?.map(cat => ({ label: cat?.name, value: cat?._id }))
+            setCategoryOption(options);
+        }
+    }, [getCategory]);
+
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
         name: true,
         slug: true,
@@ -40,7 +51,6 @@ const AddProduct = () => {
         discription: true,
         discountPercentage: true
     })
-
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -111,6 +121,22 @@ const AddProduct = () => {
                                             <FormLabel htmlFor={'slug-1'}>Slug <span className='text-red-500'>*</span></FormLabel>
                                             <FormControl>
                                                 <Input type={'text'} id={'slug-1'} placeholder="enter your category slug" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}>
+                                    </FormField>
+                                </div>
+                                <div >
+                                    <FormField control={form.control} name='category' render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel htmlFor={'Category-1'}>Category <span className='text-red-500'>*</span></FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    options={categoryOption}
+                                                    selected={field?.value}
+                                                    setSelected={field?.onChange}
+                                                    isMulti={false} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
