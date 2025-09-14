@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    media: [
+    medias: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Media",
@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema(
       },
     ],
     discription: {
-      type: string,
+      type: String,
       required:true
     },
     deletedAt: {

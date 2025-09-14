@@ -23,6 +23,7 @@ export async function POST(req) {
       medias: true,
     });
     const validate = formSchema.safeParse(payload);
+    console.log('validate',payload);
     if (!validate.success) {
       return responce(false, 400, "invalid or missing fields", validate.error);
     }
@@ -37,7 +38,7 @@ export async function POST(req) {
       medias: validate.data.medias,
     });
     await newProduct.save();
-    return responce(true, 200, "category added successfully");
+    return responce(true, 200, "product added successfully");
   } catch (error) {
     console.log(error);
   }
