@@ -76,24 +76,22 @@ const AddProduct = () => {
     };
 
     const handleProductAdd = async (values) => {
-        alert('j')
-        console.log('values', values);
-        // try {
-        //     setLoading(true)
-        //     const { data: productRes } = await axios.post('/api/product/create', values);
-        //     if (!productRes.success) {
-        //         throw new Error(productRes.message)
-        //     }
-        //     setLoading(false)
-        //     form.reset()
-        //     showToast("success", productRes.message || "category added Successfull")
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     showToast('error', error?.message)
-        // } finally {
-        //     setLoading(false)
-        // }
+        try {
+            setLoading(true)
+            const { data: productRes } = await axios.post('/api/product/create', values);
+            if (!productRes.success) {
+                throw new Error(productRes.message)
+            }
+            setLoading(false)
+            form.reset()
+            showToast("success", productRes.message || "category added Successfull")
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', error?.message)
+        } finally {
+            setLoading(false)
+        }
     }
     useEffect(() => {
         const name = form.getValues('name')
