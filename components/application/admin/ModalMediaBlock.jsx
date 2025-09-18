@@ -17,7 +17,6 @@ const ModalMediaBlock = ({ media, selectedMedia, setSelectedMedia, isMulitple })
         } else {
             setSelectedMedia([{ _id: media?._id, url: media?.secure_url }])
         }
-        console.log('newSelectedMedia',newSelectedMedia);
     };
     return (
         <label htmlFor={media?._id} className='border border-gray-200 dark:border-gray-800 relative group rounded overflow-hidden'>

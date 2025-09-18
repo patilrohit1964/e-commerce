@@ -76,23 +76,27 @@ const AddProduct = () => {
     };
 
     const handleProductAdd = async (values) => {
-        console.log('values',values);
-        // try {
-        //     setLoading(true)
-        //     const { data: productRes } = await axios.post('/api/product/create', { ...values, medias: selectedMedia });
-        //     if (!productRes.success) {
-        //         throw new Error(productRes.message)
-        //     }
-        //     setLoading(false)
-        //     form.reset()
-        //     showToast("success", productRes.message || "category added Successfull")
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     showToast('error', error?.message)
-        // } finally {
-        //     setLoading(false)
-        // }
+        setLoading(true)
+        try {
+            if (selectedMedia?.length <= 0) {
+                return showToast("error", 'please select media')
+            }
+            const mediasIds = selectedMedia?.map(media => media?._id);
+            values.medias = mediasIds
+            const { data: productRes } = await axios.post('/api/product/create', values);
+            if (!productRes.success) {
+                throw new Error(productRes.message)
+            }
+            setLoading(false)
+            form.reset()
+            showToast("success", productRes.message || "category added Successfull")
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', error?.message)
+        } finally {
+            setLoading(false)
+        }
     }
     useEffect(() => {
         const name = form.getValues('name')

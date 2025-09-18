@@ -23,7 +23,7 @@ export async function POST(req) {
       medias: true,
     });
     const validate = formSchema.safeParse(payload);
-    console.log('validate',payload);
+    console.log('payload',validate);
     if (!validate.success) {
       return responce(false, 400, "invalid or missing fields", validate.error);
     }
