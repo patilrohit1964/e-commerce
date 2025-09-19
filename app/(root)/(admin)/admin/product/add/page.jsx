@@ -62,11 +62,11 @@ const AddProduct = () => {
         defaultValues: {
             name: '',
             slug: '',
-            mrp: '',
+            mrp: 0,
             category: '',
-            sellingPrice: '',
+            sellingPrice: 0,
             discription: '',
-            discountPercentage: ''
+            discountPercentage: 0
         }
     })
 
@@ -77,6 +77,7 @@ const AddProduct = () => {
 
     const handleProductAdd = async (values) => {
         setLoading(true)
+
         try {
             if (selectedMedia?.length <= 0) {
                 return showToast("error", 'please select media')
@@ -89,6 +90,7 @@ const AddProduct = () => {
             }
             setLoading(false)
             form.reset()
+            selectedMedia([])
             showToast("success", productRes.message || "category added Successfull")
         }
         catch (error) {
@@ -104,6 +106,16 @@ const AddProduct = () => {
             form.setValue('slug', slugify(name).toLowerCase())
         }
     }, [form.watch('name')]); //using this watch method we can do anything when input change,slug is very imp when we develop e-comm or other big project
+
+    // calculate discount percentage
+    useEffect(() => {
+        const mrp = form.getValues('mrp') || 0
+        const sellingPrice = form.getValues('sellingPrice') || 0
+        if (mrp > 0 && sellingPrice > 0) {
+            const discountPrice = ((mrp - sellingPrice) / mrp) * 100
+            form.setValue('discountPercentage', Math.round(discountPrice))
+        }
+    }, [form.watch('mrp'), form.watch('sellingPrice')]);
     return (
         <div>
             <BreadCrumb breadcrumbData={breadCrumbData} />
@@ -113,6 +125,7 @@ const AddProduct = () => {
                 </CardHeader>
                 <CardContent className={'pb-5'}>
                     <div>
+                        {/* in react */}
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(handleProductAdd)}>
                                 <div className='grid md:grid-cols-2 gap-5'>
@@ -161,7 +174,7 @@ const AddProduct = () => {
                                             <FormItem>
                                                 <FormLabel htmlFor={'mrp-1'}>Mrp <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'text'} id={'mrp-1'} placeholder="enter your category mrp" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input min={1} type={'number'} id={'mrp-1'} placeholder="enter your category mrp" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -169,11 +182,11 @@ const AddProduct = () => {
                                         </FormField>
                                     </div>
                                     <div>
-                                        <FormField control={form.control} name='selling-price' render={({ field }) => (
+                                        <FormField control={form.control} name='sellingPrice' render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel htmlFor={'selling-price-1'}>Selling Price <span className='text-red-500'>*</span></FormLabel>
+                                                <FormLabel htmlFor={'selling-1'}>Selling Price <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'text'} id={'selling-price-1'} placeholder="enter your selling price" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input type={'number'} min={1} id={'selling-1'} placeholder="enter your selling price" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -181,11 +194,11 @@ const AddProduct = () => {
                                         </FormField>
                                     </div>
                                     <div>
-                                        <FormField control={form.control} name='discount' render={({ field }) => (
+                                        <FormField control={form.control} name='discountPercentage' render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel htmlFor={'discount-1'}>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'text'} id={'discount-1'} placeholder="enter your discount percentage" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input type={'number'} readOnly id={'discount-1'} placeholder="discount percentage" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
