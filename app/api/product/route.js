@@ -64,7 +64,15 @@ export async function GET(req) {
 
     // column filter
     filters?.forEach((fil) => {
-      matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
+      if (
+        fil?.id === "mrp" ||
+        fil?.id === "sellingPrice" ||
+        fil?.id === "discountPercentage"
+      ) {
+        matchQuries[fil?.id] = Number(fil?.value);
+      } else {
+        matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
+      }
     });
     // sorting
     let sortQuery = {};

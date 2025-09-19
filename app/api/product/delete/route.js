@@ -1,7 +1,7 @@
 import connectDb from "../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../lib/helper";
 import { isAuthenticated } from "../../../../lib/isAuth";
-import CategoryModel from "../../../../model/category.model";
+import ProductModel from "../../../../model/product.model";
 
 export const PUT = async (request) => {
   try {
@@ -16,20 +16,22 @@ export const PUT = async (request) => {
     if (!Array.isArray(ids) || ids?.length === 0) {
       return responce(false, 400, "invalid or empty id list");
     }
-    const category = await CategoryModel.find({ _id: { $in: ids } }).lean();
-    if (!category?.length) {
+    const product = await ProductModel.find({ _id: { $in: ids } })
+      .select("-medias,-description")
+      .lean();
+    if (!product?.length) {
       return responce(false, 404, "data not found");
     }
     if (!["SD", "RSD"].includes(deleteType)) {
       return responce(false, 400, "invalid delete operation ");
     }
     if (deleteType === "SD") {
-      await CategoryModel.updateMany(
+      await ProductModel.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: new Date().toISOString() } }
       );
     } else {
-      await CategoryModel.updateMany(
+      await ProductModel.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: null } }
       );
@@ -57,14 +59,14 @@ export const DELETE = async (request) => {
     if (!Array.isArray(ids) || ids?.length === 0) {
       return responce(false, 400, "invalid or empty id list");
     }
-    const category = await CategoryModel.find({ _id: { $in: ids } }).lean();
-    if (!category?.length) {
+    const product = await ProductModel.find({ _id: { $in: ids } }).lean();
+    if (!product?.length) {
       return responce(false, 404, "data not found");
     }
     if (deleteType !== "PD") {
       return responce(false, 400, "invalid delete operation ");
     }
-    await CategoryModel.deleteMany({ _id: { $in: ids } });
+    await ProductModel.deleteMany({ _id: { $in: ids } });
     return responce(true, 200, "data deleted permanently ");
   } catch (error) {
     console.log(error);

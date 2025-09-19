@@ -2,7 +2,7 @@ import { isValidObjectId } from "mongoose";
 import connectDb from "../../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../../lib/helper";
 import { isAuthenticated } from "../../../../../lib/isAuth";
-import CategoryModel from "../../../../../model/category.model";
+import ProductModel from "../../../../../model/product.model";
 
 export async function GET(request, { params }) {
   try {
@@ -20,11 +20,11 @@ export async function GET(request, { params }) {
       return responce(false, 400, "invalid object id");
     }
     filter._id = id;
-    const getCategory = await CategoryModel.findOne(filter).lean();
-    if (!getCategory) {
-      return responce(false, 404, "media not found");
+    const getProduct = await ProductModel.findOne(filter).populate('medias',"secure_url").lean();
+    if (!getProduct) {
+      return responce(false, 404, "Product not found");
     }
-    return responce(true, 200, "media found.", getCategory);
+    return responce(true, 200, "Product found.", getProduct);
   } catch (error) {
     console.log(error);
     return catchError(error);

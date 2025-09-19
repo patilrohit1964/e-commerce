@@ -1,11 +1,12 @@
 'use client'
+import { columnConfig } from "../../../../../lib/helper"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import BreadCrumb from "../../../../../components/application/admin/BreadCrumb"
 import DataTableWrapper from "../../../../../components/application/admin/DataTableWrapper"
 import DeleteAction from "../../../../../components/application/admin/DeleteAction"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
-import { columnConfig, DT_CATEGORY_COLUMN } from "../../../../../lib/column"
+import { DT_CATEGORY_COLUMN, DT_PRODUCT_COLUMN } from "../../../../../lib/column"
 import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
 const breadCrumbData = [
@@ -29,6 +30,13 @@ const TRASH_CONFIG = {
         fetchUrl: "/api/category",
         exportUrl: '/api/category/export',
         deleteUrl: '/api/category/delete'
+    },
+    product: {
+        title: 'Product Trash',
+        columns: DT_PRODUCT_COLUMN,
+        fetchUrl: "/api/product",
+        exportUrl: '/api/product/export',
+        deleteUrl: '/api/product/delete'
     }
 }
 const Trash = () => {
