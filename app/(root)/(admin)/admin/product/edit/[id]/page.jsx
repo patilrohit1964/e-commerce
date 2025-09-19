@@ -250,7 +250,7 @@ const EditProduct = ({ params }) => {
                   </div>
                 </div>
                 <div className='mt-3'>
-                  <ButtonLoading type={'submit'} text={'Add Product'} loading={loading} className={'cursor-pointer w-full'} />
+                  <ButtonLoading type={'submit'} text={'Save Changes'} loading={loading} className={'cursor-pointer w-full'} />
                 </div>
               </form>
             </Form>
