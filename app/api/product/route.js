@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connectDb from "../../../lib/dbConnect";
 import { responce } from "../../../lib/helper";
 import { isAuthenticated } from "../../../lib/isAuth";
-import CategoryModel from "../../../model/category.model";
+import ProductModel from "../../../model/product.model";
 
 export async function GET(req) {
   try {
@@ -31,6 +31,34 @@ export async function GET(req) {
       matchQuries["$or"] = [
         { name: { $regex: globalFilter, $options: "i" } },
         { slug: { $regex: globalFilter, $options: "i" } },
+        { "categoryData.name": { $regex: globalFilter, $options: "i" } },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: "$mrp" },
+              regex: globalFilter,
+              options: "i",
+            },
+          },
+        },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: "$sellingPrice" },
+              regex: globalFilter,
+              options: "i",
+            },
+          },
+        },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: "$discountPercentage" },
+              regex: globalFilter,
+              options: "i",
+            },
+          },
+        },
       ];
     }
 
@@ -46,6 +74,20 @@ export async function GET(req) {
 
     // aggregate pipeline
     const aggregatePipeline = [
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "categoryData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$categoryData",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       { $match: matchQuries },
       { $sort: Object.keys(sortQuery)?.length ? sortQuery : { createdAt: -1 } },
       { $skip: start },
@@ -55,6 +97,10 @@ export async function GET(req) {
           _id: 1,
           name: 1,
           slug: 1,
+          mrp: 1,
+          sellingPrice: 1,
+          discountPercentage: 1,
+          category: "$categoryData.name",
           createdAt: 1,
           updatedAt: 1,
           deletedAt: 1,
@@ -62,9 +108,9 @@ export async function GET(req) {
       },
     ];
     // execute query
-    const getCategories = await CategoryModel.aggregate(aggregatePipeline);
+    const getCategories = await ProductModel.aggregate(aggregatePipeline);
     // get total row count
-    const totalRowCount = await CategoryModel.countDocuments(matchQuries);
+    const totalRowCount = await ProductModel.countDocuments(matchQuries);
     return NextResponse.json({
       success: true,
       data: getCategories,
