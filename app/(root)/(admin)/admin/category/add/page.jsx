@@ -23,7 +23,7 @@ const breadCrumbData = [
         href: ADMIN_CATEGORY_SHOW,
     },
     {
-        label: "Edit Category",
+        label: "Add Category",
         href: "",
     },
 ]

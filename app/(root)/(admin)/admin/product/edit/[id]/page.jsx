@@ -59,6 +59,7 @@ const EditProduct = ({ params }) => {
         mrp: data?.mrp,
         discription: data?.discription,
         category: data?.category,
+        _id: id
       })
       if (data?.medias) {
         const media = data?.medias?.map(md => ({ _id: md?._id, url: md?.secure_url }))
@@ -74,7 +75,8 @@ const EditProduct = ({ params }) => {
     category: true,
     sellingPrice: true,
     discription: true,
-    discountPercentage: true
+    discountPercentage: true,
+    _id: true
   })
 
   const form = useForm({
@@ -86,7 +88,8 @@ const EditProduct = ({ params }) => {
       category: '',
       sellingPrice: 0,
       discription: '',
-      discountPercentage: 0
+      discountPercentage: 0,
+      _id: id
     }
   })
 
@@ -104,13 +107,13 @@ const EditProduct = ({ params }) => {
       }
       const mediasIds = selectedMedia?.map(media => media?._id);
       values.medias = mediasIds
-      const { data: productRes } = await axios.post('/api/product/update', values);
+      const { data: productRes } = await axios.put('/api/product/update', values);
       if (!productRes.success) {
         throw new Error(productRes.message)
       }
       setLoading(false)
       form.reset()
-      selectedMedia([])
+      setSelectedMedia([])
       showToast("success", productRes.message || "category added Successfull")
     }
     catch (error) {
@@ -237,7 +240,7 @@ const EditProduct = ({ params }) => {
                 <div className='md:col-span-2 border border-dashed rounded p-5 text-center'>
                   <MediaModal open={open} setOpen={setOpen} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} isMulitple={true} />
                   {selectedMedia?.length > 0 &&
-                    <div className='grid lg:grid-cols-10 grid-cols-4 gap-3 mb-3 flex-wrap'>
+                    <div className='grid lg:grid-cols-10 grid-cols-4 gap-3 mb-3'>
                       {selectedMedia?.map(m => (
                         <div key={m?._id} className='h-24 w-24 border'>
                           <Image src={m?.url} height={100} width={100} alt='' className='size-full object-cover' />

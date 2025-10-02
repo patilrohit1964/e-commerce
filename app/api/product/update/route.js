@@ -30,6 +30,10 @@ export async function PUT(req) {
       deletedAt: null,
       _id: validate?.data?._id,
     });
+    
+    if (!updatedProduct) {
+      return responce(false, 400, "product not found", updatedProduct);
+    }
     updatedProduct.name = validate?.data?.name;
     updatedProduct.slug = validate?.data?.slug;
     updatedProduct.category = validate?.data?.category;
@@ -37,9 +41,8 @@ export async function PUT(req) {
     updatedProduct.mrp = validate?.data?.mrp;
     updatedProduct.sellingPrice = validate?.data?.sellingPrice;
     await updatedProduct.save();
-    return responce(true, 200, "category update successfully");
+    return responce(true, 200, "product update successfully");
   } catch (error) {
     console.log(error);
   }
 }
-// addes some comment for git check

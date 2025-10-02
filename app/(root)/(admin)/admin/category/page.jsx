@@ -20,11 +20,7 @@ const breadCrumbData = [
   {
     label: "Category",
     href: ADMIN_CATEGORY_SHOW,
-  },
-  {
-    label: "Edit Category",
-    href: "",
-  },
+  }
 ]
 const ShowCategory = () => {
   const columns = useMemo(() => {

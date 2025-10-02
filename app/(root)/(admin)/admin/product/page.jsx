@@ -18,13 +18,9 @@ const breadCrumbData = [
     href: ADMIN_DASHBOARD,
   },
   {
-    label: "Category",
+    label: "Product",
     href: ADMIN_CATEGORY_SHOW,
-  },
-  {
-    label: "Edit Category",
-    href: "",
-  },
+  }
 ]
 const ShowProduct = () => {
   const columns = useMemo(() => {
