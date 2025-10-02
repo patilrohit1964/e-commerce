@@ -9,8 +9,10 @@ import { useState } from 'react'
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation'
 import { showToast } from '../../../lib/toast'
 import ButtonLoading from '../ButtonLoading'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, exportEndPoint, deleteEndPoint, deleteType, trashView, createAction }) => {
+    const path = usePathname().split("/")?.[2]
     const [columnFilters, setColumnFilters] = useState([])
     const [globalFilter, setGlobalFilter] = useState('')
     const [sorting, setSorting] = useState([])
@@ -44,7 +46,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
                 fieldSeparator: ',',
                 decimalSeparator: '.',
                 useKeysAsHeaders: true,
-                filename: 'csv-data'
+                filename: `csv-data-${path}`
             }) //download data in csv
             let csv
             if (Object.keys(rowSelection)?.length > 0) {
@@ -178,7 +180,7 @@ const DataTable = ({ queryKey, fetchUrl, columnsConfig, initialPageSize = 10, ex
         renderTopToolbarCustomActions: ({ table }) =>
         (
             <Tooltip>
-                <ButtonLoading type={'button'} loading={exportLoading} text={<><Download /> Export</>} onClick={() => handleExport(table?.getSelectedRowModel().rows)} />
+                <ButtonLoading type={'button'} loading={exportLoading} disabled={table?.getSelectedRowModel().rows.length < 1} text={<><Download /> Export</>} onClick={() => handleExport(table?.getSelectedRowModel().rows)} className={'cursor-pointer'} />
             </Tooltip>
         )
     })

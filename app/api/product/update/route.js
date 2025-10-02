@@ -30,7 +30,7 @@ export async function PUT(req) {
       deletedAt: null,
       _id: validate?.data?._id,
     });
-    
+
     if (!updatedProduct) {
       return responce(false, 400, "product not found", updatedProduct);
     }
@@ -40,6 +40,8 @@ export async function PUT(req) {
     updatedProduct.discountPercentage = validate?.data?.discountPercentage;
     updatedProduct.mrp = validate?.data?.mrp;
     updatedProduct.sellingPrice = validate?.data?.sellingPrice;
+    updatedProduct.discription = validate?.data?.discription;
+    updatedProduct.medias = validate?.data?.medias;
     await updatedProduct.save();
     return responce(true, 200, "product update successfully");
   } catch (error) {

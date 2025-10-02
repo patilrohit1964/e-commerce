@@ -17,7 +17,7 @@ import { useFetch } from '../../../../../../../hooks/useFetch'
 import { showToast } from '../../../../../../../lib/toast'
 import { zSchmea } from '../../../../../../../lib/zodSchema'
 import { ADMIN_DASHBOARD, ADMIN_PRODUCT_SHOW } from '../../../../../../../routes/adminPaneRoute'
-
+import { useRouter } from 'next/navigation'
 const breadCrumbData = [
   {
     label: "Home",
@@ -34,6 +34,7 @@ const breadCrumbData = [
 ]
 const EditProduct = ({ params }) => {
   const { id } = use(params)
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [categoryOption, setCategoryOption] = useState([])
   const { data: getProduct, loading: getProductLoading } = useFetch(`/api/product/get/${id}`)
@@ -114,7 +115,8 @@ const EditProduct = ({ params }) => {
       setLoading(false)
       form.reset()
       setSelectedMedia([])
-      showToast("success", productRes.message || "category added Successfull")
+      router.push(ADMIN_PRODUCT_SHOW)
+      showToast("success", productRes.message || "product added Successfull")
     }
     catch (error) {
       console.log(error)

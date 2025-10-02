@@ -16,6 +16,7 @@ export async function GET(request, { params }) {
     };
 
     const getProduct = await ProductModel.find(filter)
+      .seelct("-medias -description -_id")
       .sort({ createdAt: -1 })
       .lean();
     if (!getProduct) {
