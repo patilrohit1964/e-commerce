@@ -1,6 +1,5 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -12,7 +11,6 @@ import { Card, CardContent, CardHeader } from '../../../../../../components/ui/c
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../../../../components/ui/form'
 import { Input } from '../../../../../../components/ui/input'
 import { useFetch } from '../../../../../../hooks/useFetch'
-import { showToast } from '../../../../../../lib/toast'
 import { sizes } from '../../../../../../lib/utils'
 import { zSchmea } from '../../../../../../lib/zodSchema'
 import { ADMIN_DASHBOARD, ADMIN_PRODUCT_VARIANT__SHOW } from '../../../../../../routes/adminPaneRoute'
@@ -51,49 +49,49 @@ const AddProductVariant = () => {
         sku: true,
         size: true,
         color: true,
-        mrp: true,
-        sellingPrice: true,
-        discountPercentage: true
+        stock: true,
+        discountPercentage: true,
+        originalPrice: true,
     })
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: '',
-            slug: '',
-            mrp: 0,
-            category: '',
-            sellingPrice: 0,
-            discription: '',
+            product: '',
+            sku: '',
+            color: '',
+            stock: 0,
+            originalPrice: 0,
             discountPercentage: 0
         }
     })
 
 
-    const handleProductAdd = async (values) => {
-        setLoading(true)
-
-        try {
-            if (selectedMedia?.length <= 0) {
-                return showToast("error", 'please select media')
-            }
-            const mediasIds = selectedMedia?.map(media => media?._id);
-            values.medias = mediasIds
-            const { data: productRes } = await axios.post('/api/product-variant/create', values);
-            if (!productRes.success) {
-                throw new Error(productRes.message)
-            }
-            setLoading(false)
-            form.reset()
-            selectedMedia([])
-            showToast("success", productRes.message || "category added Successfull")
-        }
-        catch (error) {
-            console.log(error)
-            showToast('error', error?.message)
-        } finally {
-            setLoading(false)
-        }
+    const handleProductVariaAdd = async (values) => {
+        // setLoading(true)
+        alert('hii')
+        console.log('values', values);
+        // try {
+        //     if (selectedMedia?.length <= 0) {
+        //         return showToast("error", 'please select media')
+        //     }
+        //     const mediasIds = selectedMedia?.map(media => media?._id);
+        //     values.medias = mediasIds
+        //     const { data: productRes } = await axios.post('/api/product-variant/create', values);
+        //     if (!productRes.success) {
+        //         throw new Error(productRes.message)
+        //     }
+        //     setLoading(false)
+        //     form.reset()
+        //     selectedMedia([])
+        //     showToast("success", productRes.message || "category added Successfull")
+        // }
+        // catch (error) {
+        //     console.log(error)
+        //     showToast('error', error?.message)
+        // } finally {
+        //     setLoading(false)
+        // }
     }
 
     // calculate discount percentage
@@ -116,7 +114,7 @@ const AddProductVariant = () => {
                     <div>
                         {/* in react */}
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(handleProductAdd)}>
+                            <form onSubmit={form.handleSubmit(handleProductVariaAdd)}>
                                 <div className='grid md:grid-cols-2 gap-5'>
                                     <div>
                                         <FormField control={form.control} name='product' render={({ field }) => (
@@ -167,7 +165,9 @@ const AddProductVariant = () => {
                                                         options={sizes}
                                                         selected={field?.value}
                                                         setSelected={field?.onChange}
-                                                        isMulti={false} />
+                                                        isMulti={false}
+                                                        placeholder='select size'
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -191,7 +191,7 @@ const AddProductVariant = () => {
                                             <FormItem>
                                                 <FormLabel htmlFor={'originalPrice-1'}>Original Price <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'number'} readOnly id={'originalPrice-1'} placeholder="originalPrice" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input type={'number'} min={1} id={'originalPrice-1'} placeholder="originalPrice" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -199,11 +199,11 @@ const AddProductVariant = () => {
                                         </FormField>
                                     </div>
                                     <div>
-                                        <FormField control={form.control} name='discountPrice' render={({ field }) => (
+                                        <FormField control={form.control} name='discountPercentage' render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel htmlFor={'discountPrice-1'}>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
+                                                <FormLabel htmlFor={'discountPercentage-1'}>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'number'} readOnly id={'discountPrice-1'} placeholder="discountPrice" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input type={'number'} id={'discountPercentage-1'} placeholder="discountPercentage %" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -215,7 +215,7 @@ const AddProductVariant = () => {
                                         <FormMessage />
                                     </div> */}
                                 </div>
-                                <div className='md:col-span-2 border border-dashed rounded p-5 text-center'>
+                                <div className='md:col-span-2 border mt-4 border-dashed rounded p-5 text-center'>
                                     <MediaModal open={open} setOpen={setOpen} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} isMulitple={true} />
                                     {selectedMedia?.length > 0 &&
                                         <div className='grid lg:grid-cols-10 grid-cols-4 gap-3 mb-3 flex-wrap'>
