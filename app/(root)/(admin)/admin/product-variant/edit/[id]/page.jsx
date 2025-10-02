@@ -38,7 +38,7 @@ const EditProduct = ({ params }) => {
   const [loading, setLoading] = useState(false)
   const [categoryOption, setCategoryOption] = useState([])
   const { data: getProduct, loading: getProductLoading } = useFetch(`/api/product/get/${id}`)
-  const { data: getCategory } = useFetch(`/api/category?deleteType=SD&&size=10000`)
+  const { data: getCategory } = useFetch(`/api/category?deleteType=SD`)
   // media modal states
   const [open, setOpen] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState([])

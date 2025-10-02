@@ -15,5 +15,11 @@ export const ADMIN_PRODUCT_SHOW = "/admin/product";
 export const ADMIN_PRODUCT_EDIT = (id) =>
   id ? `/admin/product/edit/${id}` : "";
 
+// product variant routes
+export const ADMIN_PRODUCT_VARIANT_ADD = "/admin/product-variant/add";
+export const ADMIN_PRODUCT_VARIANT__SHOW = "/admin/product-variant";
+export const ADMIN_PRODUCT_VARIANT__EDIT = (id) =>
+  id ? `/admin/product-variant/edit/${id}` : "";
+
 // trash route
 export const ADMIN_TRASH = "/admin/trash";
