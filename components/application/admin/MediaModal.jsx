@@ -23,7 +23,7 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple
         }
     })
     const handleClick = () => {
-        selectedMedia([])
+        setSelectedMedia([])
     };
     const handleSelect = () => {
         setOpen(false)

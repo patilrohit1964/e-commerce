@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connectDb from "../../../lib/dbConnect";
 import { responce } from "../../../lib/helper";
 import { isAuthenticated } from "../../../lib/isAuth";
-import ProductModel from "../../../model/product.model";
+import ProductVariantModel from "../../../model/productVariant.model";
 
 export async function GET(req) {
   try {
@@ -116,12 +116,14 @@ export async function GET(req) {
       },
     ];
     // execute query
-    const getCategories = await ProductModel.aggregate(aggregatePipeline);
+    const getProductvariants = await ProductVariantModel.aggregate(
+      aggregatePipeline
+    );
     // get total row count
-    const totalRowCount = await ProductModel.countDocuments(matchQuries);
+    const totalRowCount = await ProductVariantModel.countDocuments(matchQuries);
     return NextResponse.json({
       success: true,
-      data: getCategories,
+      data: getProductvariants,
       meta: { totalRowCount },
     });
   } catch (error) {

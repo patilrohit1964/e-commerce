@@ -10,7 +10,7 @@ import { Button } from "../../../../../components/ui/button"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
 import { DT_PRODUCT_COLUMN } from "../../../../../lib/column"
 import { columnConfig } from "../../../../../lib/helper"
-import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_PRODUCT_ADD, ADMIN_PRODUCT_EDIT, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
+import { ADMIN_DASHBOARD, ADMIN_PRODUCT_EDIT, ADMIN_PRODUCT_VARIANT__SHOW, ADMIN_PRODUCT_VARIANT_ADD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
 const breadCrumbData = [
   {
@@ -18,8 +18,8 @@ const breadCrumbData = [
     href: ADMIN_DASHBOARD,
   },
   {
-    label: "Product",
-    href: ADMIN_CATEGORY_SHOW,
+    label: "Product Variants",
+    href: ADMIN_PRODUCT_VARIANT__SHOW,
   }
 ]
 const ShowProduct = () => {
@@ -37,24 +37,24 @@ const ShowProduct = () => {
       <BreadCrumb breadcrumbData={breadCrumbData} />
       <Card className={'py-0 rounded shadow-sm'}>
         <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2 flex justify-between'}>
-          <h4 className='text-2xl font-semibold'>Show Product</h4>
+          <h4 className='text-2xl font-semibold'>Show Product Variant</h4>
           <Button asChild>
-            <Link href={ADMIN_PRODUCT_ADD}>
+            <Link href={ADMIN_PRODUCT_VARIANT_ADD}>
               <FilePlus />
-              New Product
+              New Product Variant
             </Link>
           </Button>
         </CardHeader>
         <CardContent className={'pb-5 px-0'}>
           <DataTableWrapper
             queryKey={'product-data'}
-            fetchUrl={'/api/product'}
+            fetchUrl={'/api/product-variant'}
             initialPageSize={10}
             columnsConfig={columns}
-            exportEndPoint={'/api/product/export'}
-            deleteEndPoint={'/api/product/delete'}
+            exportEndPoint={'/api/product-variant/export'}
+            deleteEndPoint={'/api/product-variant/delete'}
             deleteType={"SD"}
-            trashView={`${ADMIN_TRASH}?trashof=product`}
+            trashView={`${ADMIN_TRASH}?trashof=product-variant`}
             createAction={action}
           />
         </CardContent>

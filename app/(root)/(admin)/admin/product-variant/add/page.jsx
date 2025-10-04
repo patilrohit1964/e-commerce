@@ -84,7 +84,7 @@ const AddProductVariant = () => {
             }
             setLoading(false)
             form.reset()
-            selectedMedia([])
+            setSelectedMedia([])
             showToast("success", productRes.message || "product variant added Successfull")
         }
         catch (error) {

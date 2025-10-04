@@ -90,7 +90,7 @@ const AddProduct = () => {
             }
             setLoading(false)
             form.reset()
-            selectedMedia([])
+            setSelectedMedia([])
             showToast("success", productRes.message || "category added Successfull")
         }
         catch (error) {
