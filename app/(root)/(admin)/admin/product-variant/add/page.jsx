@@ -11,9 +11,11 @@ import { Card, CardContent, CardHeader } from '../../../../../../components/ui/c
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../../../../components/ui/form'
 import { Input } from '../../../../../../components/ui/input'
 import { useFetch } from '../../../../../../hooks/useFetch'
+import { showToast } from '../../../../../../lib/toast'
 import { sizes } from '../../../../../../lib/utils'
 import { zSchmea } from '../../../../../../lib/zodSchema'
 import { ADMIN_DASHBOARD, ADMIN_PRODUCT_VARIANT__SHOW } from '../../../../../../routes/adminPaneRoute'
+import axios from 'axios'
 
 const breadCrumbData = [
     {
@@ -45,53 +47,52 @@ const AddProductVariant = () => {
     }, [getProduct]);
 
     const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
-        product: true,
+        productId: true,
         sku: true,
         size: true,
         color: true,
-        stock: true,
         discountPercentage: true,
-        originalPrice: true,
+        sellingPrice: true,
+        mrp: true,
     })
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            product: '',
+            productId: '',
             sku: '',
+            size: '',
             color: '',
-            stock: 0,
-            originalPrice: 0,
-            discountPercentage: 0
+            discountPercentage: 0,
+            sellingPrice: 0,
+            mrp: 0
         }
     })
 
 
     const handleProductVariaAdd = async (values) => {
-        // setLoading(true)
-        alert('hii')
-        console.log('values', values);
-        // try {
-        //     if (selectedMedia?.length <= 0) {
-        //         return showToast("error", 'please select media')
-        //     }
-        //     const mediasIds = selectedMedia?.map(media => media?._id);
-        //     values.medias = mediasIds
-        //     const { data: productRes } = await axios.post('/api/product-variant/create', values);
-        //     if (!productRes.success) {
-        //         throw new Error(productRes.message)
-        //     }
-        //     setLoading(false)
-        //     form.reset()
-        //     selectedMedia([])
-        //     showToast("success", productRes.message || "category added Successfull")
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     showToast('error', error?.message)
-        // } finally {
-        //     setLoading(false)
-        // }
+        setLoading(true)
+        try {
+            if (selectedMedia?.length <= 0) {
+                return showToast("error", 'please select media')
+            }
+            const mediasIds = selectedMedia?.map(media => media?._id);
+            values.medias = mediasIds
+            const { data: productRes } = await axios.post('/api/product-variant/create', values);
+            if (!productRes.success) {
+                throw new Error(productRes.message)
+            }
+            setLoading(false)
+            form.reset()
+            selectedMedia([])
+            showToast("success", productRes.message || "product variant added Successfull")
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', error?.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
     // calculate discount percentage
@@ -116,105 +117,139 @@ const AddProductVariant = () => {
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(handleProductVariaAdd)}>
                                 <div className='grid md:grid-cols-2 gap-5'>
+                                    {/* Product (Select, single) */}
                                     <div>
-                                        <FormField control={form.control} name='product' render={({ field }) => (
+                                        <FormField control={form.control} name='productId' render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel htmlFor={'product-1'}>Product <span className='text-red-500'>*</span></FormLabel>
+                                                <FormLabel htmlFor='productId'>Product <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
                                                     <Select
                                                         options={productOption}
-                                                        selected={field?.value}
-                                                        setSelected={field?.onChange}
-                                                        isMulti={false} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}>
-                                        </FormField>
-                                    </div>
-                                    <div >
-                                        <FormField control={form.control} name='sku' render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel htmlFor={'sku-1'}>SKU (stock keeping unit) <span className='text-red-500'>*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type={'text'} id={'sku-1'} placeholder="enter your category sku" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}>
-                                        </FormField>
-                                    </div>
-                                    <div >
-                                        <FormField control={form.control} name='color' render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel htmlFor={'color-1'}>Color <span className='text-red-500'>*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input min={1} type={'text'} id={'color-1'} placeholder="enter your category color" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}>
-                                        </FormField>
-                                    </div>
-                                    <div>
-                                        <FormField control={form.control} name='size' render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel htmlFor={'size-1'}>Size <span className='text-red-500'>*</span></FormLabel>
-                                                <FormControl>
-                                                    <Select
-                                                        options={sizes}
-                                                        selected={field?.value}
-                                                        setSelected={field?.onChange}
+                                                        selected={field.value}
+                                                        setSelected={field.onChange}
                                                         isMulti={false}
-                                                        placeholder='select size'
+                                                        id='productId'
+                                                        placeholder='Select product'
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
-                                        )}>
-                                        </FormField>
+                                        )} />
                                     </div>
+                                    {/* SKU (Input, text) */}
                                     <div>
-                                        <FormField control={form.control} name='stock' render={({ field }) => (
+                                        <FormField control={form.control} name='sku' render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel htmlFor={'stock-1'}>Stock <span className='text-red-500'>*</span></FormLabel>
+                                                <FormLabel htmlFor='sku'>SKU <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'number'} min={1} id={'stock-1'} placeholder="enter your stock" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input
+                                                        type='text'
+                                                        id='sku'
+                                                        placeholder='Enter SKU'
+                                                        {...field}
+                                                        className='border border-gray-700 focus:border-none transition-all delay-150'
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
-                                        )}>
-                                        </FormField>
+                                        )} />
                                     </div>
+                                    {/* Color (Input, text) */}
                                     <div>
-                                        <FormField control={form.control} name='originalPrice' render={({ field }) => (
+                                        <FormField control={form.control} name='color' render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel htmlFor={'originalPrice-1'}>Original Price <span className='text-red-500'>*</span></FormLabel>
+                                                <FormLabel htmlFor='color'>Color <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'number'} min={1} id={'originalPrice-1'} placeholder="originalPrice" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input
+                                                        type='text'
+                                                        id='color'
+                                                        placeholder='Enter color'
+                                                        {...field}
+                                                        className='border border-gray-700 focus:border-none transition-all delay-150'
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
-                                        )}>
-                                        </FormField>
+                                        )} />
                                     </div>
+                                    {/* Size (Select, single) */}
+                                    <div>
+                                        <FormField control={form.control} name='size' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor='size'>Size <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Select
+                                                        options={sizes}
+                                                        selected={field.value}
+                                                        setSelected={field.onChange}
+                                                        isMulti={false}
+                                                        id='size'
+                                                        placeholder='Select size'
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                    </div>
+                                    {/* MRP (Input, number) */}
+                                    <div>
+                                        <FormField control={form.control} name='mrp' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor='mrp'>MRP <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type='number'
+                                                        min={1}
+                                                        id='mrp'
+                                                        placeholder='Enter MRP'
+                                                        {...field}
+                                                        className='border border-gray-700 focus:border-none transition-all delay-150'
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                    </div>
+                                    {/* Selling Price (Input, number) */}
+                                    <div>
+                                        <FormField control={form.control} name='sellingPrice' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor='sellingPrice'>Selling Price <span className='text-red-500'>*</span></FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type='number'
+                                                        min={1}
+                                                        id='sellingPrice'
+                                                        placeholder='Enter selling price'
+                                                        {...field}
+                                                        className='border border-gray-700 focus:border-none transition-all delay-150'
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                    </div>
+                                    {/* Discount Percentage (Input, number, auto-calculated) */}
                                     <div>
                                         <FormField control={form.control} name='discountPercentage' render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel htmlFor={'discountPercentage-1'}>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
+                                                <FormLabel htmlFor='discountPercentage'>Discount Percentage <span className='text-red-500'>*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input type={'number'} id={'discountPercentage-1'} placeholder="discountPercentage %" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                                                    <Input
+                                                        type='number'
+                                                        id='discountPercentage'
+                                                        placeholder='Discount %'
+                                                        {...field}
+                                                        className='border border-gray-700 focus:border-none transition-all delay-150'
+                                                        readOnly
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
-                                        )}>
-                                        </FormField>
+                                        )} />
                                     </div>
-                                    {/* <div className='md:col-span-2'>
-                                        <Editor onChange={editor} />
-                                        <FormMessage />
-                                    </div> */}
                                 </div>
+                                {/* Media selection */}
                                 <div className='md:col-span-2 border mt-4 border-dashed rounded p-5 text-center'>
                                     <MediaModal open={open} setOpen={setOpen} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} isMulitple={true} />
                                     {selectedMedia?.length > 0 &&
@@ -231,7 +266,7 @@ const AddProductVariant = () => {
                                     </div>
                                 </div>
                                 <div className='mt-3'>
-                                    <ButtonLoading type={'submit'} text={'Add Product'} loading={loading} className={'cursor-pointer w-full'} />
+                                    <ButtonLoading type='submit' text='Add Product Variant' loading={loading} className='cursor-pointer w-full' />
                                 </div>
                             </form>
                         </Form>

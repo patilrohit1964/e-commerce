@@ -1,9 +1,8 @@
-import { encode } from "entities";
 import connectDb from "../../../../lib/dbConnect";
 import { responce } from "../../../../lib/helper";
 import { isAuthenticated } from "../../../../lib/isAuth";
 import { zSchmea } from "../../../../lib/zodSchema";
-import ProductModal from "../../../../model/product.model";
+import ProductVariantModal from "../../../../model/productVariant.model";
 export async function POST(req) {
   try {
     const auth = await isAuthenticated("admin");
@@ -14,31 +13,31 @@ export async function POST(req) {
     const payload = await req.json();
     const formSchema = zSchmea.pick({
       //we can get that method from zoSchema and use here as schema
-      name: true,
-      slug: true,
-      mrp: true,
-      category: true,
-      sellingPrice: true,
-      discription: true,
+      productId: true,
+      sku: true,
+      size: true,
+      color: true,
       discountPercentage: true,
+      sellingPrice: true,
+      mrp: true,
       medias: true,
     });
     const validate = formSchema.safeParse(payload);
     if (!validate.success) {
       return responce(false, 400, "invalid or missing fields", validate.error);
     }
-    const newProduct = new ProductModal({
-      name: validate.data.name,
-      slug: validate.data.slug,
-      mrp: validate.data.mrp,
-      category: validate.data.category,
-      sellingPrice: validate.data.sellingPrice,
-      discription: encode(validate.data.discription),
+    const newProductVariant = new ProductVariantModal({
+      productId: validate.data.productId,
+      sku: validate.data.sku,
+      size: validate.data.size,
+      color: validate.data.color,
       discountPercentage: validate.data.discountPercentage,
+      sellingPrice: validate.data.sellingPrice,
+      mrp: validate.data.mrp,
       medias: validate.data.medias,
     });
-    await newProduct.save();
-    return responce(true, 200, "product added successfully");
+    await newProductVariant.save();
+    return responce(true, 200, "product variant added successfully");
   } catch (error) {
     console.log(error);
   }

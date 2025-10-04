@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const productVarintSchema = new mongoose.Schema(
   {
-    product: {
+    productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
@@ -32,8 +32,10 @@ const productVarintSchema = new mongoose.Schema(
       required: true,
     },
     sku: {
-      type: Number,
+      type: String,
       required: true,
+      unique: true,
+      trim: true,
     },
     medias: [
       {
@@ -49,7 +51,7 @@ const productVarintSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const productVariantModal =
+const ProductVariantModal =
   mongoose.models.ProductVariant ||
   mongoose.model("ProductVariant", productVarintSchema);
-export default productVariantModal;
+export default ProductVariantModal;
