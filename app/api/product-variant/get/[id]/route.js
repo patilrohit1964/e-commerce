@@ -2,7 +2,7 @@ import { isValidObjectId } from "mongoose";
 import connectDb from "../../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../../lib/helper";
 import { isAuthenticated } from "../../../../../lib/isAuth";
-import ProductModel from "../../../../../model/product.model";
+import ProductModelVariant from "../../../../../model/productVariant.model";
 
 export async function GET(request, { params }) {
   try {
@@ -20,11 +20,16 @@ export async function GET(request, { params }) {
       return responce(false, 400, "invalid object id");
     }
     filter._id = id;
-    const getProduct = await ProductModel.findOne(filter).populate('medias',"secure_url").lean();
-    if (!getProduct) {
-      return responce(false, 404, "Product not found");
+    const getProductVariant = await ProductModelVariant.findOne(filter)
+      .populate([
+        { path: "medias", select: "secure_url" },
+        { path: "productId", select: "name" }, //remember when populate then in path same that schema field in our case:ex productId
+      ])
+      .lean();
+    if (!getProductVariant) {
+      return responce(false, 404, "Product Variant not found");
     }
-    return responce(true, 200, "Product found.", getProduct);
+    return responce(true, 200, "Product Varinat found.", getProductVariant);
   } catch (error) {
     console.log(error);
     return catchError(error);

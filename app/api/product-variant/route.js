@@ -31,7 +31,7 @@ export async function GET(req) {
       matchQuries["$or"] = [
         { name: { $regex: globalFilter, $options: "i" } },
         { slug: { $regex: globalFilter, $options: "i" } },
-        { "categoryData.name": { $regex: globalFilter, $options: "i" } },
+        { "productData.name": { $regex: globalFilter, $options: "i" } },
         {
           $expr: {
             $regexMatch: {
@@ -70,6 +70,8 @@ export async function GET(req) {
         fil?.id === "discountPercentage"
       ) {
         matchQuries[fil?.id] = Number(fil?.value);
+      } else if (fil?.id === "product") {
+        matchQuries["productData.name"] = { $regex: fil?.value, $options: "i" };
       } else {
         matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
       }
@@ -84,15 +86,15 @@ export async function GET(req) {
     const aggregatePipeline = [
       {
         $lookup: {
-          from: "categories",
-          localField: "category",
+          from: "products",
+          localField: "productId", //remeber this local field always take that model exact key ex: in our case field name is ProudctId
           foreignField: "_id",
-          as: "categoryData",
+          as: "productData",
         },
       },
       {
         $unwind: {
-          path: "$categoryData",
+          path: "$productData",
           preserveNullAndEmptyArrays: true,
         },
       },
@@ -103,12 +105,13 @@ export async function GET(req) {
       {
         $project: {
           _id: 1,
-          name: 1,
-          slug: 1,
+          product: "$productData.name",
+          color: 1,
+          size: 1,
+          sku: 1,
           mrp: 1,
           sellingPrice: 1,
           discountPercentage: 1,
-          category: "$categoryData.name",
           createdAt: 1,
           updatedAt: 1,
           deletedAt: 1,

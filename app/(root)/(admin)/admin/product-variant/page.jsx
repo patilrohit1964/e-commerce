@@ -8,9 +8,9 @@ import DeleteAction from "../../../../../components/application/admin/DeleteActi
 import EditAction from "../../../../../components/application/admin/EditAction"
 import { Button } from "../../../../../components/ui/button"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
-import { DT_PRODUCT_COLUMN } from "../../../../../lib/column"
+import { DT_PRODUCT_VARIANT_COLUMN } from "../../../../../lib/column"
 import { columnConfig } from "../../../../../lib/helper"
-import { ADMIN_DASHBOARD, ADMIN_PRODUCT_EDIT, ADMIN_PRODUCT_VARIANT__SHOW, ADMIN_PRODUCT_VARIANT_ADD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
+import { ADMIN_DASHBOARD, ADMIN_PRODUCT_EDIT, ADMIN_PRODUCT_VARIANT__EDIT, ADMIN_PRODUCT_VARIANT__SHOW, ADMIN_PRODUCT_VARIANT_ADD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
 const breadCrumbData = [
   {
@@ -22,13 +22,13 @@ const breadCrumbData = [
     href: ADMIN_PRODUCT_VARIANT__SHOW,
   }
 ]
-const ShowProduct = () => {
+const ShowProductvariant = () => {
   const columns = useMemo(() => {
-    return columnConfig(DT_PRODUCT_COLUMN)
+    return columnConfig(DT_PRODUCT_VARIANT_COLUMN)
   }, [])
   const action = useCallback((row, deleteType, handleDelete) => {
     let actionMenu = []
-    actionMenu.push(<EditAction key={'edit'} href={ADMIN_PRODUCT_EDIT(row?.original?._id)} />)
+    actionMenu.push(<EditAction key={'edit'} href={ADMIN_PRODUCT_VARIANT__EDIT(row?.original?._id)} />)
     actionMenu.push(<DeleteAction key={'delete'} handleDelete={handleDelete} row={row} deleteType={deleteType} />)
     return actionMenu
   }, [])
@@ -37,7 +37,7 @@ const ShowProduct = () => {
       <BreadCrumb breadcrumbData={breadCrumbData} />
       <Card className={'py-0 rounded shadow-sm'}>
         <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2 flex justify-between'}>
-          <h4 className='text-2xl font-semibold'>Show Product Variant</h4>
+          <h4 className='text-2xl font-semibold'>Show Product Variants</h4>
           <Button asChild>
             <Link href={ADMIN_PRODUCT_VARIANT_ADD}>
               <FilePlus />
@@ -47,7 +47,7 @@ const ShowProduct = () => {
         </CardHeader>
         <CardContent className={'pb-5 px-0'}>
           <DataTableWrapper
-            queryKey={'product-data'}
+            queryKey={'product-variant-data'}
             fetchUrl={'/api/product-variant'}
             initialPageSize={10}
             columnsConfig={columns}
@@ -63,4 +63,4 @@ const ShowProduct = () => {
   )
 }
 
-export default ShowProduct
+export default ShowProductvariant
