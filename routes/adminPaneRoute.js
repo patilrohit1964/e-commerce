@@ -21,5 +21,8 @@ export const ADMIN_PRODUCT_VARIANT__SHOW = "/admin/product-variant";
 export const ADMIN_PRODUCT_VARIANT__EDIT = (id) =>
   id ? `/admin/product-variant/edit/${id}` : "";
 
+// coupon routes
+
+
 // trash route
 export const ADMIN_TRASH = "/admin/trash";

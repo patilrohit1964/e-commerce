@@ -61,9 +61,9 @@ const UserDropDown = () => {
         <DropdownMenuSeparator />
         {userMenu.map((el, idx) => (
           <Link href={el.url}>
-            <DropdownMenuItem key={idx} className={`${el.title == 'Logout' && 'text-red-500'}`} onClick={logoutHandler}>
-              {el.icon}
-              {el.title}
+            <DropdownMenuItem key={idx} className={`${el?.title == 'Logout' && 'text-red-500'}`} onClick={logoutHandler}>
+              {el?.icon}
+              {el?.title}
             </DropdownMenuItem>
           </Link>
         ))}

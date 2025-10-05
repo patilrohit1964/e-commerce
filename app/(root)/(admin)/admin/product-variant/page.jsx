@@ -10,7 +10,7 @@ import { Button } from "../../../../../components/ui/button"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
 import { DT_PRODUCT_VARIANT_COLUMN } from "../../../../../lib/column"
 import { columnConfig } from "../../../../../lib/helper"
-import { ADMIN_DASHBOARD, ADMIN_PRODUCT_EDIT, ADMIN_PRODUCT_VARIANT__EDIT, ADMIN_PRODUCT_VARIANT__SHOW, ADMIN_PRODUCT_VARIANT_ADD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
+import { ADMIN_DASHBOARD, ADMIN_PRODUCT_VARIANT__EDIT, ADMIN_PRODUCT_VARIANT__SHOW, ADMIN_PRODUCT_VARIANT_ADD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
 const breadCrumbData = [
   {

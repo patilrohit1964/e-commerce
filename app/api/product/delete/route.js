@@ -17,7 +17,7 @@ export const PUT = async (request) => {
       return responce(false, 400, "invalid or empty id list");
     }
     const product = await ProductModel.find({ _id: { $in: ids } })
-      .select("-medias,-description")
+      .select("-medias -description")
       .lean();
     if (!product?.length) {
       return responce(false, 404, "data not found");

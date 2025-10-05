@@ -38,8 +38,8 @@ export async function PUT(req) {
     if (!getMedia) {
       return responce(false, 400, "media not found");
     }
-    getMedia.alt = alt;
-    getMedia.title = title;
+    getMedia?.alt = alt;
+    getMedia?.title = title;
     await getMedia.save();
     return responce(true, 200, "media update successfully");
   } catch (error) {

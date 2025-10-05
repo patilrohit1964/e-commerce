@@ -45,21 +45,21 @@ const AppSidebar = () => {
                                             <SidebarMenuButton asChild className={'font-semibold px-2 py-5'}>
                                                 <Link href={menu.url}>
                                                     <menu.icon />
-                                                    {menu.title}
-                                                    {menu.subMenu && menu.subMenu?.length > 0 && (
+                                                    {menu?.title}
+                                                    {menu?.subMenu && menu?.subMenu?.length > 0 && (
                                                         <LucideChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' /> //here this classname helps when this parent collapsibel open then rotate this comp in 90 deg
                                                     )}
                                                 </Link>
                                             </SidebarMenuButton>
                                         </CollapsibleTrigger>
                                         {
-                                            menu.subMenu && menu.subMenu?.length > 0 &&
+                                            menu?.subMenu && menu?.subMenu?.length > 0 &&
                                             <CollapsibleContent>
                                                 <SidebarMenuSub>
-                                                    {menu.subMenu.map((subMenu, idx) => (
+                                                    {menu?.subMenu?.map((subMenu, idx) => (
                                                         <SidebarMenuSubItem key={idx}>
                                                             <SidebarMenuSubButton asChild className={'px-2 py-5'}>
-                                                                <Link href={subMenu.url}>{subMenu.title}</Link>
+                                                                <Link href={subMenu?.url}>{subMenu?.title}</Link>
                                                             </SidebarMenuSubButton>
                                                         </SidebarMenuSubItem>
                                                     ))}

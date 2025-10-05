@@ -65,16 +65,16 @@ const Trash = () => {
             <BreadCrumb breadcrumbData={breadCrumbData} />
             <Card className={'py-0 rounded shadow-sm'}>
                 <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2 flex justify-between'}>
-                    <h4 className='text-2xl font-semibold'>{config.title}</h4>
+                    <h4 className='text-2xl font-semibold'>{config?.title}</h4>
                 </CardHeader>
                 <CardContent className={'pb-5 px-0'}>
                     <DataTableWrapper
                         queryKey={`${trashOf}-data-deleted`}
-                        fetchUrl={config.fetchUrl}
+                        fetchUrl={config?.fetchUrl}
                         initialPageSize={10}
                         columnsConfig={columns}
-                        exportEndPoint={config.exportUrl}
-                        deleteEndPoint={config.deleteUrl}
+                        exportEndPoint={config?.exportUrl}
+                        deleteEndPoint={config?.deleteUrl}
                         deleteType={"PD"}
                         createAction={action}
                     />
