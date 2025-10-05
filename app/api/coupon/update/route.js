@@ -1,0 +1,50 @@
+import connectDb from "../../../../lib/dbConnect";
+import { responce } from "../../../../lib/helper";
+import { isAuthenticated } from "../../../../lib/isAuth";
+import { zSchmea } from "../../../../lib/zodSchema";
+import CouponModal from "../../../../model/coupon.model";
+export async function PUT(req) {
+  try {
+    const auth = await isAuthenticated("admin");
+    if (!auth.isAuth) {
+      return responce(false, 403, "unauthorized");
+    }
+    await connectDb();
+    const payload = await req.json();
+    const schema = zSchmea.pick({
+      _id: true,
+      name: true,
+      slug: true,
+      mrp: true,
+      category: true,
+      sellingPrice: true,
+      discription: true,
+      discountPercentage: true,
+      medias: true,
+    });
+    const validate = schema.safeParse(payload);
+    if (!validate.success) {
+      return responce(false, 400, "invalid or missing fields", validate.error);
+    }
+    const updatedProduct = await CouponModal.findOne({
+      deletedAt: null,
+      _id: validate?.data?._id,
+    });
+
+    if (!updatedProduct) {
+      return responce(false, 400, "product not found", updatedProduct);
+    }
+    updatedProduct.name = validate?.data?.name;
+    updatedProduct.slug = validate?.data?.slug;
+    updatedProduct.category = validate?.data?.category;
+    updatedProduct.discountPercentage = validate?.data?.discountPercentage;
+    updatedProduct.mrp = validate?.data?.mrp;
+    updatedProduct.sellingPrice = validate?.data?.sellingPrice;
+    updatedProduct.discription = validate?.data?.discription;
+    updatedProduct.medias = validate?.data?.medias;
+    await updatedProduct.save();
+    return responce(true, 200, "product update successfully");
+  } catch (error) {
+    console.log(error);
+  }
+}

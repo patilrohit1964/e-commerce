@@ -22,7 +22,10 @@ export const ADMIN_PRODUCT_VARIANT__EDIT = (id) =>
   id ? `/admin/product-variant/edit/${id}` : "";
 
 // coupon routes
-
+export const ADMIN_COUPON_ADD = "/admin/coupon/add";
+export const ADMIN_COUPON__SHOW = "/admin/coupon";
+export const ADMIN_COUPON__EDIT = (id) =>
+  id ? `/admin/coupon/edit/${id}` : "";
 
 // trash route
 export const ADMIN_TRASH = "/admin/trash";
