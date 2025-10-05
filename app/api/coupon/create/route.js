@@ -14,28 +14,20 @@ export async function POST(req) {
     const payload = await req.json();
     const formSchema = zSchmea.pick({
       //we can get that method from zoSchema and use here as schema
-      name: true,
-      slug: true,
-      mrp: true,
-      category: true,
-      sellingPrice: true,
-      discription: true,
+      code: true,
+      validity: true,
+      minShoppingAmount: true,
       discountPercentage: true,
-      medias: true,
     });
     const validate = formSchema.safeParse(payload);
     if (!validate.success) {
       return responce(false, 400, "invalid or missing fields", validate.error);
     }
     const newProduct = new CouponModal({
-      name: validate.data.name,
-      slug: validate.data.slug,
-      mrp: validate.data.mrp,
-      category: validate.data.category,
-      sellingPrice: validate.data.sellingPrice,
-      discription: encode(validate.data.discription),
-      discountPercentage: validate.data.discountPercentage,
-      medias: validate.data.medias,
+      code: validate?.data?.code,
+      validity: validate?.data?.validity,
+      minShoppingAmount: validate?.data?.minShoppingAmount,
+      discountPercentage: validate?.data?.discountPercentage,
     });
     await newProduct.save();
     return responce(true, 200, "Coupon added successfully");
