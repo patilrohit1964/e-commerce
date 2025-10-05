@@ -21,10 +21,10 @@ export async function GET(request, { params }) {
     }
     filter._id = id;
     const getProductVariant = await ProductModelVariant.findOne(filter)
-      .populate([
-        { path: "medias", select: "secure_url" },
-        { path: "productId", select: "name" }, //remember when populate then in path same that schema field in our case:ex productId
-      ])
+      .populate(
+        "medias",
+        "_id secure_url" //remember when populate then in path same that schema field in our case:ex productId
+      )
       .lean();
     if (!getProductVariant) {
       return responce(false, 404, "Product Variant not found");

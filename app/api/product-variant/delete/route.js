@@ -1,7 +1,7 @@
 import connectDb from "../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../lib/helper";
 import { isAuthenticated } from "../../../../lib/isAuth";
-import ProductModel from "../../../../model/product.model";
+import ProductVariantModel from "../../../../model/productVariant.model";
 
 export const PUT = async (request) => {
   try {
@@ -16,9 +16,9 @@ export const PUT = async (request) => {
     if (!Array.isArray(ids) || ids?.length === 0) {
       return responce(false, 400, "invalid or empty id list");
     }
-    const product = await ProductModel.find({ _id: { $in: ids } })
-      .select("-medias,-description")
-      .lean();
+    const product = await ProductVariantModel.find({
+      _id: { $in: ids },
+    }).lean();
     if (!product?.length) {
       return responce(false, 404, "data not found");
     }
@@ -26,12 +26,12 @@ export const PUT = async (request) => {
       return responce(false, 400, "invalid delete operation ");
     }
     if (deleteType === "SD") {
-      await ProductModel.updateMany(
+      await ProductVariantModel.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: new Date().toISOString() } }
       );
     } else {
-      await ProductModel.updateMany(
+      await ProductVariantModel.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: null } }
       );
@@ -59,14 +59,16 @@ export const DELETE = async (request) => {
     if (!Array.isArray(ids) || ids?.length === 0) {
       return responce(false, 400, "invalid or empty id list");
     }
-    const product = await ProductModel.find({ _id: { $in: ids } }).lean();
+    const product = await ProductVariantModel.find({
+      _id: { $in: ids },
+    }).lean();
     if (!product?.length) {
       return responce(false, 404, "data not found");
     }
     if (deleteType !== "PD") {
       return responce(false, 400, "invalid delete operation ");
     }
-    await ProductModel.deleteMany({ _id: { $in: ids } });
+    await ProductVariantModel.deleteMany({ _id: { $in: ids } });
     return responce(true, 200, "data deleted permanently ");
   } catch (error) {
     console.log(error);

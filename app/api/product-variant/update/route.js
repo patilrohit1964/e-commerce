@@ -2,7 +2,7 @@ import connectDb from "../../../../lib/dbConnect";
 import { responce } from "../../../../lib/helper";
 import { isAuthenticated } from "../../../../lib/isAuth";
 import { zSchmea } from "../../../../lib/zodSchema";
-import ProductModel from "../../../../model/product.model";
+import ProductVariantModel from "../../../../model/productVariant.model";
 export async function PUT(req) {
   try {
     const auth = await isAuthenticated("admin");
@@ -13,12 +13,12 @@ export async function PUT(req) {
     const payload = await req.json();
     const schema = zSchmea.pick({
       _id: true,
-      name: true,
-      slug: true,
+      productId: true,
+      color: true,
+      size: true,
+      sku: true,
       mrp: true,
-      category: true,
       sellingPrice: true,
-      discription: true,
       discountPercentage: true,
       medias: true,
     });
@@ -26,7 +26,7 @@ export async function PUT(req) {
     if (!validate.success) {
       return responce(false, 400, "invalid or missing fields", validate.error);
     }
-    const updatedProduct = await ProductModel.findOne({
+    const updatedProduct = await ProductVariantModel.findOne({
       deletedAt: null,
       _id: validate?.data?._id,
     });
@@ -34,16 +34,17 @@ export async function PUT(req) {
     if (!updatedProduct) {
       return responce(false, 400, "product not found", updatedProduct);
     }
-    updatedProduct.name = validate?.data?.name;
-    updatedProduct.slug = validate?.data?.slug;
-    updatedProduct.category = validate?.data?.category;
-    updatedProduct.discountPercentage = validate?.data?.discountPercentage;
+
+    updatedProduct.productId = validate?.data?.productId;
+    updatedProduct.color = validate?.data?.color;
+    updatedProduct.size = validate?.data?.size;
+    updatedProduct.sku = validate?.data?.sku;
     updatedProduct.mrp = validate?.data?.mrp;
     updatedProduct.sellingPrice = validate?.data?.sellingPrice;
-    updatedProduct.discription = validate?.data?.discription;
+    updatedProduct.discountPercentage = validate?.data?.discountPercentage;
     updatedProduct.medias = validate?.data?.medias;
     await updatedProduct.save();
-    return responce(true, 200, "product update successfully");
+    return responce(true, 200, "product variant update successfully");
   } catch (error) {
     console.log(error);
   }

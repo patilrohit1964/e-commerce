@@ -1,12 +1,13 @@
 'use client'
-import { columnConfig } from "../../../../../lib/helper"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import BreadCrumb from "../../../../../components/application/admin/BreadCrumb"
 import DataTableWrapper from "../../../../../components/application/admin/DataTableWrapper"
 import DeleteAction from "../../../../../components/application/admin/DeleteAction"
+import RestoreAction from "../../../../../components/application/admin/RestoreAction"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
-import { DT_CATEGORY_COLUMN, DT_PRODUCT_COLUMN } from "../../../../../lib/column"
+import { DT_CATEGORY_COLUMN, DT_PRODUCT_COLUMN, DT_PRODUCT_VARIANT_COLUMN } from "../../../../../lib/column"
+import { columnConfig } from "../../../../../lib/helper"
 import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
 const breadCrumbData = [
@@ -37,6 +38,13 @@ const TRASH_CONFIG = {
         fetchUrl: "/api/product",
         exportUrl: '/api/product/export',
         deleteUrl: '/api/product/delete'
+    },
+    'product-variant': {
+        title: 'Product Variant Trash',
+        columns: DT_PRODUCT_VARIANT_COLUMN,
+        fetchUrl: "/api/product-variant",
+        exportUrl: '/api/product-variant/export',
+        deleteUrl: '/api/product-variant/delete'
     }
 }
 const Trash = () => {
@@ -44,10 +52,13 @@ const Trash = () => {
     const trashOf = searchParams.get('trashof')
     const config = TRASH_CONFIG[trashOf]
     const columns = useMemo(() => {
-        return columnConfig(config.columns, false, false, true)
+        return columnConfig(config?.columns, false, false, true)
     }, [])
     const action = useCallback((row, deleteType, handleDelete) => {
-        return [<DeleteAction key={'delete'} handleDelete={handleDelete} row={row} deleteType={deleteType} />]
+        return [
+            <DeleteAction key={'delete'} handleDelete={handleDelete} row={row} deleteType={deleteType} />,
+            <RestoreAction key={'restore'} handleRestore={handleDelete} row={row} deleteType={"RSD"} />
+        ]
     }, [])
     return (
         <div>

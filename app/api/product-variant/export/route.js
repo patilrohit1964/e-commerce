@@ -1,7 +1,7 @@
 import connectDb from "../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../lib/helper";
 import { isAuthenticated } from "../../../../lib/isAuth";
-import ProductModel from "../../../../model/product.model";
+import ProductVariantModel from "../../../../model/productVariant.model";
 
 export async function GET(request, { params }) {
   try {
@@ -15,8 +15,8 @@ export async function GET(request, { params }) {
       deletedAt: null,
     };
 
-    const getProduct = await ProductModel.find(filter)
-      .seelct("-medias -description -_id")
+    const getProduct = await ProductVariantModel.find(filter)
+      .select("-medias")
       .sort({ createdAt: -1 })
       .lean();
     if (!getProduct) {

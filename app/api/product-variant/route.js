@@ -29,8 +29,9 @@ export async function GET(req) {
     // global search
     if (globalFilter) {
       matchQuries["$or"] = [
-        { name: { $regex: globalFilter, $options: "i" } },
-        { slug: { $regex: globalFilter, $options: "i" } },
+        { color: { $regex: globalFilter, $options: "i" } },
+        { size: { $regex: globalFilter, $options: "i" } },
+        { sku: { $regex: globalFilter, $options: "i" } },
         { "productData.name": { $regex: globalFilter, $options: "i" } },
         {
           $expr: {

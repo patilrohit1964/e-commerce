@@ -111,7 +111,7 @@ const EditProductVariant = ({ params }) => {
       setLoading(false)
       form.reset()
       setSelectedMedia([])
-      router.push(ADMIN_PRODUCT_SHOW)
+      router.push(ADMIN_PRODUCT_VARIANT__SHOW)
       showToast("success", productVarinatRes.message || "product added Successfull")
     }
     catch (error) {
