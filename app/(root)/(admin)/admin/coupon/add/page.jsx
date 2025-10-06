@@ -53,24 +53,21 @@ const AddCoupon = () => {
 
 
     const handleProductAdd = async (values) => {
-        // setLoading(true)
-console.log(values)
-        // try {
-        //     const { data: productRes } = await axios.post('/api/coupon/create', values);
-        //     if (!productRes.success) {
-        //         throw new Error(productRes.message)
-        //     }
-        //     setLoading(false)
-        //     form.reset()
-        //     setSelectedMedia([])
-        //     showToast("success", productRes.message || "coupon added Successfull")
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     showToast('error', error?.message)
-        // } finally {
-        //     setLoading(false)
-        // }
+        setLoading(true)
+        try {
+            const { data: couponRes } = await axios.post('/api/coupon/create', values);
+            if (!couponRes.success) {
+                throw new Error(couponRes.message)
+            }
+            setLoading(false)
+            form.reset()
+            showToast("success", couponRes.message || "coupon added Successfull")
+        }
+        catch (error) {
+            showToast('error', error?.message)
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <div>
