@@ -26,25 +26,15 @@ export async function GET(req) {
     } else if (deleteType === "PD") {
       matchQuries = { deletedAt: { $ne: null } };
     }
+    console.log(globalFilter, "global filter");
     // global search
     if (globalFilter) {
       matchQuries["$or"] = [
-        { name: { $regex: globalFilter, $options: "i" } },
-        { slug: { $regex: globalFilter, $options: "i" } },
-        { "categoryData.name": { $regex: globalFilter, $options: "i" } },
+        { code: { $regex: globalFilter, $options: "i" } },
         {
           $expr: {
             $regexMatch: {
-              input: { $toString: "$mrp" },
-              regex: globalFilter,
-              options: "i",
-            },
-          },
-        },
-        {
-          $expr: {
-            $regexMatch: {
-              input: { $toString: "$sellingPrice" },
+              input: { $toString: "$minShoppingAmount" },
               regex: globalFilter,
               options: "i",
             },
@@ -64,11 +54,7 @@ export async function GET(req) {
 
     // column filter
     filters?.forEach((fil) => {
-      if (
-        fil?.id === "mrp" ||
-        fil?.id === "sellingPrice" ||
-        fil?.id === "discountPercentage"
-      ) {
+      if (fil?.id === "minShoppingAmount" || fil?.id === "discountPercentage") {
         matchQuries[fil?.id] = Number(fil?.value);
       } else {
         matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
@@ -82,20 +68,6 @@ export async function GET(req) {
 
     // aggregate pipeline
     const aggregatePipeline = [
-      {
-        $lookup: {
-          from: "categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "categoryData",
-        },
-      },
-      {
-        $unwind: {
-          path: "$categoryData",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
       { $match: matchQuries },
       { $sort: Object.keys(sortQuery)?.length ? sortQuery : { createdAt: -1 } },
       { $skip: start },
@@ -103,12 +75,10 @@ export async function GET(req) {
       {
         $project: {
           _id: 1,
-          name: 1,
-          slug: 1,
-          mrp: 1,
-          sellingPrice: 1,
+          code: 1,
+          minShoppingAmount: 1,
+          validity: 1,
           discountPercentage: 1,
-          category: "$categoryData.name",
           createdAt: 1,
           updatedAt: 1,
           deletedAt: 1,
@@ -116,8 +86,7 @@ export async function GET(req) {
       },
     ];
     // execute query
-    // const getCoupon = await CouponModal.aggregate(aggregatePipeline);
-    const getCoupon = await CouponModal.find();
+    const getCoupon = await CouponModal.aggregate(aggregatePipeline);
     // get total row count
     const totalRowCount = await CouponModal.countDocuments(matchQuries);
     return NextResponse.json({
