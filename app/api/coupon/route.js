@@ -116,12 +116,13 @@ export async function GET(req) {
       },
     ];
     // execute query
-    const getCategories = await CouponModal.aggregate(aggregatePipeline);
+    // const getCoupon = await CouponModal.aggregate(aggregatePipeline);
+    const getCoupon = await CouponModal.find();
     // get total row count
     const totalRowCount = await CouponModal.countDocuments(matchQuries);
     return NextResponse.json({
       success: true,
-      data: getCategories,
+      data: getCoupon,
       meta: { totalRowCount },
     });
   } catch (error) {

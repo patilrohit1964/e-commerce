@@ -8,9 +8,9 @@ import DeleteAction from "../../../../../components/application/admin/DeleteActi
 import EditAction from "../../../../../components/application/admin/EditAction"
 import { Button } from "../../../../../components/ui/button"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
-import { DT_PRODUCT_COLUMN } from "../../../../../lib/column"
+import { DT_COUPON_VARIANT_COLUMN } from "../../../../../lib/column"
 import { columnConfig } from "../../../../../lib/helper"
-import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_PRODUCT_ADD, ADMIN_PRODUCT_EDIT, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
+import { ADMIN_COUPON__EDIT, ADMIN_COUPON__SHOW, ADMIN_COUPON_ADD, ADMIN_DASHBOARD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
 const breadCrumbData = [
   {
@@ -18,17 +18,17 @@ const breadCrumbData = [
     href: ADMIN_DASHBOARD,
   },
   {
-    label: "Product",
-    href: ADMIN_CATEGORY_SHOW,
+    label: "Coupon",
+    href: ADMIN_COUPON__SHOW,
   }
 ]
 const ShowCoupon = () => {
   const columns = useMemo(() => {
-    return columnConfig(DT_PRODUCT_COLUMN)
+    return columnConfig(DT_COUPON_VARIANT_COLUMN)
   }, [])
   const action = useCallback((row, deleteType, handleDelete) => {
     let actionMenu = []
-    actionMenu.push(<EditAction key={'edit'} href={ADMIN_PRODUCT_EDIT(row?.original?._id)} />)
+    actionMenu.push(<EditAction key={'edit'} href={ADMIN_COUPON__EDIT(row?.original?._id)} />)
     actionMenu.push(<DeleteAction key={'delete'} handleDelete={handleDelete} row={row} deleteType={deleteType} />)
     return actionMenu
   }, [])
@@ -37,24 +37,24 @@ const ShowCoupon = () => {
       <BreadCrumb breadcrumbData={breadCrumbData} />
       <Card className={'py-0 rounded shadow-sm'}>
         <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2 flex justify-between'}>
-          <h4 className='text-2xl font-semibold'>Show Product</h4>
+          <h4 className='text-2xl font-semibold'>Show Coupons</h4>
           <Button asChild>
-            <Link href={ADMIN_PRODUCT_ADD}>
+            <Link href={ADMIN_COUPON_ADD}>
               <FilePlus />
-              New Product
+              New Coupon
             </Link>
           </Button>
         </CardHeader>
         <CardContent className={'pb-5 px-0'}>
           <DataTableWrapper
-            queryKey={'product-data'}
-            fetchUrl={'/api/product'}
+            queryKey={'coupon-data'}
+            fetchUrl={'/api/coupon'}
             initialPageSize={10}
             columnsConfig={columns}
-            exportEndPoint={'/api/product/export'}
-            deleteEndPoint={'/api/product/delete'}
+            exportEndPoint={'/api/coupon/export'}
+            deleteEndPoint={'/api/coupon/delete'}
             deleteType={"SD"}
-            trashView={`${ADMIN_TRASH}?trashof=product`}
+            trashView={`${ADMIN_TRASH}?trashof=coupon`}
             createAction={action}
           />
         </CardContent>
