@@ -56,6 +56,8 @@ export async function GET(req) {
     filters?.forEach((fil) => {
       if (fil?.id === "minShoppingAmount" || fil?.id === "discountPercentage") {
         matchQuries[fil?.id] = Number(fil?.value);
+      } else if (fil?.id === "validity") {
+        matchQuries[fil?.id] = new Date(fil?.value);
       } else {
         matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
       }

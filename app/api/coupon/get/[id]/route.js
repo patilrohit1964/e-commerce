@@ -20,11 +20,11 @@ export async function GET(request, { params }) {
       return responce(false, 400, "invalid object id");
     }
     filter._id = id;
-    const getProduct = await CouponModal.findOne(filter).populate('medias',"secure_url").lean();
-    if (!getProduct) {
-      return responce(false, 404, "Product not found");
+    const getCoupon = await CouponModal.findOne(filter).lean();
+    if (!getCoupon) {
+      return responce(false, 404, "Coupon not found");
     }
-    return responce(true, 200, "Product found.", getProduct);
+    return responce(true, 200, "Coupon found.", getCoupon);
   } catch (error) {
     console.log(error);
     return catchError(error);

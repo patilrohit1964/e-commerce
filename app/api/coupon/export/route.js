@@ -15,14 +15,13 @@ export async function GET(request, { params }) {
       deletedAt: null,
     };
 
-    const getProduct = await CouponModal.find(filter)
-      .seelct("-medias -description -_id")
+    const getCoupon = await CouponModal.find(filter)
       .sort({ createdAt: -1 })
       .lean();
-    if (!getProduct) {
+    if (!getCoupon) {
       return responce(false, 400, "collection empty");
     }
-    return responce(true, 200, "data found", getProduct);
+    return responce(true, 200, "data found", getCoupon);
   } catch (error) {
     console.log(error);
     return catchError(error);
