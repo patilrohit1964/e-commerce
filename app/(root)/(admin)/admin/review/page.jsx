@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import BreadCrumb from "../../../../../components/application/admin/BreadCrumb"
 import DataTableWrapper from "../../../../../components/application/admin/DataTableWrapper"
 import DeleteAction from "../../../../../components/application/admin/DeleteAction"
@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from "../../../../../components/ui/card
 import { DT_CUSTOMER_COLUMN, DT_REVIEW_COLUMN } from "../../../../../lib/column"
 import { columnConfig } from "../../../../../lib/helper"
 import { ADMIN_DASHBOARD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
+import confetti from "canvas-confetti"
 
 const breadCrumbData = [
     {
