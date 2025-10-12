@@ -26,12 +26,12 @@ export const PUT = async (request) => {
       return responce(false, 400, "invalid delete operation ");
     }
     if (deleteType === "SD") {
-      await ProductModel.updateMany(
+      await CouponModal.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: new Date().toISOString() } }
       );
     } else {
-      await ProductModel.updateMany(
+      await CouponModal.updateMany(
         { _id: { $in: ids } },
         { $set: { deletedAt: null } }
       );
