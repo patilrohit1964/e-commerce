@@ -28,7 +28,7 @@ export async function PUT(req) {
     });
 
     if (!updatedCoupon) {
-      return responce(false, 400, "product not found", updatedCoupon);
+      return responce(false, 400, "coupon not found", updatedCoupon);
     }
     updatedCoupon.code = validate?.data?.code;
     updatedCoupon.minShoppingAmount = validate?.data?.minShoppingAmount;

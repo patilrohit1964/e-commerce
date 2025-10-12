@@ -13,6 +13,7 @@ import { showToast } from '../../../../../../../lib/toast'
 import { zSchmea } from '../../../../../../../lib/zodSchema'
 import { ADMIN_COUPON__SHOW, ADMIN_DASHBOARD, ADMIN_PRODUCT_SHOW } from '../../../../../../../routes/adminPaneRoute'
 import dayjs from 'dayjs'
+import { useRouter } from 'next/navigation'
 const breadCrumbData = [
   {
     label: "Home",
@@ -29,9 +30,11 @@ const breadCrumbData = [
 ]
 const EditCoupon = ({ params }) => {
   const { id } = use(params)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const router = useRouter()
   const { data: getCouponData } = useFetch(`/api/coupon/get/${id}`)
   const formSchema = zSchmea.pick({ //we can get that method from zoSchema and use here as schema
+    _id: true,
     code: true,
     validity: true,
     minShoppingAmount: true,
@@ -44,33 +47,34 @@ const EditCoupon = ({ params }) => {
       code: '',
       validity: '',
       minShoppingAmount: 0,
-      discountPercentage: 0
+      discountPercentage: 0,
+      _id: id
     }
   })
 
   useEffect(() => {
     if (getCouponData && getCouponData?.success) {
-      const dbDate = "2025-10-12T00:00:00Z";
-      const date = new Date(dbDate).toISOString().split("T")[0];
       form.reset({
         code: getCouponData?.data?.code,
         minShoppingAmount: getCouponData?.data?.minShoppingAmount,
         discountPercentage: getCouponData?.data?.discountPercentage,
-        validity: date,
+        validity: dayjs(getCouponData?.data?.validity).format("YYYY-MM-DD"),
+        _id: id
       })
     }
   }, [getCouponData])
 
-  const handleCouponAdd = async (values) => {
+  const handleCouponEdit = async (values) => {
     setLoading(true)
     try {
-      const { data: couponRes } = await axios.put('/api/coupon/edit', values);
+      const { data: couponRes } = await axios.put('/api/coupon/update', values);
       if (!couponRes.success) {
         throw new Error(couponRes.message)
       }
       setLoading(false)
       form.reset()
-      showToast("success", couponRes.message || "coupon added Successfull")
+      router.push(ADMIN_COUPON__SHOW)
+      showToast("success", couponRes.message || "coupon Successfull updated");
     }
     catch (error) {
       showToast('error', error?.message)
@@ -83,13 +87,13 @@ const EditCoupon = ({ params }) => {
       <BreadCrumb breadcrumbData={breadCrumbData} />
       <Card className={'py-0 rounded shadow-sm'}>
         <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2'}>
-          <h4 className='text-2xl font-semibold'>Add Coupon</h4>
+          <h4 className='text-2xl font-semibold'>Edit Coupon</h4>
         </CardHeader>
         <CardContent className={'pb-5'}>
           <div>
             {/* in react */}
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleCouponAdd)}>
+              <form onSubmit={form.handleSubmit(handleCouponEdit)}>
                 <div className='grid md:grid-cols-2 gap-5'>
                   <div>
                     <FormField control={form.control} name='code' render={({ field }) => (
@@ -142,7 +146,7 @@ const EditCoupon = ({ params }) => {
 
                 </div>
                 <div className='mt-3'>
-                  <ButtonLoading type={'submit'} text={'Add Coupon'} loading={loading} className={'cursor-pointer w-full'} />
+                  <ButtonLoading type={'submit'} text={'Save Changes'} loading={loading} className={'cursor-pointer w-full'} />
                 </div>
               </form>
             </Form>

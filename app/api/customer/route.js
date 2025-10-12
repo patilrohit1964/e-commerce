@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import connectDb from "../../../lib/dbConnect";
 import { responce } from "../../../lib/helper";
 import { isAuthenticated } from "../../../lib/isAuth";
-import CouponModal from "../../../model/coupon.model";
+import User from "../../../model/user.model";
 
 export async function GET(req) {
   try {
@@ -29,37 +29,16 @@ export async function GET(req) {
     // global search
     if (globalFilter) {
       matchQuries["$or"] = [
-        { code: { $regex: globalFilter, $options: "i" } },
-        {
-          $expr: {
-            $regexMatch: {
-              input: { $toString: "$minShoppingAmount" },
-              regex: globalFilter,
-              options: "i",
-            },
-          },
-        },
-        {
-          $expr: {
-            $regexMatch: {
-              input: { $toString: "$discountPercentage" },
-              regex: globalFilter,
-              options: "i",
-            },
-          },
-        },
+        { name: { $regex: globalFilter, $options: "i" } },
+        { email: { $regex: globalFilter, $options: "i" } },
+        { phone: { $regex: globalFilter, $options: "i" } },
+        { address: { $regex: globalFilter, $options: "i" } },
       ];
     }
 
     // column filter
     filters?.forEach((fil) => {
-      if (fil?.id === "minShoppingAmount" || fil?.id === "discountPercentage") {
-        matchQuries[fil?.id] = Number(fil?.value);
-      } else if (fil?.id === "validity") {
-        matchQuries[fil?.id] = new Date(fil?.value);
-      } else {
-        matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
-      }
+      matchQuries[fil?.id] = { $regex: fil?.value, $options: "i" };
     });
     // sorting
     let sortQuery = {};
@@ -76,10 +55,12 @@ export async function GET(req) {
       {
         $project: {
           _id: 1,
-          code: 1,
-          minShoppingAmount: 1,
-          validity: 1,
-          discountPercentage: 1,
+          name: 1,
+          email: 1,
+          phone: 1,
+          address: 1,
+          avatar: 1,
+          isEmailVerified: 1,
           createdAt: 1,
           updatedAt: 1,
           deletedAt: 1,
@@ -87,12 +68,12 @@ export async function GET(req) {
       },
     ];
     // execute query
-    const getCoupon = await CouponModal.aggregate(aggregatePipeline);
+    const getCustomer = await User.aggregate(aggregatePipeline);
     // get total row count
-    const totalRowCount = await CouponModal.countDocuments(matchQuries);
+    const totalRowCount = await User.countDocuments(matchQuries);
     return NextResponse.json({
       success: true,
-      data: getCoupon,
+      data: getCustomer, //check this url data
       meta: { totalRowCount },
     });
   } catch (error) {

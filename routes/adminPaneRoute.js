@@ -29,3 +29,6 @@ export const ADMIN_COUPON__EDIT = (id) =>
 
 // trash route
 export const ADMIN_TRASH = "/admin/trash";
+
+// customer route
+export const CUSTOMER_SHOW = "/admin/customers";
