@@ -32,3 +32,6 @@ export const ADMIN_TRASH = "/admin/trash";
 
 // customer route
 export const CUSTOMER_SHOW = "/admin/customers";
+
+// review route
+export const REVIEW_SHOW = "/admin/review";

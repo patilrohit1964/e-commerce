@@ -28,6 +28,8 @@ const userSchema = new mongoose.Schema(
       url: {
         type: String,
         trim: true,
+        default:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbTqA2RGIWAc0eJeRLBsUtZUohNxNtgEW8bA&s",
       },
       public_id: {
         type: String,
