@@ -25,7 +25,7 @@ const ThemeSwitch = () => {
                 <DropdownMenuLabel>Themes</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {["Light", "Dark", "System"].map((el, idx) => (
-                    <DropdownMenuItem onClick={() => setTheme(el.toLowerCase())}>{el}</DropdownMenuItem>
+                    <DropdownMenuItem key={idx} onClick={() => setTheme(el.toLowerCase())}>{el}</DropdownMenuItem>
                 ))}
             </DropdownMenuContent>
         </DropdownMenu>

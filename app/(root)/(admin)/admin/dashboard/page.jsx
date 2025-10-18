@@ -1,7 +1,13 @@
+'use client'
+import CountOverview from "./CountOverview"
+import QuickAdd from "./QuickAdd"
 
 const AdminDashboard = () => {
   return (
-    <div>AdminDashboard</div>
+    <div>
+      <CountOverview />
+      <QuickAdd />
+    </div>
   )
 }
 
