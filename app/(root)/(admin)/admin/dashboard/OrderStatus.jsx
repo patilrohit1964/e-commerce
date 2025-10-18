@@ -4,91 +4,77 @@ import { TrendingUp } from "lucide-react"
 import { Pie, PieChart } from "recharts"
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "../../../../../components/ui/card"
 import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent
+} from "../../../../../components/ui/chart"
 
 export const description = "A donut chart"
 
 const chartData = [
-  { status: "pending", visitors: 275, fill: "var(--color-chrome)" },
-  { status: "processing", visitors: 200, fill: "var(--color-safari)" },
-  { status: "shipped", visitors: 187, fill: "var(--color-firefox)" },
-  { status: "delivered", visitors: 173, fill: "var(--color-edge)" },
-  { status: "cancelled", visitors: 90, fill: "var(--color-other)" },
-  { status: "unverified", visitors: 90, fill: "var(--color-other)" },
+    { status: "pending", visitors: 275, fill: "var(--color-pending)" },
+    { status: "processing", visitors: 200, fill: "var(--color-processing)" },
+    { status: "shipped", visitors: 187, fill: "var(--color-shipped)" },
+    { status: "delivered", visitors: 173, fill: "var(--color-delivered)" },
+    { status: "cancelled", visitors: 90, fill: "var(--color-cancelled)" },
+    { status: "unverified", visitors: 90, fill: "var(--color-unverified)" },
 ]
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
+    pending: {
+        label: "Pending",
+        color: "var(--chart-1)",
+    },
+    processing: {
+        label: "Processing",
+        color: "var(--chart-2)",
+    },
+    shipped: {
+        label: "Shipped",
+        color: "var(--chart-3)",
+    },
+    delivered: {
+        label: "Delivered",
+        color: "var(--chart-4)",
+    },
+    cancelled: {
+        label: "Cancelled",
+        color: "var(--chart-5)",
+    },
+    unverified: {
+        label: "Unverified",
+        color: "#00C3E4",
+    },
 }
 
 export function OrderStatus() {
-  return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Pie
-              data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
-            />
-          </PieChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+    return (
+        <div>
+             <ChartContainer
+                    config={chartConfig}
+                    className="mx-auto aspect-square max-h-[250px]"
+                >
+                    <PieChart>
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                        />
+                        <Pie
+                            data={chartData}
+                            dataKey="visitors"
+                            nameKey="status"
+                            innerRadius={60}
+                        />
+                    </PieChart>
+                </ChartContainer>
         </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
-    </Card>
-  )
+    )
 }
