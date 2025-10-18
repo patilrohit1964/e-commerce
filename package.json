@@ -54,6 +54,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.60.0",
     "react-redux": "^9.2.0",
+    "recharts": "^2.15.4",
     "redux-persist": "^6.0.0",
     "slugify": "^1.6.6",
     "sonner": "^2.0.6",
