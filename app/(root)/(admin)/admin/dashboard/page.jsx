@@ -7,6 +7,7 @@ import QuickAdd from "./QuickAdd"
 import { OrderOverview } from "./OrderOverview"
 import { OrderStatus } from "./OrderStatus"
 import { LatestOrder } from "./LatestOrder"
+import { LatestReview } from "./LatestReview"
 
 
 const AdminDashboard = () => {
@@ -57,13 +58,13 @@ const AdminDashboard = () => {
               </Button>
             </div>
           </CardHeader>
-          <CardContent className={'pt-3'}>
+          <CardContent className={'pt-3 lg:h-[350px] overflow-auto'}>
             <LatestOrder />
           </CardContent>
         </Card>
 
         {/* second card */}
-        <Card className={'rounded-lg lg:w-[30%] w-full p-0'}>
+        <Card className={'rounded-lg lg:w-[30%] w-full p-0 block'}>
           <CardHeader className={'py-3 border [.border-b]:pb-3'}>
             <div className="flex justify-between items-center">
               <span>Latest Review</span>
@@ -72,8 +73,8 @@ const AdminDashboard = () => {
               </Button>
             </div>
           </CardHeader>
-
-          <CardContent>
+          <CardContent className={'lg:h-[350px] overflow-auto px-1'}>
+            <LatestReview />
           </CardContent>
         </Card>
       </div>
