@@ -36,7 +36,7 @@ export function LatestReview() {
                         <TableCell>
                             <div className="flex items-center">
                                 {Array.from({ length: 5 }).map((e, i) => (
-                                    <span><Star className="text-yellow-500 fill-yellow-500" size={18} /></span>
+                                    <span key={i}><Star className="text-yellow-500 fill-yellow-500" size={18} /></span>
                                 ))}
                             </div>
                         </TableCell>
