@@ -23,9 +23,12 @@ export function LatestReview() {
                     <TableRow key={idx}>
                         <TableCell className={'flex items-center gap-3'}>
                             <Avatar>
-                                <AvatarImage src='/next.svg' />
+                                <AvatarImage src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3uUwj3--swgBp631BC-haocNy4Pr-58kB0Q&s' />
                             </Avatar>
-                            <span className="line-clamp-2">
+                            <span className="truncate block w-40">
+                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
+                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
+                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
                                 Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
                                 Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
                             </span>
