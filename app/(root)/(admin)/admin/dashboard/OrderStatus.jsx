@@ -1,21 +1,13 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { Pie, PieChart } from "recharts"
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "../../../../../components/ui/card"
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent
 } from "../../../../../components/ui/chart"
+import { Label } from "../../../../../components/ui/label"
 
 export const description = "A donut chart"
 
@@ -35,15 +27,15 @@ const chartConfig = {
     },
     processing: {
         label: "Processing",
-        color: "var(--chart-2)",
+        color: "var(--chart-3)",
     },
     shipped: {
         label: "Shipped",
-        color: "var(--chart-3)",
+        color: "#00C3E4",
     },
     delivered: {
         label: "Delivered",
-        color: "var(--chart-4)",
+        color: "var(--chart-2)",
     },
     cancelled: {
         label: "Cancelled",
@@ -51,30 +43,88 @@ const chartConfig = {
     },
     unverified: {
         label: "Unverified",
-        color: "#00C3E4",
+        color: "var(--color-orange-600)",
     },
 }
 
 export function OrderStatus() {
     return (
         <div>
-             <ChartContainer
-                    config={chartConfig}
-                    className="mx-auto aspect-square max-h-[250px]"
-                >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
+            <ChartContainer
+                config={chartConfig}
+                className="mx-auto aspect-square max-h-[250px]"
+            >
+                <PieChart>
+                    <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Pie
+                        data={chartData}
+                        dataKey="visitors"
+                        nameKey="status"
+                        innerRadius={60}
+                    >
+                        <Label
+                            content={({ viewBox }) => {
+                                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                    return (
+                                        <text
+                                            x={viewBox.cx}
+                                            y={viewBox.cy}
+                                            textAnchor="middle"
+                                            dominantBaseline="middle"
+                                        >
+                                            <tspan
+                                                x={viewBox.cx}
+                                                y={viewBox.cy}
+                                                className="fill-foreground text-3xl font-bold"
+                                            >
+                                                100
+                                            </tspan>
+                                            <tspan
+                                                x={viewBox.cx}
+                                                y={(viewBox.cy || 0) + 24}
+                                                className="fill-muted-foreground"
+                                            >
+                                                Orders
+                                            </tspan>
+                                        </text>
+                                    )
+                                }
+                            }}
                         />
-                        <Pie
-                            data={chartData}
-                            dataKey="visitors"
-                            nameKey="status"
-                            innerRadius={60}
-                        />
-                    </PieChart>
-                </ChartContainer>
+                    </Pie>
+                </PieChart>
+            </ChartContainer>
+            <div>
+                <ul>
+                    <li className="flex justify-between items-center mb-3 text-sm">
+                        <span>Pending</span>
+                        <span className="rounded-full px-2 text-sm bg-blue-500">0</span>
+                    </li>
+                    <li className="flex justify-between items-center mb-3 text-sm">
+                        <span>Processing</span>
+                        <span className="rounded-full px-2 text-sm bg-yellow-500">0</span>
+                    </li>
+                    <li className="flex justify-between items-center mb-3 text-sm">
+                        <span>Shipped</span>
+                        <span className="rounded-full px-2 text-sm bg-cyan-500">0</span>
+                    </li>
+                    <li className="flex justify-between items-center mb-3 text-sm">
+                        <span>Delivered</span>
+                        <span className="rounded-full px-2 text-sm bg-green-500">0</span>
+                    </li>
+                    <li className="flex justify-between items-center mb-3 text-sm">
+                        <span>Cancelled</span>
+                        <span className="rounded-full px-2 text-sm bg-red-500">0</span>
+                    </li>
+                    <li className="flex justify-between items-center mb-3 text-sm">
+                        <span>Unverified</span>
+                        <span className="rounded-full px-2 text-sm bg-orange-600">0</span>
+                    </li>
+                </ul>
+            </div>
         </div>
     )
 }
