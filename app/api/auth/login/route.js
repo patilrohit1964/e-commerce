@@ -38,7 +38,7 @@ export async function POST(request) {
     }
     const otp = generatOtp();
 
-    // resend email
+    // resend email link if user not verified
     if (!getUser.isEmailVerified) {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       const token = await new SignJWT({ userId: getUser._id.toString() })
@@ -81,7 +81,7 @@ export async function POST(request) {
     if (!otpEmailStatus.success) {
       return responce(false, 400, "failed to send otp");
     }
-    return responce(true, 200, "please verify your device");
+    return responce(true, 200, "we sent otp on your email please verify your device");
   } catch (error) {
     console.log(error);
     return catchError(error);
