@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../../components/ui/dialog'
 import { Input } from '../../../components/ui/input'
 import Link from 'next/link';
@@ -6,13 +6,12 @@ import searchData from '../../../lib/search';
 import Fuse from 'fuse.js';
 
 
-const fuseoption = {
-    keys: [
-        'keywords'
-    ]
-}
-const searchingData = new Fuse(searchData, fuseoption)
 const SearchModal = ({ open, setOpen }) => {
+    const fuseoption = {
+        keys: ['keywords', 'description', 'label'],
+        threshold: 0.3 //this is imp if you want strictly search
+    }
+    const searchingData = new Fuse(searchData, fuseoption)
     const [query, setQuery] = useState('');
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -31,7 +30,13 @@ const SearchModal = ({ open, setOpen }) => {
                             </Link>
                         </li>
                     ))
-                        : <h4 className='text-center text-muted-foreground select-none'>No {query} Search Found</h4>
+                        :
+                        <h4 className='text-center text-muted-foreground select-none'>
+                            {query.length >= 1 ?
+                                `No ${query} Search Found`
+                                : 'Search using above input'
+                            }
+                        </h4>
                     }
                 </ul>
             </DialogContent>
