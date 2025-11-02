@@ -1,9 +1,8 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import slugify from 'slugify'
 import BreadCrumb from '../../../../../../components/application/admin/BreadCrumb'
 import ButtonLoading from '../../../../../../components/application/ButtonLoading'
 import { Card, CardContent, CardHeader } from '../../../../../../components/ui/card'
@@ -11,12 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '../../../../../../components/ui/input'
 import { showToast } from '../../../../../../lib/toast'
 import { zSchmea } from '../../../../../../lib/zodSchema'
-import { ADMIN_COUPON__SHOW, ADMIN_DASHBOARD, ADMIN_PRODUCT_SHOW } from '../../../../../../routes/adminPaneRoute'
-import { useFetch } from '../../../../../../hooks/useFetch'
-import Select from '../../../../../../components/application/Select'
-import Editor from '../../../../../../components/application/admin/Editor'
-import MediaModal from '../../../../../../components/application/admin/MediaModal'
-import Image from 'next/image'
+import { ADMIN_COUPON__SHOW, ADMIN_DASHBOARD } from '../../../../../../routes/adminPaneRoute'
 
 const breadCrumbData = [
     {
@@ -76,12 +70,12 @@ const AddCoupon = () => {
                 <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2'}>
                     <h4 className='text-2xl font-semibold'>Add Coupon</h4>
                 </CardHeader>
-                <CardContent className={'pb-5'}>
+                <CardContent className={'pb-5 sm:px-6 px-2'}>
                     <div>
                         {/* in react */}
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(handleProductAdd)}>
-                                <div className='grid md:grid-cols-2 gap-5'>
+                                <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
                                     <div>
                                         <FormField control={form.control} name='code' render={({ field }) => (
                                             <FormItem>

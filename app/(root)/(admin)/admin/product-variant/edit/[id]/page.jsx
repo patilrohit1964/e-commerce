@@ -138,12 +138,12 @@ const EditProductVariant = ({ params }) => {
         <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2'}>
           <h4 className='text-2xl font-semibold'>Edit Product</h4>
         </CardHeader>
-        <CardContent className={'pb-5'}>
+        <CardContent className={'pb-5 sm:px-6 px-2'}>
           <div>
             {/* in react */}
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleProductVariantEdit)}>
-                <div className='grid md:grid-cols-2 gap-5'>
+                <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
                   <div>
                     <FormField control={form.control} name='productId' render={({ field }) => (
                       <FormItem>

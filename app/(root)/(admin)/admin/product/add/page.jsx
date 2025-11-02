@@ -123,12 +123,12 @@ const AddProduct = () => {
                 <CardHeader className={'pt-3 px-3 border-b [.border-b]:pb-2'}>
                     <h4 className='text-2xl font-semibold'>Add Product</h4>
                 </CardHeader>
-                <CardContent className={'pb-5'}>
+                <CardContent className={'pb-5 sm:px-6 px-2'}>
                     <div>
                         {/* in react */}
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(handleProductAdd)}>
-                                <div className='grid md:grid-cols-2 gap-5'>
+                                <div className='grid md:grid-cols-2 gap-5 grid-cols-1'>
                                     <div>
                                         <FormField control={form.control} name='name' render={({ field }) => (
                                             <FormItem>
