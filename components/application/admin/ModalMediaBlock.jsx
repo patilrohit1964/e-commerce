@@ -21,7 +21,7 @@ const ModalMediaBlock = ({ media, selectedMedia, setSelectedMedia, isMulitple })
     return (
         <label htmlFor={media?._id} className='border border-gray-200 dark:border-gray-800 relative group rounded overflow-hidden'>
             <div className='absolute top-2 left-2 z-20'>
-                <Checkbox id={media?._id} checked={selectedMedia?.find(m => m?._id === media?._id) ? true : false} onCheckedChange={handleCheck} />
+                <Checkbox id={media?._id} checked={selectedMedia?.find(m => m?._id === media?._id) ? true : false} onCheckedChange={handleCheck} className={'border-2 border-orange-500'} />
             </div>
             <div className='size-full relative'>
                 <Image src={media?.secure_url} alt={media?.alt || 'image'} width={300} height={300} className='object-cover md:h-[150px] h-[100px]' />

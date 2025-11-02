@@ -5,6 +5,7 @@ import React from 'react';
 import { Button } from '../../ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../ui/dialog';
 import ModalMediaBlock from './ModalMediaBlock';
+import ButtonLoading from '../ButtonLoading';
 
 const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple }) => {
 
@@ -35,7 +36,7 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
             <DialogContent onInteractOutside={(e) => e.preventDefault()} className={'sm:max-w-[80%] h-screen p-0 py-10 bg-transparent border-0 shadow-none'}>
                 <DialogDescription className={'hidden'}></DialogDescription>
-                <div className='h-[90vh] dark:bg-gray-600 bg-white p-3 rounded shadow'>
+                <div className='h-[90vh] dark:bg-card bg-white p-3 rounded shadow'>
                     <DialogHeader className={'h-8 border-b'}>
                         <DialogTitle className={'dark:text-white'}>Media Selection</DialogTitle>
                     </DialogHeader>
@@ -60,6 +61,14 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMulitple
                                     ))}
                                 </div>
                             </>
+                        }
+                        {
+                            hasNextPage ?
+                                <div className='flex justify-center items-center'>
+                                    <ButtonLoading type={'button'} text={'Load More'} loading={isFetching} onClick={fetchNextPage()} />
+                                </div>
+                                :
+                                <div className='text-center text-gray-400 select-none py-4'>No more data for load</div>
                         }
                     </div>
                     <div className='h-10 pt-3 border-t flex justify-between'>

@@ -44,6 +44,9 @@ const productVarintSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    stock: {
+      type: Number,
+    },
     deletedAt: {
       type: String,
       index: true,
