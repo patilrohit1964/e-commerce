@@ -1,14 +1,15 @@
 'use client'
-import { Search, UserCircle } from 'lucide-react'
+import { Menu, Search, UserCircle, X } from 'lucide-react'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_LOGIN } from '../../../routes/websiteRoute'
 import Cart from './Cart'
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
+import { useState } from 'react'
 
 const Header = () => {
     const { auth } = useSelector((state) => state.authStore)
-    console.log('auth', auth);
+    const [isMobile, setIsMobile] = useState(false)
     return (
         <div className='bg-white border-b lg:px-32 px-4'>
             <div className='flex justify-between items-center lg:py-5 py-3'>
@@ -17,8 +18,18 @@ const Header = () => {
                     {/* <Image src={Logo} alt='logo' width={383} height={146} className='lg:w-32 w-24' /> */}
                 </Link>
                 <div className='flex justify-between items-center gap-20'>
-                    <nav>
-                        <ul className='flex items-center justify-between px-3 gap-10'>
+                    <nav className={`lg:relative lg:w-auto lg:left-0 lg:top-0 lg:p-0 bg-white fixed z-50 top-0 w-full h-screen ${isMobile ? 'left-0' : '-left-full'} transition-all duration-700`}>
+
+                        <div className='lg:hidden flex items-center justify-between bg-gray-50 py-3 border-b px-3'>
+                            {/* image  */}
+                            logo
+                            <button type='button' onClick={() => setIsMobile(false)}>
+                                <X />
+                            </button>
+
+                        </div>
+
+                        <ul className='lg:flex items-center justify-between px-3 gap-10'>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
                                 <Link href={WEBSITE_HOME} className='block py-2'>Home</Link>
                             </li>
@@ -56,12 +67,16 @@ const Header = () => {
                                     </Avatar>
                                 </Link>
                             ) :
-                             (
-                                <Link href={WEBSITE_LOGIN}>
-                                    <UserCircle className='text-gray-500 hover:text-primary cursor-pointer' />
-                                </Link>
-                            )
+                                (
+                                    <Link href={WEBSITE_LOGIN}>
+                                        <UserCircle className='text-gray-500 hover:text-primary cursor-pointer' />
+                                    </Link>
+                                )
                         }
+                        {/* menubar */}
+                        <button type='button' className='lg:hidden block' onClick={() => setIsMobile(true)}>
+                            <Menu />
+                        </button>
                     </div>
                 </div>
             </div>
