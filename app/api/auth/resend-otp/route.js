@@ -41,7 +41,7 @@ export async function POST(request) {
     if (!otpSendStatus.success) {
       return responce(false, 400, "failed to resend otp");
     }
-    return responce(true, 200, "otp send successfully");
+    return responce(true, 200, "otp resend successfully");
   } catch (error) {
     console.log(error);
   }

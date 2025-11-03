@@ -50,7 +50,7 @@ const Header = () => {
                         {
                             auth ? (
                                 <Link href={USER_DASHBOARD}>
-                                    <Avatar className={'border border-gray-600'}>
+                                    <Avatar className={'border border-gray-400'}>
                                         <AvatarImage src={auth?.avatar?.url || 'data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='} />
                                         <AvatarFallback>Image</AvatarFallback>
                                     </Avatar>
