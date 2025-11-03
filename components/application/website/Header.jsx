@@ -6,10 +6,12 @@ import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_LOGIN } from '../../../routes/web
 import Cart from './Cart'
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
 import { useState } from 'react'
+import SearchModal from '../admin/SearchModal'
 
 const Header = () => {
     const { auth } = useSelector((state) => state.authStore)
     const [isMobile, setIsMobile] = useState(false)
+    const [open, setOpen] = useState(false)
     return (
         <div className='bg-white border-b lg:px-32 px-4'>
             <div className='flex justify-between items-center lg:py-5 py-3'>
@@ -17,8 +19,9 @@ const Header = () => {
                     logo
                     {/* <Image src={Logo} alt='logo' width={383} height={146} className='lg:w-32 w-24' /> */}
                 </Link>
-                <div className='flex justify-between items-center gap-20'>
-                    <nav className={`lg:relative lg:w-auto lg:left-0 lg:top-0 lg:p-0 bg-white fixed z-50 top-0 w-full h-screen ${isMobile ? 'left-0' : '-left-full'} transition-all duration-700`}>
+                <div className='flex justify-between gap-20'>
+                    {/* all nav links ui */}
+                    <nav className={`lg:relative lg:w-auto lg:left-0 lg:h-auto lg:top-0 lg:p-0 bg-white fixed z-50 top-0 w-full h-screen ${isMobile ? 'left-0' : '-left-full'} transition-all duration-300`}>
 
                         <div className='lg:hidden flex items-center justify-between bg-gray-50 py-3 border-b px-3'>
                             {/* image  */}
@@ -53,8 +56,10 @@ const Header = () => {
                             </li>
                         </ul>
                     </nav>
+
+                    {/* search, cart, auth ui */}
                     <div className='flex items-center justify-between gap-8'>
-                        <button type='button'>
+                        <button type='button' onClick={()=>setOpen(!open)}>
                             <Search className='text-gray-500 hover:text-primary cursor-pointer' />
                         </button>
                         <Cart />
@@ -78,6 +83,8 @@ const Header = () => {
                             <Menu />
                         </button>
                     </div>
+                    {/* search dialog open */}
+                    {open && <SearchModal open={open} setOpen={setOpen} />}
                 </div>
             </div>
 
