@@ -1,3 +1,5 @@
+import { Facebook, Instagram, LocationCity, Twitter, WhatsApp, YouTube, YoutubeSearchedFor } from '@mui/icons-material'
+import { Mail, Phone } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -10,46 +12,65 @@ const Footer = () => {
           <p className='text-gray-500 text-sm'></p>
         </div>
         <div className='flex flex-col items-start justify-between'>
-          <h3 className=''>Categories</h3>
+          <h3 className='text-xl font-bold uppercase mb-5'>Categories</h3>
           <ul>
-            <li><Link href={''}>T-shirt</Link></li>
-            <li><Link href={''}>Hoodies</Link></li>
-            <li><Link href={''}>Oversized</Link></li>
-            <li><Link href={''}>Full Sleeves</Link></li>
-            <li><Link href={''}>Polo</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>T-shirt</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Hoodies</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Oversized</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Full Sleeves</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Polo</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>
-          <h3 className=''>USEFUL LINKS</h3>
+          <h3 className='text-xl font-bold uppercase mb-5'>USEFUL LINKS</h3>
           <ul>
-            <li><Link href={''}>Home</Link></li>
-            <li><Link href={''}>Shop</Link></li>
-            <li><Link href={''}>About</Link></li>
-            <li><Link href={''}>Register</Link></li>
-            <li><Link href={''}>Login</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Home</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Shop</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>About</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Register</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Login</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>
-          <h3 className=''>HELP CENTER</h3>
+          <h3 className='text-xl font-bold uppercase mb-5'>HELP CENTER</h3>
           <ul>
-            <li><Link href={''}>Register</Link></li>
-            <li><Link href={''}>Login</Link></li>
-            <li><Link href={''}>My Account</Link></li>
-            <li><Link href={''}>Privacy Policy</Link></li>
-            <li><Link href={''}>Terms & Conditions</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Register</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Login</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>My Account</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Privacy Policy</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Terms & Conditions</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>
-          <h3 className=''>CONTACT</h3>
+          <h3 className='text-xl font-bold uppercase mb-5'>CONTACT</h3>
           <ul>
-            <li><Link href={''}>E-store market mumbai <br /> inida 425408</Link></li>
-            <li><Link href={''}>+91-7038394748</Link></li>
-            <li><Link href={''}>support@gmail.com</Link></li>
-            <li><Link href={''}>links</Link></li>
+            <li className='mb-2 text-gray-500 flex gap-3 hover:text-primary transition duration-300'>
+              <LocationCity size={20} />
+              <Link href={''}>
+                E-store market mumbai <br /> inida 425408
+              </Link>
+            </li>
+            <li className='mb-2 text-gray-500 flex gap-3 hover:text-primary transition duration-300'>
+              <Phone size={20} />
+              <Link href={''}>+91-7038394748</Link>
+            </li>
+            <li className='mb-2 text-gray-500 flex gap-3 hover:text-primary transition duration-300'>
+              <Mail size={20} />
+              <Link href={''}>support@gmail.com</Link>
+            </li>
+            <li className='mb-2 text-gray-500 flex gap-5'>
+              <Link href={''} className='hover:text-primary transition duration-300'><YouTube /></Link>
+              <Link href={''} className='hover:text-primary transition duration-300'><Instagram /></Link>
+              <Link href={''} className='hover:text-primary transition duration-300'><Facebook /></Link>
+              <Link href={''} className='hover:text-primary transition duration-300'><Twitter /></Link>
+              <Link href={''} className='hover:text-primary transition duration-300'><WhatsApp /></Link>
+            </li>
           </ul>
         </div>
       </div>
-
+      <div className='py-5 bg-gray-100'>
+        <p className='text-center'>&copy; Estore. All Right Reserved</p>
+      </div>
     </footer>
   )
 }
