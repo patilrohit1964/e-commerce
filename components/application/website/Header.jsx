@@ -59,7 +59,7 @@ const Header = () => {
 
                     {/* search, cart, auth ui */}
                     <div className='flex items-center justify-between gap-8'>
-                        <button type='button' onClick={()=>setOpen(!open)}>
+                        <button type='button' onClick={() => setOpen(!open)}>
                             <Search className='text-gray-500 hover:text-primary cursor-pointer' />
                         </button>
                         <Cart />
@@ -67,7 +67,7 @@ const Header = () => {
                             auth ? (
                                 <Link href={USER_DASHBOARD}>
                                     <Avatar className={'border border-gray-400'}>
-                                        <AvatarImage src={auth?.avatar?.url || 'data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='} />
+                                        <AvatarImage src={auth?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxqETGq7dg-ejdhZLas43Ad8zNvgsUGiQwQ&s'} />
                                         <AvatarFallback>Image</AvatarFallback>
                                     </Avatar>
                                 </Link>

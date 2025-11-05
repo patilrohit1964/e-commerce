@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ClipboardList, LogOut, Shirt } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
 import { Button } from '../../../components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../../../components/ui/dropdown-menu'
@@ -31,6 +31,7 @@ const userMenu = [
 const UserDropDown = () => {
   const dispatch = useDispatch()
   const router = useRouter()
+  const { auth } = useSelector((state) => state.authStore)
   const logoutHandler = async () => {
     try {
       const { data: logoutResponce } = await axios.post('/api/auth/logout')
@@ -49,15 +50,15 @@ const UserDropDown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button type="button" variant={'secondary'} className={'cursor-pointer'}>
-          <Avatar>
-            <AvatarImage src={Logo} />
-            <AvatarFallback>CN</AvatarFallback>
+        {/* <Button type="button" variant={'ghost'} className={'cursor-pointer'}> */}
+          <Avatar className={'cursor-pointer border border-gray-400'}>
+            <AvatarImage src={auth?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxqETGq7dg-ejdhZLas43Ad8zNvgsUGiQwQ&s'} />
+            <AvatarFallback>profile</AvatarFallback>
           </Avatar>
-        </Button>
+        {/* </Button> */}
       </DropdownMenuTrigger>
       <DropdownMenuContent className={'me-5 w-44'}>
-        <DropdownMenuLabel>Developer Rohit</DropdownMenuLabel>
+        <DropdownMenuLabel>{auth?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {userMenu.map((el, idx) => (
           <Link href={el.url}>
