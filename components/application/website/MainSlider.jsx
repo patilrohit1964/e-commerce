@@ -7,28 +7,28 @@ import "slick-carousel/slick/slick.css";
 import slider2 from '../../../public/slider-2.png';
 import slider3 from '../../../public/slider-3.png';
 import slider4 from '../../../public/slider-4.png';
-function SampleNextArrow(props) {
-    const { onClick, className } = props;
-    return (
-        <button
-            type='button'
-            className={'lg:absolute top-57 right-5 z-50 rounded-full bg-white'}
-            onClick={onClick}
-        >
-            <ChevronRight size={50} color='black' />
-        </button >
-    );
-}
-
-function SamplePrevArrow(props) {
+function NextArrow(props) {
     const { onClick } = props;
     return (
         <button
             type='button'
-            className={'lg:absolute top-57 left-5 z-50 rounded-full bg-white'}
+            className={'flex items-center absolute top-1/2 -translate-y-1/2 right-5 z-50 rounded-full bg-white'}
             onClick={onClick}
         >
-            <ChevronLeft size={50} color='black' />
+            <ChevronRight size={25} color='black' />
+        </button >
+    );
+}
+
+function PrevArrow(props) {
+    const { onClick } = props;
+    return (
+        <button
+            type='button'
+            className={'flex items-center absolute top-1/2 -translate-y-1/2 left-5 z-50 rounded-full bg-white'}
+            onClick={onClick}
+        >
+            <ChevronLeft size={25} color='black' />
         </button >
     );
 }
@@ -38,8 +38,19 @@ const MainSlider = () => {
         infinite: true,
         speed: 500,
         autoplay: true,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+        responsive: [
+            {
+                breakpoint: 480,
+                settings: {
+                    dots: false,
+                    arrow: false,
+                    prevArrow: '',
+                    nextArrow: ''
+                }
+            }
+        ]
     }
     return (
         <Slider {...settings}>
