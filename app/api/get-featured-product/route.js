@@ -5,11 +5,10 @@ import ProductModel from "../../../model/product.model";
 export async function GET() {
   try {
     await connectDb();
-    filter._id = id;
     const getProduct = await ProductModel.find({
       deletedAt: null,
     })
-      .populate("medias", "secure_url")
+      .populate("medias")
       .limit(8)
       .lean();
     if (!getProduct) {

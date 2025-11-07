@@ -3,9 +3,10 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 const FeaturedProducts = async () => {
-    // const { data: productData } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/get-featured-product`)
-    // console.log('productData', productData);
-// check url
+    const { data: productData } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/get-featured-product`)
+    if (!productData) {
+        return null
+    }
     return (
         <section className='lg:px-32 px-4 sm:py-10'>
             <div className='flex justify-between items-center'>
@@ -15,7 +16,12 @@ const FeaturedProducts = async () => {
                 </Link>
             </div>
             <div className='grid md:grid-cols-4 grid-cols-2 sm:gap-10 gap-2'>
-
+                {!productData.success && <div>product not found</div>}
+                {
+                    productData.success && productData?.data?.map(product => (
+                        <div key={product?._id}>{product?.name}</div>
+                    ))
+                }
             </div>
         </section>
     )
