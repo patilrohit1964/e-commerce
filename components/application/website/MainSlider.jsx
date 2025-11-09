@@ -54,15 +54,6 @@ const MainSlider = () => {
     }
     return (
         <Slider {...settings}>
-            {/* <div>
-                <Image
-                    src={slider1}
-                    layout="responsive"
-                    width={slider1.width}
-                    height={slider1.height}
-                    alt="slider image 1"
-                />
-            </div> */}
             <div>
                 <Image
                     src={slider2}

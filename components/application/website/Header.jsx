@@ -2,7 +2,7 @@
 import { Menu, Search, UserCircle, X } from 'lucide-react'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
-import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_LOGIN } from '../../../routes/websiteRoute'
+import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_LOGIN, WEBSITE_SHOP } from '../../../routes/websiteRoute'
 import Cart from './Cart'
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
 import { useState } from 'react'
@@ -43,7 +43,7 @@ const Header = () => {
                                 <Link href={WEBSITE_HOME} className='block py-2'>Contact</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>Shop</Link>
+                                <Link href={WEBSITE_SHOP} className='block py-2'>Shop</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
                                 <Link href={WEBSITE_HOME} className='block py-2'>T-shirt</Link>
