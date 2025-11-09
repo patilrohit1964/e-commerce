@@ -3,13 +3,15 @@ import Link from 'next/link';
 import MainSlider from '../../../components/application/website/MainSlider';
 import banner1 from '../../../public/banner1.png';
 import banner2 from '../../../public/banner2.png';
+import advertisingBanner from '../../../public/advertising-banner.png';
 import FeaturedProducts from '../../../components/application/website/FeaturedProducts';
+import Testimonial from '../../../components/application/website/Testimonial';
 
 const Home = () => {
   return (
     <>
       {/* section 1 */}
-      <section className='overflow- relative'>
+      <section>
         <MainSlider />
       </section>
 
@@ -29,10 +31,15 @@ const Home = () => {
         </div>
       </section>
 
+      <FeaturedProducts />
+
       {/* section 3 */}
-      <section>
-        <FeaturedProducts />
+      <section className='sm:pt-20 pt-5 pb-10'>
+        <Image src={advertisingBanner.src} height={advertisingBanner.height} width={advertisingBanner.width} alt='advertising banner' />
       </section>
+
+      {/* testimonial */}
+      <Testimonial />
     </>
   )
 }

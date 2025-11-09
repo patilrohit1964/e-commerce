@@ -1,15 +1,21 @@
 import Image from 'next/image'
 import React from 'react'
 import imagePlaceholder from '../../../public/img-placeholder.webp';
+import Link from 'next/link';
 
 const ProductBox = ({ product }) => {
     return (
-        <div>
-            <Image src={product?.medias?.secure_url || imagePlaceholder} width={400} height={400} alt={product?.medias?.alt || product?.name} title={product?.medias?.title || product?.name} />
-            <div className='p-3'>
-                <h4>{product?.name}</h4>
-                <p></p>
-            </div>
+        <div className='rounded-lg hover:shadow-lg border overflow-hidden'>
+            <Link href={''}>
+                <Image src={product?.medias[0]?.secure_url || imagePlaceholder} width={400} height={400} alt={product?.medias[0]?.alt || product?.name} title={product?.medias[0]?.title || product?.name} className='lg:h-[300px] md:h-[200px] h-[150px] w-full object-cover object-top' />
+                <div className='p-3 border-t'>
+                    <h4>{product?.name}</h4>
+                    <p className='flex items-center gap-2 text-sm mt-2'>
+                        <span className='line-through text-gray-400'>{product?.mrp.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
+                        <span className='font-semibold'>{product?.sellingPrice?.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
+                    </p>
+                </div>
+            </Link>
         </div>
     )
 }

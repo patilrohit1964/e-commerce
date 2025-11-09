@@ -1,6 +1,7 @@
 import connectDb from "../../../lib/dbConnect";
 import { catchError, responce } from "../../../lib/helper";
 import ProductModel from "../../../model/product.model";
+import MediaModel from "../../../model/media.model";
 
 export async function GET() {
   try {
