@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { WEBSITE_HOME } from '../../../routes/websiteRoute';
-
 const WebsiteBreadCrumb = ({props}) => {
     return (
-        <div className={`py-10 flex justify-center items-center bg-cover bg-center`}>
+        <div className={`py-10 flex justify-center items-center bg-cover bg-center bg-[url('/page-title.png')]`}>
             <div>
                 <h1 className='text-2xl font-semibold mb-2 text-center'>{props?.title}</h1>
                 <ul className='flex gap-2 justify-center'>

@@ -1,5 +1,5 @@
 'use client'
-import { Quote, Star } from 'lucide-react'
+import { MessageSquareText, Star } from 'lucide-react'
 import Slider from 'react-slick'
 const testimonial = [
     {
@@ -91,7 +91,7 @@ const Testimonial = () => {
                     testimonial.map((item, index) => (
                         <div key={index} className='p-5'>
                             <div className='border rounded-lg p-5'>
-                                <Quote className='rotate-180' />
+                                <MessageSquareText className='mb-2' />
                                 <p className='mb-5'>{item?.review}</p>
                                 <p className='font-semibold'>{item?.name}</p>
                                 <div className='flex mt-5'>
