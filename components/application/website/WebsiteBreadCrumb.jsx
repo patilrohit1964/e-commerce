@@ -8,7 +8,7 @@ const WebsiteBreadCrumb = ({props}) => {
                 <ul className='flex gap-2 justify-center'>
                     <li><Link href={WEBSITE_HOME} className='font-semibold'>Home</Link></li>
                     {props.links.map((link, idx) => (
-                        <li>
+                        <li key={idx}>
                             <span className='me-1'>/</span>
                             {link?.href ? <Link href={link?.href}>{link?.label}</Link> : <span>{link?.label}</span>}
                         </li>
