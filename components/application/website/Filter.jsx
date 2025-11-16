@@ -1,5 +1,4 @@
 'use client'
-import { Button } from '../../../components/ui/button'
 import Link from 'next/link'
 import { useRouter, useSearchParams, } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -9,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../../../components/ui/accordion'
+import { Button } from '../../../components/ui/button'
 import { Checkbox } from '../../../components/ui/checkbox'
 import { Slider } from '../../../components/ui/slider'
 import { useFetch } from '../../../hooks/useFetch'

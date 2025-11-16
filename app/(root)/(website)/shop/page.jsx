@@ -1,6 +1,9 @@
+'use client'
+import Shorting from '../../../../components/application/website/Shorting';
 import Filter from '../../../../components/application/website/Filter';
 import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb';
 import { WEBSITE_SHOP } from '../../../../routes/websiteRoute';
+import { useState } from 'react';
 
 const breadCrumb = {
     title: 'Shop',
@@ -9,6 +12,7 @@ const breadCrumb = {
     ]
 }
 const Shop = () => {
+    const [limit, setLimit] = useState(0);
     return (
         <div>
             <WebsiteBreadCrumb props={breadCrumb} />
@@ -18,7 +22,9 @@ const Shop = () => {
                         <Filter />
                     </div>
                 </div>
-                <div></div>
+                <div className='lg:w-[calc(100%-18rem)]'>
+                    <Shorting limit={limit} setLimit={setLimit} />
+                </div>
             </section>
         </div>
     )
