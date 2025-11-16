@@ -22,9 +22,9 @@ export async function GET(request, { params }) {
     filter._id = id;
     const getCategory = await CategoryModel.findOne(filter).lean();
     if (!getCategory) {
-      return responce(false, 404, "media not found");
+      return responce(false, 404, "category not found");
     }
-    return responce(true, 200, "media found.", getCategory);
+    return responce(true, 200, "category found.", getCategory);
   } catch (error) {
     console.log(error);
     return catchError(error);
