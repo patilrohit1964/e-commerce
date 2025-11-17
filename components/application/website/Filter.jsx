@@ -99,7 +99,7 @@ const Filter = () => {
                   <li key={category?._id} className='mb-3'>
                     <label className={'space-x-3 cursor-pointer flex items-center'}>
                       <Checkbox className={'border border-gray-500'} onCheckedChange={(e) => handleCategoryFilter(category?.slug)} checked={selectedCategory.includes(category?.slug)} />
-                      <span>{category?.name}</span>
+                      <span className='uppercase'>{category?.name}</span>
                     </label>
                   </li>
                 ))}

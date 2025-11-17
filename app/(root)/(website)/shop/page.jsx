@@ -38,13 +38,16 @@ const Shop = () => {
                             </div>
                         </div> :
                         <Sheet open={isMobileFilter} onOpenChange={() => setMobileFilter(false)}>
-                            <SheetContent side='left' className={'overflow-auto'}>
-                                <SheetHeader>
+                            <SheetContent side='left' className={'overflow-auto block'}>
+                                <SheetHeader className={'border-b'}>
                                     <SheetTitle>Filters</SheetTitle>
                                     <SheetDescription>
-                                        <Filter />
+                                        You can filter anything
                                     </SheetDescription>
                                 </SheetHeader>
+                                <div className="p-4">
+                                    <Filter />
+                                </div>
                             </SheetContent>
                         </Sheet>
                 }
