@@ -1,3 +1,4 @@
+import { ListFilter } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select'
 import { sortings } from '../../../lib/utils'
@@ -5,6 +6,7 @@ import { sortings } from '../../../lib/utils'
 const Shorting = ({ limit, setLimit, sorting, setSorting, mobileFilterOpen, setMobileFilterOpen }) => {
     return (
         <div className='flex items-center justify-between flex-wrap gap-2 p-4 bg-gray-50'>
+            <Button type='button' className={'lg:hidden'} variant={'outline'} onClick={() => setMobileFilterOpen(!mobileFilterOpen)}>Filter <ListFilter size={20} /></Button>
             <ul className='flex items-center gap-4'>
                 <li className='font-semibold'>Show</li>
                 {

@@ -1,6 +1,9 @@
 'use client'
+import { ListFilter } from 'lucide-react';
 import { useState } from 'react';
 import Filter from '../../../../components/application/website/Filter';
+import Shorting from '../../../../components/application/website/Shorting';
+import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb';
 import {
     Sheet,
     SheetContent,
@@ -9,8 +12,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '../../../../components/ui/sheet';
-import Shorting from '../../../../components/application/website/Shorting';
-import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb';
 import useWindowSize from '../../../../hooks/useWindowSize';
 import { WEBSITE_SHOP } from '../../../../routes/websiteRoute';
 
@@ -23,6 +24,7 @@ const breadCrumb = {
 const Shop = () => {
     const [limit, setLimit] = useState(0);
     const [sorting, setSorting] = useState('');
+    const [isMobileFilter, setMobileFilter] = useState(false);
     const windowSize = useWindowSize();
     return (
         <div>
@@ -35,21 +37,19 @@ const Shop = () => {
                                 <Filter />
                             </div>
                         </div> :
-                        <Sheet>
-                            <SheetTrigger>Open</SheetTrigger>
-                            <SheetContent side='left'>
+                        <Sheet open={isMobileFilter} onOpenChange={() => setMobileFilter(false)}>
+                            <SheetContent side='left' className={'overflow-auto'}>
                                 <SheetHeader>
-                                    <SheetTitle>Are you absolutely sure?</SheetTitle>
+                                    <SheetTitle>Filters</SheetTitle>
                                     <SheetDescription>
-                                        This action cannot be undone. This will permanently delete your account
-                                        and remove your data from our servers.
+                                        <Filter />
                                     </SheetDescription>
                                 </SheetHeader>
                             </SheetContent>
                         </Sheet>
                 }
                 <div className='lg:w-[calc(100%-18rem)]'>
-                    <Shorting limit={limit} setLimit={setLimit} sorting={sorting} setSorting={setSorting} />
+                    <Shorting limit={limit} setLimit={setLimit} sorting={sorting} setSorting={setSorting} mobileFilterOpen={isMobileFilter} setMobileFilterOpen={setMobileFilter} />
                 </div>
             </section>
         </div>
