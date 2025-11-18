@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import ProductBox from './ProductBox'
+import { TextShimmer } from '../../../components/ui/text-shimmer'
 
 const FeaturedProducts = async () => {
     const { data: productData } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/get-featured-product`)

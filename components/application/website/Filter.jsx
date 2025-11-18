@@ -14,6 +14,7 @@ import { Slider } from '../../../components/ui/slider'
 import { useFetch } from '../../../hooks/useFetch'
 import { WEBSITE_SHOP } from '../../../routes/websiteRoute'
 import ButtonLoading from '../ButtonLoading'
+import { CoolMode } from '../../../components/ui/cool-mode'
 
 const Filter = () => {
   const searchParams = useSearchParams()
@@ -83,9 +84,11 @@ const Filter = () => {
   return (
     <div>
       {searchParams?.size > 0 &&
-        <Button type='button' variant={'destructive'}>
-          <Link href={WEBSITE_SHOP}>Clear Filter</Link>
-        </Button>
+        <CoolMode>
+          <Button type='button' variant={'destructive'}>
+            <Link href={WEBSITE_SHOP}>Clear Filter</Link>
+          </Button>
+        </CoolMode>
       }
       <Accordion type="multiple" defaultValue={['1', '2', '3', '4']}>
         {/* this help to multiple accordion open by default open all accordion */}

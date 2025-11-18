@@ -1,4 +1,5 @@
 'use client'
+import { TextShimmer } from '../../../components/ui/text-shimmer'
 import { MessageSquareText, Star } from 'lucide-react'
 import Slider from 'react-slick'
 const testimonial = [
@@ -84,7 +85,9 @@ const Testimonial = () => {
     }
     return (
         <div className='lg:px-32 px-4 sm:pt-20 pt-5 pb-10'>
-            <h2 className='text-center sm:text-4xl text-2xl mb-5 font-semibold'>Customer Reviews</h2>
+            <TextShimmer as='h2' duration={2} className='text-center sm:text-4xl text-2xl mb-5 font-semibold'>
+                Customer Reviews
+            </TextShimmer>
             <Slider {...settings}>
                 {
                     // generate random 10 testimonial data 
