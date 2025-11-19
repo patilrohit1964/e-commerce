@@ -14,6 +14,8 @@ import {
 } from '../../../../components/ui/sheet';
 import useWindowSize from '../../../../hooks/useWindowSize';
 import { WEBSITE_SHOP } from '../../../../routes/websiteRoute';
+import axios from 'axios';
+import { useSearchParams } from 'next/navigation';
 
 const breadCrumb = {
     title: 'Shop',
@@ -22,10 +24,16 @@ const breadCrumb = {
     ]
 }
 const Shop = () => {
+    const searchParams = useSearchParams().toString();
     const [limit, setLimit] = useState(0);
     const [sorting, setSorting] = useState('');
     const [isMobileFilter, setMobileFilter] = useState(false);
     const windowSize = useWindowSize();
+    const fetchProductData = async (pageParam) => {
+        const { data: getProduct } = await axios.get(`/api/shop?page=${pageParam}&limit=${limit}&sort=${sorting}&${searchParams}`)
+        console.log(getProduct)
+    }
+    fetchProductData(0)
     return (
         <div>
             <WebsiteBreadCrumb props={breadCrumb} />

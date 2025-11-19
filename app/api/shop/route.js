@@ -17,7 +17,6 @@ export async function GET(request) {
     const limit = parseInt(searchParams?.get("limit")) || 9;
     const page = parseInt(searchParams?.get("page")) || 0;
     const skip = page * limit;
-    console.log('all data',searchParams.name,color,minPrice,maxPrice,categorySlug,search)
     // sorting
     const sortOptions = searchParams?.get("sort") || "default_sorting";
     let sortQuery = {};
