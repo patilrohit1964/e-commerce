@@ -1,10 +1,7 @@
-import { NextResponse } from "next/server";
 import connectDb from "../../../lib/dbConnect";
 import { responce } from "../../../lib/helper";
-import { isAuthenticated } from "../../../lib/isAuth";
-import REVIEWModel from "../../../model/review.model";
-import CategoryModel from "@/model/category.model";
-import ProductModel from "@/model/product.model";
+import CategoryModel from "../../../model/category.model";
+import ProductModel from "../../../model/product.model";
 export async function GET(request) {
   try {
     await connectDb();
@@ -12,15 +9,15 @@ export async function GET(request) {
     // get filters from query params
     const size = searchParams?.get("size");
     const color = searchParams?.get("color");
-    const minPrice = parseInt(searchParams?.get("minPrice"));
-    const maxPrice = parseInt(searchParams?.get("maxPrice"));
+    const minPrice = parseInt(searchParams?.get("minPrice")) || 0;
+    const maxPrice = parseInt(searchParams?.get("maxPrice")) || 0;
     const categorySlug = searchParams?.get("category");
     const search = searchParams?.get("q");
     // pagination
     const limit = parseInt(searchParams?.get("limit")) || 9;
     const page = parseInt(searchParams?.get("page")) || 0;
-    const pageMultiLimit = page * limit;
-
+    const skip = page * limit;
+    console.log('all data',searchParams.name,color,minPrice,maxPrice,categorySlug,search)
     // sorting
     const sortOptions = searchParams?.get("sort") || "default_sorting";
     let sortQuery = {};
@@ -51,10 +48,73 @@ export async function GET(request) {
       { $match: matchStage },
       { $sort: sortQuery },
       { $skip: skip },
-      { $limit: limit + 1 },{
-        // here inc get data
-      }
+      { $limit: limit + 1 },
+      {
+        $lookup: {
+          from: "productvariants",
+          localField: "_id",
+          foreignField: "product",
+          as: "variants",
+        },
+      },
+      {
+        $addFields: {
+          variants: {
+            $filter: {
+              input: "$variants",
+              as: "variant",
+              cond: {
+                $and: [
+                  size ? { $eq: ["$$variant.size", size] } : { $literal: true }, // literal use for bypass,
+                  color
+                    ? { $eq: ["$$variant.color", color] }
+                    : { $literal: true }, // literal use for bypass,
+                  { $gte: ["$$variant.sellingPrice", minPrice] }, // literal use for bypass,
+                  { $lte: ["$$variant.sellingPrice", maxPrice] }, // literal use for bypass,
+                ],
+              },
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "medias",
+          localField: "media",
+          foreignField: "_id",
+          as: "media",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          slug: 1,
+          mrp: 1,
+          sellingPrice: 1,
+          discountPercentage: 1,
+          media: {
+            _id: 1,
+            secure_url: 1,
+            alt: 1,
+          },
+          variants: {
+            color: 1,
+            size: 1,
+            mrp: 1,
+            sellingPrice: 1,
+            discountPercentage: 1,
+          },
+        },
+      },
     ]);
+
+    let nextPage = null;
+    if (products.length > limit) {
+      nextPage = page + 1;
+      products.pop(); //remove xtra items
+    }
+    return responce(true, 200, "Product date found", { products, nextPage });
   } catch (error) {
     console.log(error);
   }
