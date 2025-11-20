@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Suspense } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import Loading from './Loading'
 
 const queryClient = new QueryClient()
 
@@ -12,7 +13,7 @@ const GlobalProvider = ({ children }) => {
     return (
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-                <PersistGate persistor={persistor} loading={<h1>Loading...</h1>}>
+                <PersistGate persistor={persistor} loading={<Loading />}>
                     {children}
                 </PersistGate>
             </Provider>
