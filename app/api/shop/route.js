@@ -79,9 +79,9 @@ export async function GET(request) {
       {
         $lookup: {
           from: "medias",
-          localField: "media",
+          localField: "medias",
           foreignField: "_id",
-          as: "media",
+          as: "medias",
         },
       },
       {
@@ -92,7 +92,7 @@ export async function GET(request) {
           mrp: 1,
           sellingPrice: 1,
           discountPercentage: 1,
-          media: {
+          medias: {
             _id: 1,
             secure_url: 1,
             alt: 1,
@@ -103,6 +103,7 @@ export async function GET(request) {
             mrp: 1,
             sellingPrice: 1,
             discountPercentage: 1,
+            // our filterin and data not working currectly so work on this aggrgation 
           },
         },
       },
