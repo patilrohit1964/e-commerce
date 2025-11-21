@@ -52,7 +52,7 @@ export async function GET(request) {
         $lookup: {
           from: "productvariants",
           localField: "_id",
-          foreignField: "product",
+          foreignField: "productId",
           as: "variants",
         },
       },
@@ -64,12 +64,16 @@ export async function GET(request) {
               as: "variant",
               cond: {
                 $and: [
-                  size ? { $eq: ["$$variant.size", size] } : { $literal: true }, // literal use for bypass,
-                  color
-                    ? { $eq: ["$$variant.color", color] }
-                    : { $literal: true }, // literal use for bypass,
-                  { $gte: ["$$variant.sellingPrice", minPrice] }, // literal use for bypass,
-                  { $lte: ["$$variant.sellingPrice", maxPrice] }, // literal use for bypass,
+                  // size filter
+                  size ? { $eq: ["$$variant.size", size] } : true, // literal use for bypass,
+                  // color filter
+                  color ? { $eq: ["$$variant.color", color] } : true, // literal use for bypass,
+                  minPrice !== undefined
+                    ? { $gte: ["$$variant.sellingPrice", minPrice] }
+                    : true, // literal use for bypass,
+                  maxPrice !== undefined
+                    ? { $lte: ["$$variant.sellingPrice", maxPrice] }
+                    : true, // literal use for bypass,
                 ],
               },
             },
@@ -78,7 +82,7 @@ export async function GET(request) {
       },
       {
         $lookup: {
-          from: "medias",
+          from: "media",
           localField: "medias",
           foreignField: "_id",
           as: "medias",
@@ -103,7 +107,6 @@ export async function GET(request) {
             mrp: 1,
             sellingPrice: 1,
             discountPercentage: 1,
-            // our filterin and data not working currectly so work on this aggrgation 
           },
         },
       },
