@@ -26,19 +26,20 @@ export async function GET(request) {
     if (sortOptions === "price_low_high") sortQuery = { sellingPrice: 1 };
     if (sortOptions === "price_high_low") sortQuery = { sellingPrice: -1 };
     // find category by slug
-    let categoryId = null;
+    let categoryId = [];
     if (categorySlug) {
-      const categoryData = await CategoryModel.findOne({
+      const slugs = categorySlug.split(",");
+      const categoryData = await CategoryModel.find({
         deletedAt: null,
-        slug: categorySlug,
+        slug: { $in: slugs },
       })
         .select("_id")
         .lean();
-      if (categoryData) categoryId = categoryData?._id;
+      categoryId = categoryData?.map((cat) => cat?._id);
     }
     // match stage
     let matchStage = {};
-    if (categoryId) matchStage.category = categoryId; //filter by category
+    if (categoryId) matchStage.category = { $in: categoryId }; //filter by category
     if (search) {
       matchStage.name = { $regex: search, $options: "i" };
     }
