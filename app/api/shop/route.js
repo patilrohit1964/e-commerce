@@ -10,7 +10,7 @@ export async function GET(request) {
     const size = searchParams?.get("size");
     const color = searchParams?.get("color");
     const minPrice = parseInt(searchParams?.get("minPrice")) || 0;
-    const maxPrice = parseInt(searchParams?.get("maxPrice")) || 0;
+    const maxPrice = parseInt(searchParams?.get("maxPrice")) || 100000;
     const categorySlug = searchParams?.get("category");
     const search = searchParams?.get("q");
     // pagination
@@ -66,9 +66,11 @@ export async function GET(request) {
               cond: {
                 $and: [
                   // size filter
-                  size ? { $eq: ["$$variant.size", size] } : true, // literal use for bypass,
+                  size ? { $in: ["$$variant.size", size?.split(",")] } : true, // literal use for bypass,
                   // color filter
-                  color ? { $eq: ["$$variant.color", color] } : true, // literal use for bypass,
+                  color
+                    ? { $in: ["$$variant.color", color?.split(",")] }
+                    : true, // literal use for bypass,
                   minPrice !== undefined
                     ? { $gte: ["$$variant.sellingPrice", minPrice] }
                     : true, // literal use for bypass,
@@ -81,6 +83,12 @@ export async function GET(request) {
           },
         },
       },
+      {
+        $match: {
+          variants: { $ne: [] },
+        },
+      },
+      // check this api data correctly
       {
         $lookup: {
           from: "media",
@@ -118,7 +126,7 @@ export async function GET(request) {
       nextPage = page + 1;
       products.pop(); //remove xtra items
     }
-    return responce(true, 200, "Product date found", { products, nextPage });
+    return responce(true, 200, "Product data found", { products, nextPage });
   } catch (error) {
     console.log(error);
   }
