@@ -83,11 +83,10 @@ const Header = () => {
                             <Menu />
                         </button>
                     </div>
-                    {/* search dialog open */}
-                    {showSearch && <ShopSearch open={open} setOpen={setOpen} />}
                 </div>
             </div>
-
+            {/* search dialog open */}
+            <ShopSearch isShow={showSearch} />
         </div>
     )
 }

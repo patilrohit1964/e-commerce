@@ -6,3 +6,6 @@ export const WEBSITE_LOGIN = "/auth/login";
 export const USER_DASHBOARD = "/my-account";
 
 export const WEBSITE_SHOP = "/shop";
+
+// product details
+export const PRODUCT_DETAILS = (slug) => (slug ? `/product/${slug}` : "/product");

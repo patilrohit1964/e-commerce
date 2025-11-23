@@ -1,11 +1,9 @@
 "use client";
+import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
-import { Input } from "../../ui/input";
+import { Input } from "../../../components/ui/input";
 import { WEBSITE_SHOP } from "../../../routes/websiteRoute";
-
-
 const ShopSearch = ({ isShow }) => {
     const router = useRouter()
     const [query, setQuery] = useState()
@@ -24,7 +22,7 @@ const ShopSearch = ({ isShow }) => {
                     onChange={(e) => setQuery(e.target.value)}
                 />
                 <button type="button" onClick={handleSearch} className="absolute right-3 cursor-pointer">
-                    <IoSearchOutline size={20} className="text-gray-500" />
+                    <Search size={20} className="text-gray-500" />
                 </button>
             </div>
         </div>
