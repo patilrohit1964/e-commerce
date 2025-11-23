@@ -46,7 +46,6 @@ const Shop = () => {
             return lastPage.nextPage
         }
     })
-    console.log('data', data);
     return (
         <div>
             <WebsiteBreadCrumb props={breadCrumb} />
