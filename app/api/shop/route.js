@@ -39,7 +39,7 @@ export async function GET(request) {
     }
     // match stage
     let matchStage = {};
-    if (categoryId) matchStage.category = { $in: categoryId }; //filter by category
+    if (categoryId.length > 0) matchStage.category = { $in: categoryId }; //filter by category
     if (search) {
       matchStage.name = { $regex: search, $options: "i" };
     }

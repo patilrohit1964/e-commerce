@@ -14,7 +14,6 @@ import { Slider } from '../../../components/ui/slider'
 import { useFetch } from '../../../hooks/useFetch'
 import { WEBSITE_SHOP } from '../../../routes/websiteRoute'
 import ButtonLoading from '../ButtonLoading'
-import { CoolMode } from '../../../components/ui/cool-mode'
 
 const Filter = () => {
   const searchParams = useSearchParams()
@@ -84,11 +83,9 @@ const Filter = () => {
   return (
     <div>
       {searchParams?.size > 0 &&
-        <CoolMode>
-          <Button type='button' variant={'destructive'}>
-            <Link href={WEBSITE_SHOP}>Clear Filter</Link>
-          </Button>
-        </CoolMode>
+        <Button type='button' variant={'destructive'}>
+          <Link href={WEBSITE_SHOP}>Clear Filter</Link>
+        </Button>
       }
       <Accordion type="multiple" defaultValue={['1', '2', '3', '4']}>
         {/* this help to multiple accordion open by default open all accordion */}
@@ -153,7 +150,7 @@ const Filter = () => {
         <AccordionItem value="4">
           <AccordionTrigger className={'uppercase font-semibold hover:no-underline'}>Price</AccordionTrigger>
           <AccordionContent>
-            <Slider defaultValue={[0, 3000]} max={3000} step={1} onValueChange={handlePriceChange} />
+            <Slider defaultValue={[0, 3000]} max={3000} step={1} onValueChange={handlePriceChange} className={'cursor-pointer'} />
             <div className='flex justify-between items-center pt-2'>
               <span>{priceFilter.minPrice.toLocaleString("en-In", { style: 'currency', currency: 'INR' })}</span>
               <span>{priceFilter.maxPrice.toLocaleString("en-In", { style: 'currency', currency: 'INR' })}</span>

@@ -1,17 +1,17 @@
 'use client'
 import { Menu, Search, UserCircle, X } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
 import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_LOGIN, WEBSITE_SHOP } from '../../../routes/websiteRoute'
 import Cart from './Cart'
-import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar'
-import { useState } from 'react'
-import SearchModal from '../admin/SearchModal'
-
+import ShopSearch from './ShopSearch'
 const Header = () => {
     const { auth } = useSelector((state) => state.authStore)
     const [isMobile, setIsMobile] = useState(false)
     const [open, setOpen] = useState(false)
+    const [showSearch, setShowSearch] = useState(false)
     return (
         <div className='bg-white border-b lg:px-32 px-4'>
             <div className='flex justify-between items-center lg:py-5 py-3'>
@@ -59,7 +59,7 @@ const Header = () => {
 
                     {/* search, cart, auth ui */}
                     <div className='flex items-center justify-between gap-8'>
-                        <button type='button' onClick={() => setOpen(!open)}>
+                        <button type='button' onClick={() => setShowSearch(!showSearch)}>
                             <Search className='text-gray-500 hover:text-primary cursor-pointer' />
                         </button>
                         <Cart />
@@ -84,7 +84,7 @@ const Header = () => {
                         </button>
                     </div>
                     {/* search dialog open */}
-                    {open && <SearchModal open={open} setOpen={setOpen} />}
+                    {showSearch && <ShopSearch open={open} setOpen={setOpen} />}
                 </div>
             </div>
 

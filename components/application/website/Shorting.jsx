@@ -10,9 +10,9 @@ const Shorting = ({ limit, setLimit, sorting, setSorting, mobileFilterOpen, setM
             <ul className='flex items-center gap-4'>
                 <li className='font-semibold'>Show</li>
                 {
-                    [13, 44, 35, 41]?.map((limitNumber, idx) => (
+                    [9, 12, 18, 24]?.map((limitNumber, idx) => (
                         <li key={idx}>
-                            <Button type='button' className={limitNumber === limit ? 'w-8 h-8 flex justify-center items-center rounded-full border bg-primary text-sm text-white' : 'cursor-pointer '} variant={'ghost'} onClick={() => setLimit(limitNumber)}>{limitNumber}</Button>
+                            <Button type='button' className={limitNumber === limit ? 'w-8 h-8 flex justify-center items-center rounded-full border bg-primary text-sm text-white cursor-pointer' : 'cursor-pointer border border-gray-300 rounded-full w-8 h-8'} variant={'ghost'} onClick={() => setLimit(limitNumber)}>{limitNumber}</Button>
                         </li>
                     ))
                 }
