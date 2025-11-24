@@ -53,7 +53,7 @@ export function ProductDetailOne({ productData, productSizes }) {
 								key={index}
 								onClick={() => setCurrentImageIndex(index)}
 								className={cn(
-									"aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors",
+									"aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors cursor-pointer",
 									currentImageIndex === index
 										? "border-gray-900"
 										: "border-transparent"
@@ -97,10 +97,10 @@ export function ProductDetailOne({ productData, productSizes }) {
 						<a
 							href="#"
 							className="text-muted-foreground hover:text-gray-900 inline-block mb-2">
-							{productData.category}
+							{productData.category?.name}
 						</a>
 						<h1 className="text-3xl font-bold">{productData.name}</h1>
-						<p className="text-muted-foreground">{productData.description}</p>
+						<p className="text-muted-foreground">{productData.discription}</p>
 					</div>
 
 					<div className="flex items-end gap-2">

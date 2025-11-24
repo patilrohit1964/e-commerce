@@ -26,7 +26,7 @@ export async function GET(request, { params }) {
 
     // get product
     const getProduct = await ProductModel?.findOne(filter)
-      .populate("medias", "secure_url")
+      .populate("medias category", "secure_url name")
       .lean();
 
     if (!getProduct) {
