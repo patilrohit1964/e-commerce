@@ -1,11 +1,36 @@
 'use client'
+import Link from 'next/link'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../../../../../components/ui/breadcrumb'
 import { ProductDetailOne } from '../../../../../components/ui/product-detail-01'
-import React from 'react'
+import { WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../../routes/websiteRoute'
 
 const productDetail = ({ product, productColors, productSizes, productReview, productVariants }) => {
   return (
-    <div>
-      <ProductDetailOne productData={product} productSizes={productSizes} />
+    <div className='lg:px-32 px-4'>
+      <div className='my-10'>
+        <Breadcrumb className='mb-5'>
+          <BreadcrumbList>
+            <div className='flex items-center'>
+              <BreadcrumbItem >
+                <BreadcrumbLink href={'/'}>Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem >
+                <BreadcrumbLink href={WEBSITE_SHOP}>Product</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href={WEBSITE_PRODUCT_DETAILS(product?.slug)}>
+                    {product?.name}
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </div>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <ProductDetailOne productData={product} productSizes={productSizes} />
+      </div>
     </div>
   )
 }

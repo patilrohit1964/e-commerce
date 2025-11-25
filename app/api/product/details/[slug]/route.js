@@ -2,6 +2,7 @@ import connectDb from "../../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../../lib/helper";
 import ProductModel from "../../../../../model/product.model";
 import MediaModel from "../../../../../model/media.model";
+import CategoryModel from "../../../../../model/category.model";
 import ProductVariantModal from "../../../../../model/productVariant.model";
 import REVIEWModel from "../../../../../model/review.model";
 
@@ -25,8 +26,17 @@ export async function GET(request, { params }) {
     filter.slug = slug;
 
     // get product
-    const getProduct = await ProductModel?.findOne(filter)
-      .populate("medias category", "secure_url name")
+    const getProduct = await ProductModel.findOne(filter)
+      .populate([
+        {
+          path: "medias",
+          select: "secure_url",
+        },
+        {
+          path: "category",
+          select: "name",
+        },
+      ])
       .lean();
 
     if (!getProduct) {

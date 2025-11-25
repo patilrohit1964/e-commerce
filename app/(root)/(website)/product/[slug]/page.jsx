@@ -18,6 +18,7 @@ const ProductPage = async ({ params, searchParams }) => {
         )
     } else {
         return (
+
             <ProductDetail product={getProduct?.data?.productData} productColors={getProduct?.data?.productColors} productVariants={getProduct?.data?.productVariants} productSizes={getProduct?.data?.productSizes} productReview={getProduct?.data?.productReviews} />
         )
     };
