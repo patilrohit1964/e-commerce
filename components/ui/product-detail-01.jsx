@@ -4,6 +4,7 @@ import { Button } from "./button";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const productData = {
 	name: "Man Black Cotton T-Shirt",
@@ -24,23 +25,29 @@ const productData = {
 	stockMessage: "Last 1 left - make it yours!",
 };
 
-export function ProductDetailOne({ productData, productSizes }) {
+export function ProductDetailOne({ productData, productSizes, productColors, productVariants }) {
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-	const [selectedSize, setSelectedSize] = useState("S");
-	const [selectedColor, setSelectedColor] = useState(0);
+	const [selectedSize, setSelectedSize] = useState(productSizes[0]);
+	const [selectedColor, setSelectedColor] = useState(productColors[0]);
 	const [quantity, setQuantity] = useState(1);
-
+	const cartsArray =useSelector(state=>state)
+	// here check redux store cart slice contains auth state
+	console.log('cartArray',cartsArray);
 	const nextImage = () => {
-		setCurrentImageIndex((prev) => (prev + 1) % productData.medias.length);
+		setCurrentImageIndex((prev) => (prev + 1) % productData?.medias?.length);
 	};
 
 	const prevImage = () => {
 		setCurrentImageIndex((prev) =>
-			(prev - 1 + productData.medias.length) % productData.medias.length);
+			(prev - 1 + productData.medias.length) % productData?.medias?.length);
 	};
 
 	const incrementQuantity = () => setQuantity((prev) => prev + 1);
 	const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
+
+	const addToCart = () => {
+
+	}
 
 	return (
 		<div className="w-full max-w-6xl mx-auto p-6 not-prose">
@@ -60,7 +67,7 @@ export function ProductDetailOne({ productData, productSizes }) {
 								)}>
 								<img
 									src={image?.secure_url}
-									alt={`${productData.name} ${index + 1}`}
+									alt={`${productData?.name} ${index + 1}`}
 									className="w-full h-full object-cover" />
 							</button>
 						))}
@@ -69,8 +76,8 @@ export function ProductDetailOne({ productData, productSizes }) {
 					<div
 						className="flex-1 relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
 						<img
-							src={productData.medias[currentImageIndex]?.secure_url}
-							alt={productData.name}
+							src={productData?.medias[currentImageIndex]?.secure_url}
+							alt={productData?.name}
 							className="w-full h-full object-cover" />
 
 						{/* Navigation Arrows */}
@@ -99,14 +106,14 @@ export function ProductDetailOne({ productData, productSizes }) {
 							className="text-muted-foreground hover:text-gray-900 inline-block mb-2">
 							{productData.category?.name}
 						</a>
-						<h1 className="text-3xl font-bold">{productData.name}</h1>
-						<p className="text-muted-foreground">{productData.discription}</p>
+						<h1 className="text-3xl font-bold">{productData?.name}</h1>
+						<p className="text-muted-foreground">{productData?.discription}</p>
 					</div>
 
 					<div className="flex items-end gap-2">
 						<p className="text-3xl font-bold">
-							{productData.sellingPrice}
-							{productData.mrp - productData.discountPercentage}
+							{productData?.sellingPrice}
+							{productData.mrp - productData?.discountPercentage}
 						</p>
 						<p className="text-gray-400 font-medium text-2xl line-through">
 							{productData.sellingPrice}
@@ -130,6 +137,22 @@ export function ProductDetailOne({ productData, productSizes }) {
 						</div>
 					</div>
 
+					<div>
+						<h3 className="text-sm font-medium mb-2">Available Colors:</h3>
+						<div className="flex gap-2">
+							{productColors?.map((color) => (
+								<Button
+									key={color}
+									variant={selectedColor === color ? "default" : "outline"}
+									size="sm"
+									className={'uppercase cursor-pointer'}
+									onClick={() => setSelectedColor(color)}>
+									{color}
+								</Button>
+							))}
+						</div>
+					</div>
+
 					<div className="flex items-center gap-4">
 						<div className="flex items-center border border-gray-300 rounded-lg">
 							<Button
@@ -148,7 +171,7 @@ export function ProductDetailOne({ productData, productSizes }) {
 								<Plus className="w-4 h-4" />
 							</Button>
 						</div>
-						<Button size="lg" className={'cursor-pointer'}>Add to cart</Button>
+						<Button size="lg" className={'cursor-pointer'} onClick={addToCart}>Add to cart</Button>
 					</div>
 				</div>
 			</div>

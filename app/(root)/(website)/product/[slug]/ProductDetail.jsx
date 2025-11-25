@@ -29,7 +29,9 @@ const productDetail = ({ product, productColors, productSizes, productReview, pr
             </div>
           </BreadcrumbList>
         </Breadcrumb>
-        <ProductDetailOne productData={product} productSizes={productSizes} />
+      </div>
+      <div className='md:flex justify-between items-start lg:gap-10 gap-5 mb-20'>
+        <ProductDetailOne productData={product} productSizes={productSizes} productColors={productColors} productVariants={productVariants} />
       </div>
     </div>
   )
