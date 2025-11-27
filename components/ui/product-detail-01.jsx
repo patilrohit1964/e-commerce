@@ -4,7 +4,8 @@ import { Button } from "./button";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../store/reducers/cartReducer";
 
 const productData = {
 	name: "Man Black Cotton T-Shirt",
@@ -30,9 +31,8 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 	const [selectedSize, setSelectedSize] = useState(productSizes[0]);
 	const [selectedColor, setSelectedColor] = useState(productColors[0]);
 	const [quantity, setQuantity] = useState(1);
-	const cartsArray =useSelector(state=>state)
-	// here check redux store cart slice contains auth state
-	console.log('cartArray',cartsArray);
+	const cartsArray = useSelector(state => state)
+	const dispatch = useDispatch()
 	const nextImage = () => {
 		setCurrentImageIndex((prev) => (prev + 1) % productData?.medias?.length);
 	};
@@ -45,8 +45,8 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 	const incrementQuantity = () => setQuantity((prev) => prev + 1);
 	const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
-	const addToCart = () => {
-
+	const addToInCart = () => {
+		dispatch(addToCart(productData))
 	}
 
 	return (
@@ -171,7 +171,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 								<Plus className="w-4 h-4" />
 							</Button>
 						</div>
-						<Button size="lg" className={'cursor-pointer'} onClick={addToCart}>Add to cart</Button>
+						<Button size="lg" className={'cursor-pointer'} onClick={addToInCart}>Add to cart</Button>
 					</div>
 				</div>
 			</div>
