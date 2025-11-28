@@ -36,17 +36,15 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 	const nextImage = () => {
 		setCurrentImageIndex((prev) => (prev + 1) % productData?.medias?.length);
 	};
-
 	const prevImage = () => {
 		setCurrentImageIndex((prev) =>
 			(prev - 1 + productData.medias.length) % productData?.medias?.length);
 	};
-
 	const incrementQuantity = () => setQuantity((prev) => prev + 1);
 	const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
 	const addToInCart = () => {
-		dispatch(addToCart(productData))
+		dispatch(addToCart({ ...productData, quantity }))
 	}
 
 	return (
