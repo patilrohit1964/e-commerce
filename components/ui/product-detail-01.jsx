@@ -109,13 +109,17 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 					</div>
 
 					<div className="flex items-end gap-2">
-						<p className="text-3xl font-bold">
-							{productData?.sellingPrice}
-							{productData.mrp - productData?.discountPercentage}
-						</p>
 						<p className="text-gray-400 font-medium text-2xl line-through">
-							{productData.sellingPrice}
 							{productData.mrp}
+							{/* {productData.sellingPrice} */}
+						</p>
+						<p className="text-3xl font-bold">
+							${productData?.sellingPrice}
+							{/* {productData.mrp - productData?.discountPercentage} */}
+						</p>
+						<p className="text-[#389588] font-medium text-md">
+							{productData?.discountPercentage}% off
+							{/* {productData.sellingPrice} */}
 						</p>
 					</div>
 
