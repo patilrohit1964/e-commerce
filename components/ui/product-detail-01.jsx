@@ -1,11 +1,14 @@
 "use client";
 
 import { Button } from "./button";
-import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Minus, Plus, Star } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/reducers/cartReducer";
+import { decode } from "entities";
+import Link from "next/link";
+import { WEBSITE_PRODUCT_DETAILS } from "../../routes/websiteRoute";
 
 const productData = {
 	name: "Man Black Cotton T-Shirt",
@@ -26,34 +29,45 @@ const productData = {
 	stockMessage: "Last 1 left - make it yours!",
 };
 
-export function ProductDetailOne({ productData, productSizes, productColors, productVariants }) {
+export function ProductDetailOne({ productData, productSizes, productColors, productVariants, productReview }) {
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-	const [selectedSize, setSelectedSize] = useState(productSizes[0]);
-	const [selectedColor, setSelectedColor] = useState(productColors[0]);
+	const [selectedSize, setSelectedSize] = useState(productVariants?.size);
+	const [selectedColor, setSelectedColor] = useState(productVariants?.color);
 	const [quantity, setQuantity] = useState(1);
-	const cartsArray = useSelector(state => state)
 	const dispatch = useDispatch()
 	const nextImage = () => {
-		setCurrentImageIndex((prev) => (prev + 1) % productData?.medias?.length);
+		setCurrentImageIndex((prev) => (prev + 1) % productVariants?.medias?.length);
 	};
 	const prevImage = () => {
 		setCurrentImageIndex((prev) =>
-			(prev - 1 + productData.medias.length) % productData?.medias?.length);
+			(prev - 1 + productVariants.medias.length) % productVariants?.medias?.length);
 	};
 	const incrementQuantity = () => setQuantity((prev) => prev + 1);
 	const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
-
 	const addToInCart = () => {
-		dispatch(addToCart({ ...productData, quantity }))
+		const cartData = {
+			_id: productData?._id,
+			category: productData?.category?.name,
+			discountPercentage: productVariants?.discountPercentage,
+			proudctName: productData?.name,
+			quantity,
+			color: productVariants?.color,
+			size: productVariants?.size,
+			sellingPrice: productVariants?.sellingPrice,
+			mrp: productVariants?.mrp,
+			media: productVariants?.medias[currentImageIndex]?.secure_url
+		}
+		dispatch(addToCart({ ...cartData, quantity }))
 	}
 
 	return (
-		<div className="w-full max-w-6xl mx-auto p-6 not-prose">
+		<div className="w-full max-w-6xl mx-auto not-prose">
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 				{/* Image Section */}
 				<div className="flex gap-2">
 					<div className="flex flex-col w-28 gap-2">
-						{productData?.medias?.map((image, index) => (
+						{/* changing image list button */}
+						{productVariants?.medias?.map((image, index) => (
 							<button
 								key={index}
 								onClick={() => setCurrentImageIndex(index)}
@@ -74,7 +88,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 					<div
 						className="flex-1 relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
 						<img
-							src={productData?.medias[currentImageIndex]?.secure_url}
+							src={productVariants?.medias[currentImageIndex]?.secure_url}
 							alt={productData?.name}
 							className="w-full h-full object-cover" />
 
@@ -105,16 +119,22 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 							{productData.category?.name}
 						</a>
 						<h1 className="text-3xl font-bold">{productData?.name}</h1>
-						<p className="text-muted-foreground">{productData?.discription}</p>
+						<div className="flex items-center gap-1 py-2">
+							{Array.from({ length: 5 }).map((_, idx) => (
+								<Star key={idx} size={18} />
+							))}
+							<span className="text-sm ps-2">({productReview} Reviews)</span>
+						</div>
+						<p className="text-muted-foreground line-clamp-3" dangerouslySetInnerHTML={{ __html: decode(productData?.discription) }}></p>
 					</div>
 
 					<div className="flex items-end gap-2">
-						<p className="text-gray-400 font-medium text-2xl line-through">
-							{productData.mrp}
+						<p className="text-gray-400 font-medium text-md line-through">
+							{productData.mrp.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
 							{/* {productData.sellingPrice} */}
 						</p>
 						<p className="text-3xl font-bold">
-							${productData?.sellingPrice}
+							{productData?.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}
 							{/* {productData.mrp - productData?.discountPercentage} */}
 						</p>
 						<p className="text-[#389588] font-medium text-md">
@@ -124,33 +144,38 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 					</div>
 
 					<div>
-						<h3 className="text-sm font-medium mb-2">Available Sizes:</h3>
+						<h3 className="text-sm font-medium mb-2 uppercase">Size: {productVariants?.size}</h3>
 						<div className="flex gap-2">
 							{productSizes?.map((size) => (
-								<Button
-									key={size}
-									variant={selectedSize === size ? "default" : "outline"}
-									size="sm"
-									className={'uppercase cursor-pointer'}
-									onClick={() => setSelectedSize(size)}>
-									{size}
-								</Button>
+								<Link href={`${WEBSITE_PRODUCT_DETAILS(productData?.slug)}?color=${productVariants?.color}&&size=${size}`} key={size}
+								>
+									<Button
+										key={size}
+										variant={productVariants?.size === size ? "default" : "outline"}
+										size="sm"
+										className={'uppercase cursor-pointer'}
+										onClick={() => setSelectedSize(size)}>
+										{size}
+									</Button>
+								</Link>
 							))}
 						</div>
 					</div>
 
 					<div>
-						<h3 className="text-sm font-medium mb-2">Available Colors:</h3>
+						<h3 className="text-sm font-medium mb-2">Color: {productVariants?.color}</h3>
 						<div className="flex gap-2">
 							{productColors?.map((color) => (
-								<Button
-									key={color}
-									variant={selectedColor === color ? "default" : "outline"}
-									size="sm"
-									className={'uppercase cursor-pointer'}
-									onClick={() => setSelectedColor(color)}>
-									{color}
-								</Button>
+								<Link href={`${WEBSITE_PRODUCT_DETAILS(productData?.slug)}?color=${color}&&size=${productVariants?.size}`} key={color}
+								>
+									<Button
+										variant={productVariants?.color === color ? "default" : "outline"}
+										size="sm"
+										className={'uppercase cursor-pointer'}
+										onClick={() => setSelectedColor(color)}>
+										{color}
+									</Button>
+								</Link>
 							))}
 						</div>
 					</div>
@@ -177,6 +202,6 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 					</div>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 }

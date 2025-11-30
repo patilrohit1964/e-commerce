@@ -31,7 +31,7 @@ const productDetail = ({ product, productColors, productSizes, productReview, pr
         </Breadcrumb>
       </div>
       <div className='md:flex justify-between items-start lg:gap-10 gap-5 mb-20'>
-        <ProductDetailOne productData={product} productSizes={productSizes} productColors={productColors} productVariants={productVariants} />
+        <ProductDetailOne productData={product} productSizes={productSizes} productColors={productColors} productVariants={productVariants} productReview={productReview} />
       </div>
     </div>
   )

@@ -30,7 +30,7 @@ export function CartItems({ item }) {
             className="w-full max-w-[480px] bg-muted border shadow-none rounded-xl not-prose p-4 flex-row gap-4 border-gray-500">
             <div className="w-20 h-20 bg-white rounded-xl overflow-hidden flex-shrink-0">
                 <img
-                    src={item.medias[0]?.secure_url}
+                    src={item.media}
                     alt={item.name}
                     className="w-full h-full object-cover" />
             </div>
