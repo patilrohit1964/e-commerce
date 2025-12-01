@@ -49,7 +49,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 			_id: productData?._id,
 			category: productData?.category?.name,
 			discountPercentage: productVariants?.discountPercentage,
-			proudctName: productData?.name,
+			name: productData?.name,
 			quantity,
 			color: productVariants?.color,
 			size: productVariants?.size,

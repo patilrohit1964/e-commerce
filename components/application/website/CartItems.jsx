@@ -37,7 +37,7 @@ export function CartItems({ item }) {
             <div className="flex-1 flex flex-col space-y-4">
                 <div className="flex gap-4">
                     <div className="flex-1">
-                        <CardDescription>{item.category?.name}</CardDescription>
+                        <CardDescription>{item.category}</CardDescription>
                         <CardTitle>{item.name}</CardTitle>
                     </div>
 
