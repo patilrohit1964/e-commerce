@@ -8,7 +8,7 @@ export async function POST(req) {
     const auth = await isAuthenticated("user");
     if (!auth.isAuth) {
       return responce(false, 403, "unauthorized");
-    }
+    } //check here function throw error
     await connectDb();
     const payload = await req.json();
     const schema = zSchmea.pick({

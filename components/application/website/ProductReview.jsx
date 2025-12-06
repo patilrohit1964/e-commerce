@@ -14,6 +14,8 @@ import { Textarea } from '../../../components/ui/textarea'
 import { zSchmea } from '../../../lib/zodSchema'
 import Link from 'next/link'
 import { WEBSITE_LOGIN } from '../../../routes/websiteRoute'
+import { showToast } from '../../../lib/toast'
+import axios from 'axios'
 
 const ProductReview = ({ productId }) => {
     const [loading, setLoading] = useState(false)
@@ -41,8 +43,23 @@ const ProductReview = ({ productId }) => {
             review: '',
         }
     })
-    const handleAddReview = (values) => {
-        console.log('values', values);
+    const handleAddReview = async (values) => {
+        try {
+            setLoading(true)
+            const { data: reviewAddRes } = await axios.post('/api/review/create', values);
+            if (!reviewAddRes.success) {
+                throw new Error(reviewAddRes.message)
+            }
+            setLoading(false)
+            form.reset()
+            showToast("success", reviewAddRes.message || "review added Successfull")
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', error?.message)
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <div className="shadow rounded border">
