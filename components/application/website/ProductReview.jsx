@@ -87,7 +87,6 @@ const ProductReview = ({ productId }) => {
                                         {/* <FormLabel htmlFor={'rating-1'}>Rating</FormLabel> */}
                                         <FormControl>
                                             <Rating
-                                                values={field?.value}
                                                 size='large'
                                                 {...field}
                                             />
@@ -110,11 +109,11 @@ const ProductReview = ({ productId }) => {
                                 </FormField>
                             </div>
                             <div className='my-5'>
-                                <FormField control={form.control} name='review-1' render={({ field }) => (
+                                <FormField control={form.control} name='review' render={({ field }) => (
                                     <FormItem>
                                         <FormLabel htmlFor={'review-1'}>Review</FormLabel>
                                         <FormControl>
-                                            <Textarea placeholder="Write your comment here..." {...field} />
+                                            <Textarea id='review-1' placeholder="Write your comment here..." {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -122,7 +121,7 @@ const ProductReview = ({ productId }) => {
                                 </FormField>
                             </div>
                             <div>
-                                <ButtonLoading type={'submit'} text={'Add Category'} loading={loading} className={'cursor-pointer'} />
+                                <ButtonLoading type={'submit'} text={'Add Review'} loading={loading} disabled={loading} className={'cursor-pointer'} />
                             </div>
                         </form>
                     </Form>
