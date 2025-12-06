@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 
 const CartData = ({ open, setOpen, cartItems }) => {
     // set cart data and focus on cart state management
-    const { cartItems:cartData } = useSelector(state => state?.cartStore)
     return (
         <Sheet open={open} onOpenChange={() => setOpen(false)}>
             <SheetContent side='right' className={'px-2'}>

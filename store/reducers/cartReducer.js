@@ -10,11 +10,14 @@ export const cartReducer = createSlice({
   reducers: {
     addToCart: (state, action) => {
       let existingItem = state.cartItems.find(
-        (item) => item?._id == action?.payload?._id
+        (item) =>
+          item?.productId === action?.payload?.productId &&
+          item?.variantId == action?.payload?.variantId
       );
       if (existingItem) {
         state.cartItems = state?.cartItems?.map((item) =>
-          item?._id == existingItem?._id
+          item?.productId === existingItem?.productId &&
+          item?.variantId == action?.payload?.variantId
             ? { ...item, quantity: item?.quantity + 1 }
             : item
         );
@@ -28,7 +31,7 @@ export const cartReducer = createSlice({
       );
     },
     clearCart: (state, action) => {
-      // state.cartItems = action?.payload;
+      state.cartItems = [];
     },
   },
 });

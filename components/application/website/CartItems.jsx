@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../../components/ui/button";
@@ -14,11 +14,11 @@ const cartItem = {
         "https://images.unsplash.com/photo-1624258919367-5dc28f5dc293?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1160",
     price: 129.0,
     originalPrice: 129,
-    quantity: 1,
+    quantity: 1,    
 };
 
 export function CartItems({ item }) {
-    const [quantity, setQuantity] = useState(cartItem.quantity);
+    const [quantity, setQuantity] = useState(item.quantity);
     const dispatch = useDispatch()
     const incrementQuantity = () => setQuantity((prev) => prev + 1);
     const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
@@ -37,7 +37,7 @@ export function CartItems({ item }) {
             <div className="flex-1 flex flex-col space-y-4">
                 <div className="flex gap-4">
                     <div className="flex-1">
-                        <CardDescription>{item.category}</CardDescription>
+                        {/* <CardDescription>{item.category}</CardDescription> */}
                         <CardTitle>{item.name}</CardTitle>
                     </div>
 

@@ -6,9 +6,11 @@ import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/reducers/cartReducer";
-import { decode } from "entities";
+import { decode, encode } from "entities";
 import Link from "next/link";
 import { WEBSITE_PRODUCT_DETAILS } from "../../routes/websiteRoute";
+import { showToast } from "../../lib/toast";
+import ProductReview from "../application/website/ProductReview";
 
 const productData = {
 	name: "Man Black Cotton T-Shirt",
@@ -46,18 +48,19 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 	const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 	const addToInCart = () => {
 		const cartData = {
-			_id: productData?._id,
-			category: productData?.category?.name,
-			discountPercentage: productVariants?.discountPercentage,
+			productId: productData?._id,
+			variantId: productVariants?._id,
 			name: productData?.name,
-			quantity,
-			color: productVariants?.color,
+			url: productData?.slug,
 			size: productVariants?.size,
-			sellingPrice: productVariants?.sellingPrice,
+			color: productVariants?.color,
 			mrp: productVariants?.mrp,
-			media: productVariants?.medias[currentImageIndex]?.secure_url
+			sellingPrice: productVariants?.sellingPrice,
+			media: productVariants?.medias[currentImageIndex]?.secure_url,
+			quantity,
 		}
-		dispatch(addToCart({ ...cartData, quantity }))
+		dispatch(addToCart(cartData))
+		showToast('success', 'Product added into cart.')
 	}
 
 	return (
@@ -180,8 +183,8 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 						</div>
 					</div>
 
-					<div className="flex items-center gap-4">
-						<div className="flex items-center border border-gray-300 rounded-lg">
+					<div className="flex items-center">
+						{/* <div className="flex items-center border border-gray-300 rounded-lg">
 							<Button
 								variant="ghost"
 								size="icon"
@@ -197,11 +200,23 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 								onClick={incrementQuantity}>
 								<Plus className="w-4 h-4" />
 							</Button>
-						</div>
-						<Button size="lg" className={'cursor-pointer'} onClick={addToInCart}>Add to cart</Button>
+						</div> */}
+						<Button size="lg" className={'cursor-pointer flex-1'} onClick={addToInCart}>Add to cart</Button>
 					</div>
 				</div>
 			</div>
+			{/* product details */}
+			<div className="my-10">
+				<div className="shadow rounded border">
+					<div className="p-3 bg-gray-50">
+						<h2 className="font-semibold text-2xl">Product Description</h2>
+					</div>
+					<div className="p-3">
+						<div dangerouslySetInnerHTML={{ __html: encode(productData?.discription) }}></div>
+					</div>
+				</div>
+			</div>
+			<ProductReview product={'jk'} />
 		</div >
 	);
 }
