@@ -216,7 +216,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 					</div>
 				</div>
 			</div>
-			<ProductReview product={'jk'} />
+			<ProductReview productId={productData?._id} />
 		</div >
 	);
 }
