@@ -19,6 +19,7 @@ import axios from 'axios'
 
 const ProductReview = ({ productId }) => {
     const [loading, setLoading] = useState(false)
+    const [writeReview, setWriteReview] = useState(false);
     const [currentUrl, setCurrentUrl] = useState('')
     const { auth } = useSelector(state => state?.authStore)
     useEffect(() => {
@@ -99,69 +100,70 @@ const ProductReview = ({ productId }) => {
                         </div>
                     </div>
                     <div className="md:w-1/2 w-full md:text-end text-center">
-                        <Button type='button' variant={'outline'} className={'md:w-fit w-full py-6 px-10'}>Write Review</Button>
+                        <Button onClick={() => setWriteReview(!writeReview)} type='button' variant={'outline'} className={'md:w-fit cursor-pointer w-full py-6 px-10'}>Write Review</Button>
                     </div>
                 </div>
-                <div className='my-5'>
-                    <h4 className='text-xl font-semibold mb-3'>Write A Review</h4>
-                    {/* show if user not login then they can't review */}
-                    {!auth ?
-                        <>
-                            <p className='mb-2'>Login to submit review</p>
-                            <Button type='button' asChild>
-                                <Link href={`${WEBSITE_LOGIN}?callback=${currentUrl}`}>Login</Link>
-                            </Button>
-                        </>
-                        :
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(handleAddReview)}>
-                                <div>
-                                    <FormField control={form.control} name='rating' render={({ field }) => (
-                                        <FormItem>
-                                            {/* <FormLabel htmlFor={'rating-1'}>Rating</FormLabel> */}
-                                            <FormControl>
-                                                <Rating
-                                                    size='large'
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div className='my-5'>
-                                    <FormField control={form.control} name='title' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'title1'}>Title</FormLabel>
-                                            <FormControl>
-                                                <Input type={'text'} id='title1' placeholder='Review title' {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div className='my-5'>
-                                    <FormField control={form.control} name='review' render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor={'review1'}>Review</FormLabel>
-                                            <FormControl>
-                                                <Textarea id='review1' placeholder="Write your comment here..." {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                    </FormField>
-                                </div>
-                                <div>
-                                    <ButtonLoading type={'submit'} text={'Add Review'} loading={loading} disabled={loading} className={'cursor-pointer'} />
-                                </div>
-                            </form>
-                        </Form>
-                    }
-                </div>
-
+                {writeReview &&
+                    <div className='my-5'>
+                        <h4 className='text-xl font-semibold mb-3'>Write A Review</h4>
+                        {/* show if user not login then they can't review */}
+                        {!auth ?
+                            <>
+                                <p className='mb-2'>Login to submit review</p>
+                                <Button type='button' asChild>
+                                    <Link href={`${WEBSITE_LOGIN}?callback=${currentUrl}`}>Login</Link>
+                                </Button>
+                            </>
+                            :
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(handleAddReview)}>
+                                    <div>
+                                        <FormField control={form.control} name='rating' render={({ field }) => (
+                                            <FormItem>
+                                                {/* <FormLabel htmlFor={'rating-1'}>Rating</FormLabel> */}
+                                                <FormControl>
+                                                    <Rating
+                                                        size='large'
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div className='my-5'>
+                                        <FormField control={form.control} name='title' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'title1'}>Title</FormLabel>
+                                                <FormControl>
+                                                    <Input type={'text'} id='title1' placeholder='Review title' {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div className='my-5'>
+                                        <FormField control={form.control} name='review' render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel htmlFor={'review1'}>Review</FormLabel>
+                                                <FormControl>
+                                                    <Textarea id='review1' placeholder="Write your comment here..." {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                        </FormField>
+                                    </div>
+                                    <div>
+                                        <ButtonLoading type={'submit'} text={'Add Review'} loading={loading} disabled={loading} className={'cursor-pointer'} />
+                                    </div>
+                                </form>
+                            </Form>
+                        }
+                    </div>
+                }
             </div>
         </div >
     )

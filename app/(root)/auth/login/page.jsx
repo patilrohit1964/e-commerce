@@ -161,7 +161,7 @@ const LoginPage = () => {
                                 <p className='text-primary cursor-pointer hover:text-gray-700 transition-all delay-150' onClick={() => setForgotPass(true)}>Forgot Password ?</p>
                               </div>
                             </div>
-                            <button className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>
+                            <button type='button' className='absolute right-2 top-7 cursor-pointer' onClick={() => setIsTypePassword(!istypePassword)}>
                               {istypePassword ?
                                 <EyeIcon color='gray' size={'25'} />
                                 :

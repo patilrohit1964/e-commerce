@@ -58,7 +58,7 @@ const OtpVerification = ({ email, onSubmit, loading }) => {
                                     <InputOTP maxLength={6} {...field}>
                                         <InputOTPGroup>
                                             {[...Array(6)].map((_, idx) => (
-                                                <InputOTPSlot index={idx} />
+                                                <InputOTPSlot index={idx} key={idx} />
                                             ))}
                                         </InputOTPGroup>
                                     </InputOTP>
