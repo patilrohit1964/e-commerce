@@ -188,7 +188,7 @@ const ProductReview = ({ productId }) => {
                     <div className='mt-10'>
                         {data && data?.pages?.map((page) => (
                             page?.reviews?.map(review => (
-                                <div className='mb-5' key={review?._id}><ReviewList /></div>
+                                <div className='mb-5' key={review?._id}><ReviewList review={review} /></div>
                             ))
                         ))}
                     </div>
