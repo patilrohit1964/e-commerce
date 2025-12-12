@@ -16,6 +16,8 @@ import Link from 'next/link'
 import { WEBSITE_LOGIN } from '../../../routes/websiteRoute'
 import { showToast } from '../../../lib/toast'
 import axios from 'axios'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import ReviewList from './ReviewList'
 
 const ProductReview = ({ productId }) => {
     const [loading, setLoading] = useState(false)
@@ -62,6 +64,23 @@ const ProductReview = ({ productId }) => {
             setLoading(false)
         }
     }
+
+    const fetchReview = async (pageParam) => {
+        const { data: getReviewsData } = await axios.get(`/api/review/get?productId=${productId}&page=${pageParam}`)
+        if (!getReviewsData?.success) {
+            return;
+        }
+        return getReviewsData?.data
+    }
+
+    const { error, data, isFetching, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
+        queryKey: ['product-review'], //query key should be unique always in our whole app
+        queryFn: async ({ pageParam }) => await fetchReview(pageParam), //this function call our api and give page if exists more data
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => {
+            return lastPage.nextPage
+        }
+    })
     return (
         <div className="shadow rounded border">
             <div className="p-3 bg-gray-50">
@@ -79,7 +98,7 @@ const ProductReview = ({ productId }) => {
                                 <Star size={20} />
                                 <Star size={20} />
                             </div>
-                            <p className='text-center mt-3'>{0} Rating & Reviews</p>
+                            <p className='text-center mt-3'>{data?.length} Rating & Reviews</p>
                         </div>
                         <div className='md:w-[calc(100%-200px)] flex items-center'>
                             <div className='w-full'>
@@ -164,6 +183,18 @@ const ProductReview = ({ productId }) => {
                         }
                     </div>
                 }
+                <div className='mt-10 border-t pt-5'>
+                    <h5 className='text-xl font-semibold'>{data?.pages[0]?.totalReview || 0} Reviews</h5>
+                    <div className='mt-10'>
+                        {data && data?.pages?.map((page) => (
+                            page?.reviews?.map(review => (
+                                <div className='mb-5' key={review?._id}><ReviewList /></div>
+                            ))
+                        ))}
+                    </div>
+
+
+                </div>
             </div>
         </div >
     )

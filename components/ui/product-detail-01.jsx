@@ -123,7 +123,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 						</a>
 						<h1 className="text-3xl font-bold">{productData?.name}</h1>
 						<div className="flex items-center gap-1 py-2">
-							{Array.from({ length: productReview }).map((_, idx) => (
+							{Array.from({ length: 5 }).map((_, idx) => (
 								<Star key={idx} size={18} fill="yellow" className="text-yellow-600" />
 							))}
 							<span className="text-sm ps-2">({productReview} Reviews)</span>

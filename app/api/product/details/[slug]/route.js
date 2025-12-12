@@ -15,7 +15,6 @@ export async function GET(request, { params }) {
     const size = searchParams?.get("size");
     const color = searchParams?.get("color");
 
-    // check this api for product review rating
     const filter = {
       deletedAt: null,
     };
