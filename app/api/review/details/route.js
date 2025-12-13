@@ -26,9 +26,30 @@ export async function GET(request) {
       },
       { $sort: { _id: 1 } },
     ]);
-    console.log("reviews", reviews);
-    return responce(true, 200, "Review Details Found", reviews);
-    return "hii";
+    // total review
+    const totalReview = reviews?.reduce((sum, r) => sum + r.count, 0);
+    // average review
+    const averageRating =
+      totalReview > 0
+        ? (reviews?.reduce((sum, r) => sum + r?._id * r.count, 0) / totalReview).toFixed(1)
+        : "0.0";
+
+    const rating = reviews.reduce((acc, r) => {
+      acc[r?._id] = r?.count;
+      return acc;
+    }, {});
+    const percentage = reviews.reduce((acc, r) => {
+      acc[r?._id] = (r?.count / totalReview) * 100;
+      return acc;
+    }, {});
+
+    return responce(true, 200, "Review Details Found", {
+      reviews,
+      totalReview,
+      rating,
+      percentage,
+      averageRating,
+    });
   } catch (error) {
     console.log(error);
   }

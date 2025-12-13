@@ -113,9 +113,9 @@ const ProductReview = ({ productId }) => {
                                                 <p className='w-3'>{reviewNum}</p>
                                                 <Star size={15} />
                                             </div>
-                                            <Progress value={80} />
-                                            <span className='text-sm'>20</span>
-                                        </div>
+                                            <Progress value={30} />
+                                            <span className='text-sm'>{reviewDetails?.rating[reviewNum]}</span>
+                                        </div>//key error
                                     ))
                                 }
                             </div>
