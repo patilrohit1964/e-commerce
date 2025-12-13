@@ -16,14 +16,17 @@ import Link from 'next/link'
 import { WEBSITE_LOGIN } from '../../../routes/websiteRoute'
 import { showToast } from '../../../lib/toast'
 import axios from 'axios'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import ReviewList from './ReviewList'
+import { useFetch } from '../../../hooks/useFetch'
 
 const ProductReview = ({ productId }) => {
     const [loading, setLoading] = useState(false)
+    const queryClient = useQueryClient()
     const [writeReview, setWriteReview] = useState(false);
     const [currentUrl, setCurrentUrl] = useState('')
     const { auth } = useSelector(state => state?.authStore)
+    const { data: reviewDetails } = useFetch(`/api/review/details?productId=${productId}`)
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setCurrentUrl(window.location.href)
@@ -56,6 +59,7 @@ const ProductReview = ({ productId }) => {
             setLoading(false)
             form.reset()
             showToast("success", reviewAddRes.message || "review added Successfull")
+            queryClient.invalidateQueries(['product-review'])
         }
         catch (error) {
             console.log(error)

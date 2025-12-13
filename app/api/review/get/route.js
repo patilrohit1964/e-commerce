@@ -1,7 +1,6 @@
-import mongoose, { isValidObjectId, Mongoose } from "mongoose";
+import mongoose from "mongoose";
 import connectDb from "../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../lib/helper";
-import { isAuthenticated } from "../../../../lib/isAuth";
 import REVIEWModel from "../../../../model/review.model";
 
 export async function GET(request) {
