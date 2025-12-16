@@ -94,7 +94,7 @@ const ProductReview = ({ productId }) => {
                 <div className='flex justify-between flex-wrap items-center'>
                     <div className='md:w-1/2 w-full md:flex md:gap-10 md:mb-0 mb-5'>
                         <div className='md:w-[200px] w-full md:mb-0 mb-5'>
-                            <h4 className='text-center text-8xl font-semibold'>0.0</h4>
+                            <h4 className='text-center text-7xl font-semibold'>{reviewDetails?.data?.averageRating}</h4>
                             <div className='flex justify-center gap-2'>
                                 <Star size={20} />
                                 <Star size={20} />
@@ -114,8 +114,8 @@ const ProductReview = ({ productId }) => {
                                                 <Star size={15} />
                                             </div>
                                             <Progress value={30} />
-                                            <span className='text-sm'>{reviewDetails?.rating[reviewNum]}</span>
-                                        </div>//key error
+                                            <span className='text-sm'>{reviewDetails?.data?.rating[reviewNum]}</span>
+                                        </div>
                                     ))
                                 }
                             </div>

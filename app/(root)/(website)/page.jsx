@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Discount, KeyboardReturn, LocalShipping, SupportAgent } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
