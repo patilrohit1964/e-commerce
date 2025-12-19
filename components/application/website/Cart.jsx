@@ -6,7 +6,6 @@ import CartData from './CartData'
 const Cart = () => {
     const { cartItems } = useSelector(state => state?.cartStore)
     const [open, setOpen] = useState(false)
-    console.log('cartItems.length', cartItems);
     return (
         <div className='relative'>
             <button type='button' onClick={() => setOpen(true)}>

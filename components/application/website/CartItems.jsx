@@ -19,8 +19,8 @@ const cartItem = {
 
 // show each product item of cart that present in add to cart
 export function CartItems({ item }) {
-    const [quantity, setQuantity] = useState(item.quantity);
     const dispatch = useDispatch()
+    const [quantity, setQuantity] = useState(item.quantity);
     const incrementQuantity = () => setQuantity((prev) => prev + 1);
     const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
     const removeCartItem = () => {
