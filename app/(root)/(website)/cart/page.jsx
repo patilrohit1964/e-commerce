@@ -1,5 +1,5 @@
 'use client'
-import { Minus, Plus } from 'lucide-react'
+import { Minus, Plus, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -36,7 +36,7 @@ const CartPage = () => {
                                         <th className='text-start p-3'>Price</th>
                                         <th className='text-start p-3'>Quantity</th>
                                         <th className='text-start p-3'>Total</th>
-                                        <th className='text-start p-3'></th>
+                                        <th className='text-start p-3'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,9 +53,13 @@ const CartPage = () => {
                                                 </div>
                                             </td>
                                             <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
-                                                {cartProduct?.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                                                <span className='md:hidden font-medium'>Price</span>
+                                                <span>
+                                                    {cartProduct?.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                                                </span>
                                             </td>
-                                            <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2'>
+                                            <td className='md:table-cell flex justify-between items-center md:p-3 px-3 pb-2'>
+                                                <span className='md:hidden font-medium'>Quantity</span>
                                                 <div
                                                     className="flex items-center bg-background text-foreground rounded-lg border border-gray-200">
                                                     <Button
@@ -78,6 +82,14 @@ const CartPage = () => {
                                                     </Button>
 
                                                 </div>
+                                            </td>
+                                            <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
+                                                <span className='md:hidden font-medium'>Total</span>
+                                                <span>{(cartProduct?.sellingPrice * cartProduct?.quantity).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
+                                            </td>
+                                            <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
+                                                <span className='md:hidden font-medium'>Remove</span>
+                                                <button type='buttton' className='text-red-500 cursor-pointer hover:bg-gray-200 hover:text-red-600 p-1'><X /></button>
                                             </td>
                                         </tr>
                                     ))}
