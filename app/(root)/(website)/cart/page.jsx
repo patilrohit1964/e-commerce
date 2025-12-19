@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb'
 import { Button } from '../../../../components/ui/button'
 import { WEBSITE_CHECKOUT, WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websiteRoute'
-import { increaseQuantity, decreaseQuantity } from '../../../../store/reducers/cartReducer'
+import { increaseQuantity, decreaseQuantity, removeToCart } from '../../../../store/reducers/cartReducer'
 
 const breadCrumb = {
     title: 'Cart',
@@ -28,7 +28,6 @@ const CartPage = () => {
         setTotal(totalAmount)
         setDiscount(discount)
     }, [cartItems]);
-    console.log('cartItems',cartItems);
     return (
         <div>
             <WebsiteBreadCrumb props={breadCrumb} />
@@ -72,8 +71,8 @@ const CartPage = () => {
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        className="h-8 w-8 rounded-lg hover:bg-muted"
-                                                        onClick={()=>dispatch(decreaseQuantity({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}>
+                                                        className="h-8 w-8 rounded-lg hover:bg-muted cursor-pointer"
+                                                        onClick={() => dispatch(decreaseQuantity({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}>
                                                         <Minus className="h-4 w-4" />
                                                     </Button>
                                                     <span className="w-8 text-center text-sm font-medium">
@@ -83,8 +82,8 @@ const CartPage = () => {
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
-                                                        className="h-8 w-8 rounded-lg hover:bg-muted"
-                                                        onClick={()=>dispatch(increaseQuantity({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}>
+                                                        className="h-8 w-8 rounded-lg hover:bg-muted cursor-pointer"
+                                                        onClick={() => dispatch(increaseQuantity({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}>
                                                         <Plus className="h-4 w-4" />
                                                     </Button>
 
@@ -96,7 +95,7 @@ const CartPage = () => {
                                             </td>
                                             <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
                                                 <span className='md:hidden font-medium'>Remove</span>
-                                                <button type='buttton' className='text-red-500 cursor-pointer hover:bg-gray-200 hover:text-red-600 p-1'><X /></button>
+                                                <button type='buttton' className='text-red-500 cursor-pointer hover:bg-gray-200 hover:text-red-600 p-1' onClick={() => dispatch(removeToCart({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}><X /></button>
                                             </td>
                                         </tr>
                                     ))}
