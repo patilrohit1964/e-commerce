@@ -14,16 +14,17 @@ const cartItem = {
         "https://images.unsplash.com/photo-1624258919367-5dc28f5dc293?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1160",
     price: 129.0,
     originalPrice: 129,
-    quantity: 1,    
+    quantity: 1,
 };
 
+// show each product item of cart that present in add to cart
 export function CartItems({ item }) {
     const [quantity, setQuantity] = useState(item.quantity);
     const dispatch = useDispatch()
     const incrementQuantity = () => setQuantity((prev) => prev + 1);
     const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
     const removeCartItem = () => {
-        dispatch(removeToCart(item?._id))
+        dispatch(removeToCart({ productId: item?._id, variantId: item?.variantId }))
     };
     return (
         <Card
@@ -39,10 +40,11 @@ export function CartItems({ item }) {
                     <div className="flex-1">
                         {/* <CardDescription>{item.category}</CardDescription> */}
                         <CardTitle>{item.name}</CardTitle>
+                        <p className="uppercase text-xs">{item?.color}/{item?.size}</p>
                     </div>
 
-                    <Button size="icon" variant="ghost" className={'cursor-pointer'} onClick={removeCartItem}>
-                        <Trash2 className="h-4 w-4" />
+                    <Button size="icon" variant="ghost" className={'cursor-pointer hover:text-red-500 transition-all duration-200'} onClick={removeCartItem}>
+                        <Trash2 className="h-4 w-4 " />
                     </Button>
                 </div>
 

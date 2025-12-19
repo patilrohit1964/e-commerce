@@ -26,6 +26,7 @@ const ProductReview = ({ productId }) => {
     const [writeReview, setWriteReview] = useState(false);
     const [currentUrl, setCurrentUrl] = useState('')
     const { auth } = useSelector(state => state?.authStore)
+    // fetch all review details of particular product 
     const { data: reviewDetails } = useFetch(`/api/review/details?productId=${productId}`)
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -49,6 +50,8 @@ const ProductReview = ({ productId }) => {
             review: '',
         }
     })
+
+    // add review function
     const handleAddReview = async (values) => {
         try {
             setLoading(true)
@@ -69,6 +72,7 @@ const ProductReview = ({ productId }) => {
         }
     }
 
+    // fetch all reviews for particular product
     const fetchReview = async (pageParam) => {
         const { data: getReviewsData } = await axios.get(`/api/review/get?productId=${productId}&page=${pageParam}`)
         if (!getReviewsData?.success) {
@@ -77,6 +81,7 @@ const ProductReview = ({ productId }) => {
         return getReviewsData?.data
     }
 
+    // get all particular product reviews
     const { error, data, isFetching, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
         queryKey: ['product-review'], //query key should be unique always in our whole app
         queryFn: async ({ pageParam }) => await fetchReview(pageParam), //this function call our api and give page if exists more data
@@ -102,7 +107,7 @@ const ProductReview = ({ productId }) => {
                                 <Star size={20} />
                                 <Star size={20} />
                             </div>
-                            <p className='text-center mt-3'>{data?.length} Rating & Reviews</p>
+                            <p className='text-center mt-3'>({reviewDetails?.data?.totalReview}) Rating & Reviews</p>
                         </div>
                         <div className='md:w-[calc(100%-200px)] flex items-center'>
                             <div className='w-full'>
@@ -113,7 +118,7 @@ const ProductReview = ({ productId }) => {
                                                 <p className='w-3'>{reviewNum}</p>
                                                 <Star size={15} />
                                             </div>
-                                            <Progress value={30} />
+                                            <Progress value={reviewDetails?.data?.percentage[reviewNum]} />
                                             <span className='text-sm'>{reviewDetails?.data?.rating[reviewNum]}</span>
                                         </div>
                                     ))
@@ -195,9 +200,13 @@ const ProductReview = ({ productId }) => {
                                 <div className='mb-5' key={review?._id}><ReviewList review={review} /></div>
                             ))
                         ))}
+                        {
+                            hasNextPage &&
+                            <div className='flex justify-center items-center'>
+                                <ButtonLoading text={'Load More'} loading={isLoading} onClick={() => fetchNextPage()} className={'cursor-pointer'} />
+                            </div>
+                        }
                     </div>
-
-
                 </div>
             </div>
         </div >
