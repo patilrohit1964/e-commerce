@@ -2,11 +2,12 @@
 import { Minus, Plus, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb'
 import { Button } from '../../../../components/ui/button'
-import { WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websiteRoute'
+import { WEBSITE_CHECKOUT, WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websiteRoute'
+import { increaseQuantity, decreaseQuantity } from '../../../../store/reducers/cartReducer'
 
 const breadCrumb = {
     title: 'Cart',
@@ -17,11 +18,17 @@ const breadCrumb = {
     ]
 }
 const CartPage = () => {
+    const dispatch = useDispatch()
     const { cartItems } = useSelector(store => store?.cartStore)
-    const [quantity, setQuantity] = useState(1);
-    const incrementQuantity = () => setQuantity((prev) => prev + 1);
-    const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
-
+    const [discount, setDiscount] = useState(0)
+    const [total, setTotal] = useState(0)
+    useEffect(() => {
+        const totalAmount = cartItems.reduce((sum, product) => sum + (product?.sellingPrice * product?.quantity), 0)
+        const discount = cartItems.reduce((sum, product) => sum + ((product?.mrp - product?.sellingPrice) * product?.quantity), 0)
+        setTotal(totalAmount)
+        setDiscount(discount)
+    }, [cartItems]);
+    console.log('cartItems',cartItems);
     return (
         <div>
             <WebsiteBreadCrumb props={breadCrumb} />
@@ -47,8 +54,8 @@ const CartPage = () => {
                                                     <Image src={cartProduct?.media} height={60} width={60} alt={cartProduct?.name} />
                                                     <div>
                                                         <h4 className='text-lg font-medium line-clamp-1'><Link href={WEBSITE_PRODUCT_DETAILS(cartProduct?.url)}>{cartProduct?.name}</Link></h4>
-                                                        <p className='text-sm'>Color:{cartProduct?.color}</p>
-                                                        <p className='text-sm'>Size:{cartProduct?.size}</p>
+                                                        <p className='text-sm'>Color: {cartProduct?.color}</p>
+                                                        <p className='text-sm'>Size: {cartProduct?.size.toUpperCase()}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -66,18 +73,18 @@ const CartPage = () => {
                                                         variant="ghost"
                                                         size="icon"
                                                         className="h-8 w-8 rounded-lg hover:bg-muted"
-                                                        onClick={decrementQuantity}>
+                                                        onClick={()=>dispatch(decreaseQuantity({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}>
                                                         <Minus className="h-4 w-4" />
                                                     </Button>
                                                     <span className="w-8 text-center text-sm font-medium">
-                                                        {quantity}
+                                                        {cartProduct?.quantity}
                                                     </span>
 
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
                                                         className="h-8 w-8 rounded-lg hover:bg-muted"
-                                                        onClick={incrementQuantity}>
+                                                        onClick={()=>dispatch(increaseQuantity({ productId: cartProduct?.productId, variantId: cartProduct?.variantId }))}>
                                                         <Plus className="h-4 w-4" />
                                                     </Button>
 
@@ -96,7 +103,35 @@ const CartPage = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <div className='lg:w-[30%] w-full'></div>
+                        <div className='lg:w-[30%] w-full'>
+                            <div className='rounded bg-gray-50 p-5 sticky top-5'>
+                                <h4 className='text-lg font-semibold mb-5'>Order Summary</h4>
+                                <div>
+                                    <table className='w-full'>
+                                        <tbody>
+                                            <tr>
+                                                <td className='font-medium py-2'>SubTotal:</td>
+                                                <td className='text-end py-2'>{total.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='font-medium py-2'>Discount:</td>
+                                                <td className='text-end py-2'>-{discount.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='font-medium py-2'>Total:</td>
+                                                <td className='text-end py-2'>{total.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <Button type='button' asChild className={'w-full bg-black rounded-full mt-5 mb-3'}>
+                                        <Link href={WEBSITE_CHECKOUT}>Process To Checkout</Link>
+                                    </Button>
+                                    <p className='text-center'>
+                                        <Link href={WEBSITE_SHOP} className='hover:underline transition-all'>Continue Shopping</Link>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div> :
                     <div className='py-32 h-[400px] flex justify-center items-center'>
                         <div className='text-center'>
