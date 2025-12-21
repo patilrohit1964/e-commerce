@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ButtonLoading from '../../../../components/application/ButtonLoading'
 import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb'
 import { Button } from '../../../../components/ui/button'
-import { Form, FormControl, FormField, FormItem,FormMessage } from '../../../../components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../../components/ui/form'
 import { Input } from '../../../../components/ui/input'
 import { Label } from '../../../../components/ui/label'
 import { Textarea } from '../../../../components/ui/textarea'
@@ -17,6 +17,8 @@ import { useFetch } from '../../../../hooks/useFetch'
 import { zSchmea } from '../../../../lib/zodSchema'
 import { WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websiteRoute'
 import { addToCart, clearCart } from '../../../../store/reducers/cartReducer'
+import { showToast } from '../../../../lib/toast'
+import axios from 'axios'
 const breadCrumb = {
   title: 'Checkout',
   links: [
@@ -32,26 +34,34 @@ const Checkout = () => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [isCouponLoading, setIsCouponLoading] = useState(false);
   const [discount, setDiscount] = useState(0)
+  const [couponDiscountAmount, setCouponDiscountAmount] = useState(0)
+  const [totalAmount, setTotalAmount] = useState(0)
   const [total, setTotal] = useState(0)
 
   const { data: getverifiedCartData } = useFetch(`/api/cart-verification`, 'POST', { data: cartItems })
-  console.log('verifiedCartData', getverifiedCartData);
+  // get cart verification data logic
   useEffect(() => {
     if (getverifiedCartData && getverifiedCartData?.success) {
       const cartData = getverifiedCartData?.data
       setVerifiedCartData(cartData)
+      // clear all cart when fetch the cart data
       dispatch(clearCart())
+      // add previous cart data after clearing cart data
       cartData.forEach(cartItem => {
         dispatch(addToCart(cartItem))
       })
     }
-  }, []);
+  }, [getverifiedCartData]);
+
+  //subtotal or total calculation 
   useEffect(() => {
     const subTotalAmount = cartItems.reduce((sum, product) => sum + (product?.sellingPrice * product?.quantity), 0)
     const discount = cartItems.reduce((sum, product) => sum + ((product?.mrp - product?.sellingPrice) * product?.quantity), 0)
     setTotal(subTotalAmount)
     setDiscount(discount)
+    setTotalAmount(subTotalAmount)
   }, [cartItems]);
+
   const couponFormSchema = zSchmea.pick({
     code: true,
     minShoppingAmount: true
@@ -66,10 +76,22 @@ const Checkout = () => {
   const appliedCoupon = async (values) => {
     setIsCouponLoading(true)
     try {
-
+      const { data: couponAppliedData } = await axios.post('/api/coupon/apply', values)
+      if (!couponAppliedData?.success) {
+        throw new Error(couponAppliedData?.message)
+      }
+      const discountPercentage = couponAppliedData?.data?.discountPercentage
+      // get coupon amount
+      setCouponDiscountAmount((total * discountPercentage) / 100)
+      setTotalAmount(total - ((total * discountPercentage) / 100))
+      showToast('success', couponAppliedData?.message)
     }
     catch (error) {
+      showToast('error', error?.message)
       console.log(error)
+    }
+    finally {
+      setIsCouponLoading(false)
     }
   }
   return (
@@ -123,13 +145,13 @@ const Checkout = () => {
               </div>
               <Button className={'w-full bg-black hover:bg-gray-800 text-white cursor-pointer rounded-full'}>Place Order</Button>
             </div>
-            <div className='lg:w-[30%] w-full'>
+            <div className='lg:w-[40%] w-full'>
               <div className='rounded bg-gray-50 p-5 sticky top-5'>
                 <h4 className='text-lg font-semibold mb-5'>Order Summary</h4>
                 <div>
                   <table className='w-full border'>
                     <tbody>
-                      {verifiedCartData && verifiedCartData?.map(product => (
+                      {(verifiedCartData && verifiedCartData?.length > 0) ? verifiedCartData?.map(product => (
                         <tr key={product?.variantId}>
                           <td className='p-3'>
                             <div className='flex items-center gap-5'>
@@ -145,30 +167,34 @@ const Checkout = () => {
                           </td>
                           <td className="p-3 text-center">
                             <p className='text-nowrap text-sm'>
-                              {product?.quantity} x {product?.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                              {product?.quantity} x {product?.sellingPrice?.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                             </p>
                           </td>
                         </tr>
-                      ))}
+                      )) : (
+                        <tr>
+                          <td className="p-3 text-center text-gray-400" colSpan={2}>No items in cart</td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                   <table className='w-full'>
                     <tbody>
                       <tr>
                         <td className='font-medium py-2'>SubTotal:</td>
-                        {/* <td className='text-end py-2'>{total.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td> */}
+                        <td className='text-end py-2'>{total.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
                       </tr>
                       <tr>
                         <td className='font-medium py-2'>Discount:</td>
-                        {/* <td className='text-end py-2'>-{discount.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td> */}
+                        <td className='text-end py-2'>- {discount.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
                       </tr>
                       <tr>
                         <td className='font-medium py-2'>Coupon Discount:</td>
-                        {/* <td className='text-end py-2'>-{discount.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td> */}
+                        <td className='text-end py-2'>- {couponDiscountAmount.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
                       </tr>
                       <tr>
                         <td className='font-medium py-2 text-xl'>Total:</td>
-                        {/* <td className='text-end py-2'>{total.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td> */}
+                        <td className='text-end py-2'>{totalAmount.toLocaleString('en-IN', { style: 'currency', currency: "INR" })}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -197,12 +223,6 @@ const Checkout = () => {
                       :
                       ''}
                   </div>
-                  {/* <Button type='button' asChild className={'w-full bg-black rounded-full mt-5 mb-3'}>
-                    <Link href={WEBSITE_CHECKOUT}>Process To Checkout</Link>
-                  </Button>
-                  <p className='text-center'>
-                    <Link href={WEBSITE_SHOP} className='hover:underline transition-all'>Continue Shopping</Link>
-                  </p> */}
                 </div>
               </div>
             </div>
