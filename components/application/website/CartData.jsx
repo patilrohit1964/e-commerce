@@ -18,7 +18,7 @@ const CartData = ({ open, setOpen, cartItems }) => {
     }, [cartItems]);
     return (
         <Sheet open={open} onOpenChange={() => setOpen(false)}>
-            <SheetContent side='right' className={'px-1 pb-3 overflow-y-auto'}>
+            <SheetContent side='right' className={'px-1 pb-3 overflow-y-auto w-full'}>
                 <SheetHeader className={''}>
                     <SheetTitle className={'border-b'}>Cart Items</SheetTitle>
                     {/* <SheetDescription>
