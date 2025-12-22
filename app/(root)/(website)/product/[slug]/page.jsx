@@ -5,7 +5,7 @@ import React from 'react'
 const ProductPage = async ({ params, searchParams }) => {
     const { slug } = await params
     const { color, size } = await searchParams
-    let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/details/${slug}`
+    let url = `/api/product/details/${slug}`
     if (color && size) {
         url += `?color=${color}&size=${size}`
     }

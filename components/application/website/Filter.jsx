@@ -22,9 +22,9 @@ const Filter = () => {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedColor, setSelectedColor] = useState([]);
   const [selectedSize, setSelectedSize] = useState([]);
-  const { data: categoryData } = useFetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/category/get-category`)
-  const { data: sizeData } = useFetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product-variant/size`)
-  const { data: colorData } = useFetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product-variant/colors`)
+  const { data: categoryData } = useFetch(`/api/category/get-category`)
+  const { data: sizeData } = useFetch(`/api/product-variant/size`)
+  const { data: colorData } = useFetch(`/api/product-variant/colors`)
   const urlSearchParams = new URLSearchParams(searchParams.toString())
   const handlePriceChange = (value) => {
     setPriceFilter({ minPrice: value[0], maxPrice: value[1] })
