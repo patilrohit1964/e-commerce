@@ -4,7 +4,7 @@ import { Assistant } from "next/font/google";
 import "./globals.css";
 import GlobalProvider from "../components/application/GlobalProvider";
 import { Toaster } from "../components/ui/sonner";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const assistantFont = Assistant({
   weight: ['400', '500', '600', '700', '800'],
   subsets: ['latin'],
@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
         className={`${assistantFont.className} antialiased`}
       >
         <GlobalProvider>
+          <SpeedInsights />
           <Toaster />
           {children}
         </GlobalProvider>
