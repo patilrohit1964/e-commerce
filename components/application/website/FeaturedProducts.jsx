@@ -17,7 +17,9 @@ const FeaturedProducts = () => {
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(
-                    `/api/get-featured-product`
+                    `/api/get-featured-product`,{
+                        withCredentials:true
+                    }
                 );
 
                 setProductData({
