@@ -17,7 +17,7 @@ const FeaturedProducts = () => {
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/get-featured-product`
+                    `/api/get-featured-product`
                 );
 
                 setProductData({

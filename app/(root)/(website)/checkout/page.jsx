@@ -60,6 +60,7 @@ const Checkout = () => {
     setTotal(subTotalAmount)
     setDiscount(discount)
     setTotalAmount(subTotalAmount)
+    couponForm?.setValue('minShoppingAmount', subTotalAmount)
   }, [cartItems]);
 
   const couponFormSchema = zSchmea.pick({
@@ -155,7 +156,7 @@ const Checkout = () => {
                         <tr key={product?.variantId}>
                           <td className='p-3'>
                             <div className='flex items-center gap-5'>
-                              <Image src={product?.media} width={60} height={60} alt={product?.name} className='rounded' />
+                              <Image src={product?.media} width={60} height={60} alt={product?.name || 'cart image'} className='rounded' />
                               <div>
                                 <h4 className='font-medium line-clamp-1'>
                                   <Link href={WEBSITE_PRODUCT_DETAILS(product?.url)}>{product?.name}</Link>
@@ -206,16 +207,15 @@ const Checkout = () => {
                             <FormField control={couponForm?.control} name={'code'} render={({ field }) => (
                               <FormItem>
                                 <FormControl>
-                                  <Input placeholder='enter coupon code' {...field} />
+                                  <Input type={'text'} placeholder='enter coupon code' {...field} />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}>
-
                             </FormField>
                           </div>
                           <div className='w-[100px]'>
-                            <ButtonLoading type='button' text={'Apply'} className={'w-full cursor-pointer'} loading={isCouponLoading} />
+                            <ButtonLoading type='submit' text={'Apply'} className={'w-full cursor-pointer'} loading={isCouponLoading} />
                           </div>
                         </form>
 
