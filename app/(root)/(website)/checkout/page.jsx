@@ -19,6 +19,7 @@ import { WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websit
 import { addToCart, clearCart } from '../../../../store/reducers/cartReducer'
 import { showToast } from '../../../../lib/toast'
 import axios from 'axios'
+import { X } from 'lucide-react'
 const breadCrumb = {
   title: 'Checkout',
   links: [
@@ -37,6 +38,7 @@ const Checkout = () => {
   const [couponDiscountAmount, setCouponDiscountAmount] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
   const [total, setTotal] = useState(0)
+  const [couponCode, setCouponCode] = useState('')
 
   const { data: getverifiedCartData } = useFetch(`/api/cart-verification`, 'POST', { data: cartItems })
   // get cart verification data logic
@@ -79,6 +81,7 @@ const Checkout = () => {
     try {
       const { data: couponAppliedData } = await axios.post('/api/coupon/apply', values)
       if (!couponAppliedData?.success) {
+        showToast('error', couponAppliedData?.message)
         throw new Error(couponAppliedData?.message)
       }
       const discountPercentage = couponAppliedData?.data?.discountPercentage
@@ -86,14 +89,24 @@ const Checkout = () => {
       setCouponDiscountAmount((total * discountPercentage) / 100)
       setTotalAmount(total - ((total * discountPercentage) / 100))
       showToast('success', couponAppliedData?.message)
+      setCouponCode(couponForm?.getValues('code'));
+      setIsCouponApplied(true)
+      couponForm?.resetField('code')
     }
     catch (error) {
-      showToast('error', error?.message)
-      console.log(error)
+      showToast('error', error?.response?.data?.message);
+      console.log('error', error);
     }
     finally {
       setIsCouponLoading(false)
     }
+  }
+
+  const removeCoupon = () => {
+    setIsCouponApplied(false);
+    setCouponCode('')
+    setCouponDiscountAmount(0)
+    setTotalAmount(total)
   }
   return (
     <div>
@@ -221,7 +234,14 @@ const Checkout = () => {
 
                       </Form>
                       :
-                      ''}
+                      <div className='flex justify-between py-1 px-5 rounded-lg bg-gray-200'>
+                        <div className='space-x-1'>
+                          <span className='text-xs'>Coupon:</span>
+                          <span className='text-xs font-semibold'>{couponCode}</span>
+                        </div>
+                        <button type='button' className='text-red-500 cursor-pointer' onClick={removeCoupon}><X size={20} /></button>
+                      </div>
+                    }
                   </div>
                 </div>
               </div>

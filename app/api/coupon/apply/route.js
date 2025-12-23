@@ -29,7 +29,7 @@ export async function POST(request) {
       return responce(false, 400, "Coupon code expired");
     }
     if (minShoppingAmount < couponData?.minShoppingAmount) {
-      return responce(false, 400, "in-sufficient shopping amount");
+      return responce(false, 400, `in-sufficient shopping amount for this coupon code shopping amount should be greater than ${couponData?.minShoppingAmount}`);
     }
     return responce(true, 200, "coupon applied successfully", couponData);
   } catch (error) {
