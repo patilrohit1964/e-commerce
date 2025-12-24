@@ -8,9 +8,12 @@ export const USER_DASHBOARD = "/my-account";
 export const WEBSITE_SHOP = "/shop";
 
 // product details
-export const WEBSITE_PRODUCT_DETAILS = (slug) => (slug ? `/product/${slug}` : "/product");
-
+export const WEBSITE_PRODUCT_DETAILS = (slug) =>
+  slug ? `/product/${slug}` : "/product";
 
 // checkouts and cart routes
-export const WEBSITE_CART='/cart'
-export const WEBSITE_CHECKOUT='/checkout'
+export const WEBSITE_CART = "/cart";
+export const WEBSITE_CHECKOUT = "/checkout";
+
+// order  route
+export const WEBSITE_ORDER_DETAILS = (order_id) => `/order-details/${order_id}`;

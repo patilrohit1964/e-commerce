@@ -15,12 +15,14 @@ import { Label } from '../../../../components/ui/label'
 import { Textarea } from '../../../../components/ui/textarea'
 import { useFetch } from '../../../../hooks/useFetch'
 import { zSchmea } from '../../../../lib/zodSchema'
-import { WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websiteRoute'
+import { WEBSITE_ORDER_DETAILS, WEBSITE_PRODUCT_DETAILS, WEBSITE_SHOP } from '../../../../routes/websiteRoute'
 import { addToCart, clearCart } from '../../../../store/reducers/cartReducer'
 import { showToast } from '../../../../lib/toast'
 import axios from 'axios'
 import { X } from 'lucide-react'
 import z from 'zod'
+import Script from 'next/script'
+import { useRouter } from 'next/navigation'
 const breadCrumb = {
   title: 'Checkout',
   links: [
@@ -32,6 +34,7 @@ const breadCrumb = {
 const Checkout = () => {
   const { cartItems } = useSelector(store => store?.cartStore)
   const { auth } = useSelector(store => store?.authStore)
+  const router = useRouter()
   const dispatch = useDispatch()
   const [verifiedCartData, setVerifiedCartData] = useState([]);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
@@ -141,11 +144,80 @@ const Checkout = () => {
       userId: auth?._id
     }
   })
+
+  // get order id call razor api here
+  const getOrderId = async (amount) => {
+    try {
+      const { data: orderIdData } = await axios.post('/api/payment/get-order-id', { amount })
+      if (!orderIdData?.success) {
+        throw new Error(orderIdData?.message)
+      }
+      return { success: true, message: orderIdData?.data }
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  // using this function get order id from getorderid function 
   const placeOrder = async (values) => {
-    console.log('values',values);
     setOrderPlaced(true)
     try {
-
+      const generateOrderId = await getOrderId(totalAmount)
+      if (!generateOrderId?.success) {
+        throw new Error(generateOrderId?.message)
+      };
+      const order_id = generateOrderId?.orderId
+      const rezOptions = {
+        "key": process.env.NEXT_PUBLIC_RAZORPAY_API_KEY, // Enter the Key ID generated from the Dashboard
+        "amount": totalAmount * 100, // Amount is in currency subunits. 
+        "currency": "INR",
+        "name": "OneThread",
+        "description": "Payment For Order",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrGhFVUkEOfvXJncmzQTaf8x59m-6gJPA06g&s",
+        "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": async function (response) {
+          const products = verifiedCartData?.map((cartItem) => (
+            {
+              productId: cartItem?.productId,
+              variantId: cartItem?.variantId,
+              quantity: cartItem?.quantity,
+              mrp: cartItem?.mrp,
+              sellingPrice: cartItem?.sellingPrice,
+            }
+          ))
+          const { data: paymentResponceData } = await axios.post('/api/payment/save-order', {
+            ...orderForm,
+            ...response,
+            products,
+            total,
+            discount,
+            couponDiscountAmount,
+            totalAmount
+          });
+          if (paymentResponceData?.success) {
+            showToast('success', paymentResponceData?.message)
+            dispatch(clearCart())
+            orderForm.reset()
+            router.push(WEBSITE_ORDER_DETAILS(response?.razorpay_order_id))
+          } else {
+            showToast('error', paymentResponceData?.message)
+          }
+        },
+        "prefill": {
+          "name": orderForm?.name,
+          "email": orderForm?.email,
+          "contact": orderForm?.phone
+        },
+        "theme": {
+          "color": "#3399cc" //#7c3aed
+        }
+      }
+      const rzp = new Razorpay(rezOptions);
+      rzp.on('payment.failed', function (response) {
+        showToast('error', response.error.description);
+      });
+      rzp.open()
     }
     catch (error) {
       console.log(error)
@@ -154,6 +226,7 @@ const Checkout = () => {
       setOrderPlaced(false)
     }
   }
+
   return (
     <div>
       <WebsiteBreadCrumb props={breadCrumb} />
@@ -375,7 +448,7 @@ const Checkout = () => {
             </div>
           </div>
       }
-
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
     </div>
   )
 }
