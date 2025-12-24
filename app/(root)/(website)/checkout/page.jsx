@@ -45,6 +45,7 @@ const Checkout = () => {
   const [total, setTotal] = useState(0)
   const [couponCode, setCouponCode] = useState('')
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [orderConfirmation, setOrderConfirmation] = useState(false);
 
   const { data: getverifiedCartData } = useFetch(`/api/cart-verification`, 'POST', { data: cartItems })
   // get cart verification data logic
@@ -177,6 +178,7 @@ const Checkout = () => {
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrGhFVUkEOfvXJncmzQTaf8x59m-6gJPA06g&s",
         "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": async function (response) {
+          setOrderConfirmation(true)
           const products = verifiedCartData?.map((cartItem) => (
             {
               productId: cartItem?.productId,
@@ -200,8 +202,10 @@ const Checkout = () => {
             dispatch(clearCart())
             orderForm.reset()
             router.push(WEBSITE_ORDER_DETAILS(response?.razorpay_order_id))
+            setOrderConfirmation(false)
           } else {
             showToast('error', paymentResponceData?.message)
+            setOrderConfirmation(false)
           }
         },
         "prefill": {
@@ -229,6 +233,13 @@ const Checkout = () => {
 
   return (
     <div>
+      {orderConfirmation &&
+        <div div className='h-screen w-screen fixed top-0 z-50 bg-black/40'>
+          <div className='flex h-full justify-center font-extrabold items-center'>
+            <span>Order Processing...</span>
+          </div>
+        </div>
+      }
       <WebsiteBreadCrumb props={breadCrumb} />
       {
         cartItems?.length > 0 ?
@@ -449,7 +460,7 @@ const Checkout = () => {
           </div>
       }
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
-    </div>
+    </div >
   )
 }
 
