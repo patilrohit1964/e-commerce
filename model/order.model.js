@@ -91,7 +91,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     status: {
-      type: Number,
+      type: String,
       enum: orderStatus,
       required: true,
       default: "pending",
@@ -106,7 +106,6 @@ const orderSchema = new mongoose.Schema(
     },
     deletedAt: {
       type: Date,
-      required: true,
       default: null,
       index: true,
     },

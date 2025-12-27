@@ -46,7 +46,6 @@ const Checkout = () => {
   const [couponCode, setCouponCode] = useState('')
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderConfirmation, setOrderConfirmation] = useState(false);
-
   const { data: getverifiedCartData } = useFetch(`/api/cart-verification`, 'POST', { data: cartItems })
   // get cart verification data logic
   useEffect(() => {
@@ -130,6 +129,7 @@ const Checkout = () => {
   }).extend({
     userId: z.string().optional()
   })
+  // user order form values
   const orderForm = useForm({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
@@ -168,7 +168,8 @@ const Checkout = () => {
       if (!generateOrderId?.success) {
         throw new Error(generateOrderId?.message)
       };
-      const order_id = generateOrderId?.orderId
+      console.log('calling genereate id func res', generateOrderId);
+      const order_id = generateOrderId?.message
       const rezOptions = {
         "key": process.env.NEXT_PUBLIC_RAZORPAY_API_KEY, // Enter the Key ID generated from the Dashboard
         "amount": totalAmount * 100, // Amount is in currency subunits. 
@@ -183,14 +184,17 @@ const Checkout = () => {
             {
               productId: cartItem?.productId,
               variantId: cartItem?.variantId,
+              name: cartItem?.name,
               quantity: cartItem?.quantity,
               mrp: cartItem?.mrp,
               sellingPrice: cartItem?.sellingPrice,
             }
           ))
           const { data: paymentResponceData } = await axios.post('/api/payment/save-order', {
-            ...orderForm,
-            ...response,
+            ...values,
+            razorpay_order_id: order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
             products,
             total,
             discount,
@@ -198,13 +202,13 @@ const Checkout = () => {
             totalAmount
           });
           if (paymentResponceData?.success) {
-            showToast('success', paymentResponceData?.message)
+            showToast('success', paymentResponceData?.message?.message)
             dispatch(clearCart())
             orderForm.reset()
             router.push(WEBSITE_ORDER_DETAILS(response?.razorpay_order_id))
             setOrderConfirmation(false)
           } else {
-            showToast('error', paymentResponceData?.message)
+            showToast('error', paymentResponceData?.message?.message)
             setOrderConfirmation(false)
           }
         },
@@ -234,7 +238,7 @@ const Checkout = () => {
   return (
     <div>
       {orderConfirmation &&
-        <div div className='h-screen w-screen fixed top-0 z-50 bg-black/40'>
+        <div className='h-screen w-screen fixed top-0 z-50 bg-black/40'>
           <div className='flex h-full justify-center font-extrabold items-center'>
             <span>Order Processing...</span>
           </div>

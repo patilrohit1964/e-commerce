@@ -4,8 +4,8 @@ import connectDb from "../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../lib/helper";
 import { zSchmea } from "../../../../lib/zodSchema";
 import OrderModal from "../../../../model/order.model";
-import { sendMail } from "@/lib/sendMail";
-import { orderNotificationEmail } from "@/email/orderNotification";
+import { sendMail } from "../../../../lib/sendMail";
+import { orderNotificationEmail } from "../../../../email/orderNotification";
 
 export async function POST(request) {
   try {
@@ -14,7 +14,8 @@ export async function POST(request) {
     const productSchema = z.object({
       productId: z.string().length(24, "invalid product id format"),
       variantId: z.string().length(24, "invalid variant id format"),
-      name: z.string().length(1, "invalid name"),
+      name: z.string().min(1, "invalid name"),
+      quantity: z.number().nonnegative(),
       mrp: z.number().nonnegative(),
       sellingPrice: z.number().nonnegative(),
     });

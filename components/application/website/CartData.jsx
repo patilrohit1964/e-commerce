@@ -27,7 +27,7 @@ const CartData = ({ open, setOpen, cartItems }) => {
                 </SheetHeader>
                 {
                     cartItems?.length > 0 ? cartItems?.map((item) => (
-                        <CartItems item={item} key={item?._id} />
+                        <CartItems item={item} key={item?.variantId} />
                     ))
                         :
                         <h1 className='text-gray-400 text-xl h-screen flex items-center justify-center text-center'>No Any Items in cart</h1>

@@ -16,10 +16,10 @@ export async function POST(request) {
           .lean();
         if (variant) {
           return {
-            productId: variant?.product?._id,
+            productId: variant?.productId?._id,
             variantId: variant?._id,
-            name: variant?.product?.name,
-            url: variant?.product?.slug,
+            name: variant?.productId?.name,
+            url: variant?.productId?.slug,
             size: variant?.size,
             color: variant?.color,
             mrp: variant?.mrp,

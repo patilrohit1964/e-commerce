@@ -24,6 +24,7 @@ export async function POST(request) {
       currency: "INR",
     };
     const orderDetails = await razInstance?.orders?.create(razOptions);
+    console.log('orderDetails',orderDetails);
     const orderId = orderDetails.id;
     return responce(true, 200, "Order Id Generated", orderId);
   } catch (error) {
