@@ -202,13 +202,13 @@ const Checkout = () => {
             totalAmount
           });
           if (paymentResponceData?.success) {
-            showToast('success', paymentResponceData?.message?.message)
-            dispatch(clearCart())
+            showToast('success', paymentResponceData?.message)
+            // dispatch(clearCart())
             orderForm.reset()
             router.push(WEBSITE_ORDER_DETAILS(response?.razorpay_order_id))
             setOrderConfirmation(false)
           } else {
-            showToast('error', paymentResponceData?.message?.message)
+            showToast('error', paymentResponceData?.message)
             setOrderConfirmation(false)
           }
         },

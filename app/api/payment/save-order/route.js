@@ -27,6 +27,7 @@ export async function POST(request) {
         state: true,
         city: true,
         pincode: true,
+        phone: true,
         landmark: true,
         ordernote: true,
       })
@@ -86,7 +87,11 @@ export async function POST(request) {
         products: validatedData?.products,
         totalAmount: validatedData?.totalAmount,
         shippingAddress: validatedData?.landmark,
-        orderDate: new Date().getDate(),
+        orderDate: new Date().toLocaleDateString("en-IN", {
+          day: "2-digit",
+          year: "numeric",
+          month: "2-digit",
+        }),
         status: newOrder?.status,
         orderDetailsUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/order-details/${validatedData?.razorpay_order_id}`,
       };
