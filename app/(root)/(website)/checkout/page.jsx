@@ -145,6 +145,9 @@ const Checkout = () => {
       userId: auth?._id
     }
   })
+  useEffect(() => {
+    orderForm.setValue('userId', auth?._id)
+  }, [auth]);
 
   // get order id call razor api here
   const getOrderId = async (amount) => {
@@ -168,7 +171,6 @@ const Checkout = () => {
       if (!generateOrderId?.success) {
         throw new Error(generateOrderId?.message)
       };
-      console.log('calling genereate id func res', generateOrderId);
       const order_id = generateOrderId?.message
       const rezOptions = {
         "key": process.env.NEXT_PUBLIC_RAZORPAY_API_KEY, // Enter the Key ID generated from the Dashboard
