@@ -4,6 +4,8 @@ export const WEBSITE_LOGIN = "/auth/login";
 
 // user routes
 export const USER_DASHBOARD = "/my-account";
+export const USER_PROFILE = "/profile";
+export const USER_ORDERS = "/orders";
 
 export const WEBSITE_SHOP = "/shop";
 

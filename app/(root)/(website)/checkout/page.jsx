@@ -203,7 +203,7 @@ const Checkout = () => {
           });
           if (paymentResponceData?.success) {
             showToast('success', paymentResponceData?.message)
-            // dispatch(clearCart())
+            dispatch(clearCart())
             orderForm.reset()
             router.push(WEBSITE_ORDER_DETAILS(response?.razorpay_order_id))
             setOrderConfirmation(false)
