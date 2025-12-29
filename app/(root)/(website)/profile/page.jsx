@@ -1,11 +1,75 @@
+'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import ButtonLoading from '../../../../components/application/ButtonLoading'
 import UserPanelLayout from '../../../../components/application/website/UserPanelLayout'
 import WebsiteBreadCrumb from '../../../../components/application/website/WebsiteBreadCrumb'
-import React from 'react'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../../components/ui/form'
+import { Input } from '../../../../components/ui/input'
+import { zSchmea } from '../../../../lib/zodSchema'
+import { useEffect, useState } from 'react'
+import { Textarea } from '../../../../components/ui/textarea'
+import { useFetch } from '../../../../hooks/useFetch'
+import Dropzone from 'react-dropzone/'
+import { Avatar, AvatarImage } from '../../../../components/ui/avatar'
+import { Camera } from 'lucide-react'
+import { showToast } from '../../../../lib/toast'
 const breadCrumbData = {
   title: 'Profile',
   links: [{ label: 'Profile' }]
 }
 const UserProfile = () => {
+  const { data: userData, loading: getUserLoading } = useFetch('/api/profile/get')
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState();
+  const [file, setFile] = useState();
+  const updateProfileSchema = zSchmea.pick({
+    address: true,
+    name: true,
+    phone: true,
+  })
+
+  const updateProfileForm = useForm({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      name: '',
+      address: '',
+      phone: ''
+    }
+  })
+  const handleProfilePic = (files) => {
+    const file = files[0];
+    const preview = URL.createObjectURL(file)
+    setPreview(preview)
+    setFile(file)
+  };
+  const handleProfileUpdate = ({ name, phone, address }) => {
+    // setLoading(true)
+    try {
+      let formData = new FormData()
+      if (file) {
+        formData.set('file', file)
+      }
+      formData.set('name', name)
+      formData.set('phone', phone)
+      formData.set('address', address)
+    }
+    catch (error) {
+      console.log(error)
+      showToast('error', error?.message)
+    } finally {
+      setLoading(false)
+    }
+  };
+  useEffect(() => {
+    if (userData && userData?.success) {
+      updateProfileForm.reset({
+        name: userData?.data?.name,
+        phone: userData?.data?.phone,
+        address: userData?.data?.address,
+      })
+    }
+  }, [userData])
   return (
     <div>
       <WebsiteBreadCrumb props={breadCrumbData} />
@@ -15,7 +79,67 @@ const UserProfile = () => {
             Profile
           </div>
           <div className='p-5'>
-
+            {
+              getUserLoading ? <h1>Fetch Details...</h1> :
+                <Form {...updateProfileForm}>
+                  <form onSubmit={updateProfileForm.handleSubmit(handleProfileUpdate)}>
+                    <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
+                      <div className='md:col-span-2 col-span-1 flex items-center justify-center'>
+                        <Dropzone onDrop={acceptedFiles => handleProfilePic(acceptedFiles)}>
+                          {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                              <input {...getInputProps()} />
+                              <Avatar className={'w-28 h-28 relative group border border-gray-100 transition-all duration-300'}>
+                                <AvatarImage src={preview ? preview : userData?.data?.avatar?.url} />
+                                <div className='absolute z-50 w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center border-2 border-violet-500 rounded-full group-hover:flex hidden cursor-pointer bg-black/50'>
+                                  <Camera color='white' />
+                                </div>
+                              </Avatar>
+                            </div>
+                          )}
+                        </Dropzone>
+                      </div>
+                      <div>
+                        <FormField control={updateProfileForm.control} name='name' render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor={'name'}>Name</FormLabel>
+                            <FormControl>
+                              <Input type={'text'} id={'name'} placeholder="enter your name" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}>
+                        </FormField>
+                      </div>
+                      <div>
+                        <FormField control={updateProfileForm.control} name='phone' render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor={'phone'}>Phone</FormLabel>
+                            <FormControl>
+                              <Input type={'number'} id={'phone'} placeholder="enter your phone" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}>
+                        </FormField>
+                      </div>
+                      <div className='md:col-span-2 col-span-1'>
+                        <FormField control={updateProfileForm.control} name='address' render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor={'address'}>Address</FormLabel>
+                            <FormControl>
+                              <Textarea type={'text'} id={'address'} placeholder="enter your address" {...field} className={'border border-gray-700 focus:border-none transition-all delay-150'} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}>
+                        </FormField>
+                      </div>
+                    </div>
+                    <ButtonLoading loading={loading} text={"Update Profile"} className={'my-3 cursor-pointer'} />
+                  </form>
+                </Form>
+            }
           </div>
         </div>
       </UserPanelLayout>

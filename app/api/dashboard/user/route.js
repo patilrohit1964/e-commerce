@@ -1,6 +1,9 @@
 import { responce } from "../../../../lib/helper";
 import { isAuthenticated } from "../../../../lib/isAuth";
 import OrderModal from "../../../../model/order.model";
+import ProductModal from "../../../../model/product.model";
+import ProductVariantModal from "../../../../model/productVariant.model";
+import MediaModal from "../../../../model/media.model";
 export async function GET() {
   try {
     const auth = await isAuthenticated("user");
