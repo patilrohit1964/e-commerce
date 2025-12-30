@@ -14,6 +14,7 @@ import Dropzone from 'react-dropzone/'
 import { Avatar, AvatarImage } from '../../../../components/ui/avatar'
 import { Camera } from 'lucide-react'
 import { showToast } from '../../../../lib/toast'
+import axios from 'axios'
 const breadCrumbData = {
   title: 'Profile',
   links: [{ label: 'Profile' }]
@@ -43,8 +44,8 @@ const UserProfile = () => {
     setPreview(preview)
     setFile(file)
   };
-  const handleProfileUpdate = ({ name, phone, address }) => {
-    // setLoading(true)
+  const handleProfileUpdate = async ({ name, phone, address }) => {
+    setLoading(true)
     try {
       let formData = new FormData()
       if (file) {
@@ -53,6 +54,11 @@ const UserProfile = () => {
       formData.set('name', name)
       formData.set('phone', phone)
       formData.set('address', address)
+      const { data: profileData } = await axios.put(`/api/profile/update`, formData)
+      if (!profileData?.success) {
+        throw new Error(profileData?.message)
+      }
+      showToast('success', profileData?.message)
     }
     catch (error) {
       console.log(error)
@@ -89,8 +95,8 @@ const UserProfile = () => {
                           {({ getRootProps, getInputProps }) => (
                             <div {...getRootProps()}>
                               <input {...getInputProps()} />
-                              <Avatar className={'w-28 h-28 relative group border border-gray-100 transition-all duration-300'}>
-                                <AvatarImage src={preview ? preview : userData?.data?.avatar?.url} />
+                              <Avatar className={'w-28 h-28 relative group border border-gray-400 transition-all duration-300'}>
+                                <AvatarImage src={preview ? preview : userData?.data?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAwLk7BdSBwMGmmO6YCyxEP0otqy_0jXtY6w&s'} />
                                 <div className='absolute z-50 w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center border-2 border-violet-500 rounded-full group-hover:flex hidden cursor-pointer bg-black/50'>
                                   <Camera color='white' />
                                 </div>
