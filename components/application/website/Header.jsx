@@ -37,7 +37,7 @@ const Header = () => {
                                 <Link href={WEBSITE_HOME} className='block py-2'>Home</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>About</Link>
+                                <Link href={'/about-us'} className='block py-2'>About</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
                                 <Link href={WEBSITE_HOME} className='block py-2'>Contact</Link>
@@ -46,13 +46,13 @@ const Header = () => {
                                 <Link href={WEBSITE_SHOP} className='block py-2'>Shop</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>T-shirt</Link>
+                                <Link href={`${WEBSITE_SHOP}?category=tshirts`} className='block py-2'>T-shirt</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>Hoodies</Link>
+                                <Link href={`${WEBSITE_SHOP}?category=odies`} className='block py-2'>Hoodies</Link>
                             </li>
                             <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>Oversized</Link>
+                                <Link href={`${WEBSITE_SHOP}?category=oversized`} className='block py-2'>Oversized</Link>
                             </li>
                         </ul>
                     </nav>

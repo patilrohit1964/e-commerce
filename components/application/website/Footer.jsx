@@ -1,7 +1,7 @@
-import { Facebook, Instagram, LocationCity, Twitter, WhatsApp, YouTube, YoutubeSearchedFor } from '@mui/icons-material'
+import { Facebook, Instagram, LocationCity, Twitter, WhatsApp, YouTube } from '@mui/icons-material'
 import { Mail, Phone } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import { USER_PROFILE, WEBSITE_HOME, WEBSITE_LOGIN, WEBSITE_REGISTER, WEBSITE_SHOP } from '../../../routes/websiteRoute'
 
 const Footer = () => {
   return (
@@ -14,29 +14,29 @@ const Footer = () => {
         <div className='flex flex-col items-start justify-between'>
           <h3 className='text-xl font-bold uppercase mb-5'>Categories</h3>
           <ul>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>T-shirt</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Hoodies</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Oversized</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Full Sleeves</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Polo</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={`${WEBSITE_SHOP}?category=tshirts`}>T-shirt</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={`${WEBSITE_SHOP}?category=odies`}>Hoodies</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={`${WEBSITE_SHOP}?category=oversized`}>Oversized</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={`${WEBSITE_SHOP}?category=full-slives`}>Full Sleeves</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={`${WEBSITE_SHOP}?category=polo`}>Polo</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>
           <h3 className='text-xl font-bold uppercase mb-5'>USEFUL LINKS</h3>
           <ul>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/'}>Home</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/shop'}>Shop</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={WEBSITE_HOME}>Home</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={WEBSITE_SHOP}>Shop</Link></li>
             <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/about-us'}>About</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/register'}>Register</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/login'}>Login</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={WEBSITE_REGISTER}>Register</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={WEBSITE_LOGIN}>Login</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>
           <h3 className='text-xl font-bold uppercase mb-5'>HELP CENTER</h3>
           <ul>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/register'}>Register</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/login'}>Login</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/profile'}>My Account</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={WEBSITE_REGISTER}>Register</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={WEBSITE_LOGIN}>Login</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={USER_PROFILE}>My Account</Link></li>
             <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/privacy-policy'}>Privacy Policy</Link></li>
             <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/terms-and-conditions'}>Terms & Conditions</Link></li>
           </ul>
