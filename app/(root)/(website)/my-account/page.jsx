@@ -14,7 +14,6 @@ const breadCrumbData = {
 const MyAccount = () => {
   const { data: dashboardInfo } = useFetch('/api/dashboard/user')
   const { cartItems } = useSelector(state => state?.cartStore)
-  console.log('dashboardInfo', dashboardInfo);
   return (
     <div>
       <WebsiteBreadCrumb props={breadCrumbData} />
@@ -46,40 +45,42 @@ const MyAccount = () => {
             </div>
             <div className="mt-5">
               <h4 className='text-lg font-semibold mb-3'>Recent Orders</h4>
-              <table className='w-full'>
-                <thead>
-                  <tr>
-                    <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Sr.No</th>
-                    <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Order id</th>
-                    <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Total Item</th>
-                    <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardInfo && dashboardInfo?.data?.recentOrders?.length > 0 ?
-                    dashboardInfo?.data?.recentOrders?.map((order, idx) => (
-                      <tr key={order?._id}>
-                        <td className='text-center text-sm text-gray-500 p-2 font-bold'>{idx + 1}</td>
-                        <td className='text-center text-sm text-gray-500 p-2 font-bold'>
-                          <Link href={WEBSITE_ORDER_DETAILS(order?.order_id)} className='hover:underline hover:text-blue-400'>{order?.order_id}</Link>
-                        </td>
-                        <td className='text-center text-sm text-gray-500 p-2 font-bold'>
-                          {order?.products.length}
-                        </td>
-                        <td className='text-center text-sm text-gray-500 p-2 font-bold'>
-                          {order?.totalAmount}
+              <div className="overflow-auto">
+                <table className='w-full'>
+                  <thead>
+                    <tr>
+                      <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Sr.No</th>
+                      <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Order id</th>
+                      <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Total Item</th>
+                      <th className='p-2 text-sm border-b text-nowrap text-gray-500'>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dashboardInfo && dashboardInfo?.data?.recentOrders?.length > 0 ?
+                      dashboardInfo?.data?.recentOrders?.map((order, idx) => (
+                        <tr key={order?._id}>
+                          <td className='text-center text-sm text-gray-500 p-2 font-bold'>{idx + 1}</td>
+                          <td className='text-center text-sm text-gray-500 p-2 font-bold'>
+                            <Link href={WEBSITE_ORDER_DETAILS(order?.order_id)} className='hover:underline hover:text-blue-400'>{order?.order_id}</Link>
+                          </td>
+                          <td className='text-center text-sm text-gray-500 p-2 font-bold'>
+                            {order?.products.length}
+                          </td>
+                          <td className='text-center text-sm text-gray-500 p-2 font-bold'>
+                            {order?.totalAmount}
+                          </td>
+                        </tr>
+                      ))
+                      :
+                      <tr>
+                        <td colSpan={4} className="text-center text-gray-500 py-4">
+                          You haven't placed any orders yet. Start shopping and your orders will show up here!
                         </td>
                       </tr>
-                    ))
-                    :
-                    <tr>
-                      <td colSpan={4} className="text-center text-gray-500 py-4">
-                        You haven't placed any orders yet. Start shopping and your orders will show up here!
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
+                    }
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

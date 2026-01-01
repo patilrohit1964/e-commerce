@@ -15,6 +15,8 @@ import { Avatar, AvatarImage } from '../../../../components/ui/avatar'
 import { Camera } from 'lucide-react'
 import { showToast } from '../../../../lib/toast'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { login } from '../../../../store/reducers/authReducer'
 const breadCrumbData = {
   title: 'Profile',
   links: [{ label: 'Profile' }]
@@ -24,6 +26,7 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState();
   const [file, setFile] = useState();
+  const dispatch = useDispatch()
   const updateProfileSchema = zSchmea.pick({
     address: true,
     name: true,
@@ -59,6 +62,7 @@ const UserProfile = () => {
         throw new Error(profileData?.message)
       }
       showToast('success', profileData?.message)
+      dispatch(login(profileData?.data))
     }
     catch (error) {
       console.log(error)

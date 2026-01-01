@@ -24,21 +24,21 @@ const Footer = () => {
         <div className='flex flex-col items-start justify-between'>
           <h3 className='text-xl font-bold uppercase mb-5'>USEFUL LINKS</h3>
           <ul>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Home</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Shop</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>About</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Register</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Login</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/'}>Home</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/shop'}>Shop</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/about-us'}>About</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/register'}>Register</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/login'}>Login</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>
           <h3 className='text-xl font-bold uppercase mb-5'>HELP CENTER</h3>
           <ul>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Register</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Login</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>My Account</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Privacy Policy</Link></li>
-            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={''}>Terms & Conditions</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/register'}>Register</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/auth/login'}>Login</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/profile'}>My Account</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/privacy-policy'}>Privacy Policy</Link></li>
+            <li className='mb-2 text-gray-500 hover:text-primary transition duration-300'><Link href={'/terms-and-conditions'}>Terms & Conditions</Link></li>
           </ul>
         </div>
         <div className='flex flex-col items-start justify-between'>

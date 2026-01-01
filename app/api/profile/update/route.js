@@ -22,13 +22,22 @@ export async function PUT(request) {
 
     if (file) {
       const fileBuffer = await file.arrayBuffer();
-      const base64Image = `data:${file?.type};base64,${Buffer.from(
+
+      const base64Image = `data:${file.type};base64,${Buffer.from(
         fileBuffer
-      ).toString()}`;
-      const uploadAvatar = cloudinary.uploader.upload(base64Image, {
-        upload_preset: "avatars",
+      ).toString("base64")}`;
+
+      const uploadAvatar = await cloudinary.uploader.upload(base64Image, {
+        folder: "avatars",
+        public_id: `avatar_${auth.userId}`,
+        overwrite: true,
+        invalidate: true,
       });
-      user.avatar.url = uploadAvatar.secure_url;
+
+      user.avatar = {
+        url: uploadAvatar.secure_url,
+        public_id: uploadAvatar.public_id,
+      };
     }
 
     user.name = name;
@@ -37,7 +46,12 @@ export async function PUT(request) {
 
     await user.save();
 
-    return responce(true, 201, "Profile Update", user);
+    return responce(true, 201, "Profile Update", {
+      _id: user._id.toString(),
+      role: user.role,
+      name: user.name,
+      avatar: user.avatar,
+    });
   } catch (error) {
     console.error(error);
     return catchError(error, "Server Error");
