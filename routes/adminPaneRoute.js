@@ -35,3 +35,8 @@ export const CUSTOMER_SHOW = "/admin/customers";
 
 // review route
 export const ADMIN_REVIEW_SHOW = "/admin/review";
+
+// orders route
+export const ADMIN_ORDERS_SHOW = "/admin/orders";
+export const ADMIN_ORDER__DETAILS = (order_id) =>
+  order_id ? `/admin/orders/details/${order_id}` : "";
