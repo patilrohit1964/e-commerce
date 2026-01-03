@@ -66,7 +66,7 @@ const OrderDetails = ({ params }) => {
     return (
         <div>
             <BreadCrumb breadcrumbData={breadCrumbData} />
-            <div className='px-5 border'>
+            <div className='px-5 border rounded-md'>
                 {!orderDetailsData
                     ?
                     <div className='flex justify-center items-center py-32'>
