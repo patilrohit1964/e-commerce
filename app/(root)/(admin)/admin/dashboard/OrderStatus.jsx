@@ -39,12 +39,19 @@ const chartConfig = {
     },
 }
 
+// const chartData = [
+//     { status: "pending", visitors: 275, fill: "var(--color-pending)" },
+//     { status: "processing", visitors: 200, fill: "var(--color-processing)" },
+//     { status: "shipped", visitors: 187, fill: "var(--color-shipped)" },
+//     { status: "delivered", visitors: 173, fill: "var(--color-delivered)" },
+//     { status: "cancelled", visitors: 90, fill: "var(--color-cancelled)" },
+//     { status: "unverified", visitors: 90, fill: "var(--color-unverified)" },
+// ]
 export function OrderStatus() {
     const [chartData, setChartData] = useState([])
     const [statusCount, setStatusCount] = useState()
     const [totalCount, setTotalCount] = useState(0)
     const { data: orderStatus, loading } = useFetch(`/api/dashboard/admin/order-status`)
-    console.log(orderStatus)
     useEffect(() => {
         if (orderStatus && orderStatus?.success) {
             const newOrderStatus = orderStatus?.data?.map((order, idx) => (
@@ -61,10 +68,9 @@ export function OrderStatus() {
                 acc[item?._id] = item?.count
                 return acc;
             }, {})
-            setStatusCount(statusObj)
+            setStatusCount(statusObj);
         }
     }, [orderStatus])
-    console.log('chartData',chartData);
     return (
         <div>
             <ChartContainer
@@ -74,7 +80,7 @@ export function OrderStatus() {
                 <PieChart>
                     <ChartTooltip
                         cursor={false}
-                        content={<ChartTooltipContent hideLabel />}
+                        content={<ChartTooltipContent />}
                     />
                     <Pie
                         data={chartData}

@@ -1,3 +1,5 @@
+'use client'
+import Loading from "../../../../../components/application/Loading"
 import { Badge } from "../../../../../components/ui/badge"
 import {
     Table,
@@ -7,8 +9,14 @@ import {
     TableHeader,
     TableRow
 } from "../../../../../components/ui/table"
+import { useFetch } from "../../../../../hooks/useFetch"
 
 export function LatestOrder() {
+    const { data: latestOrderData, loading } = useFetch(`/api/dashboard/admin/latest-order`)
+
+    if (loading) {
+        return <Loading />
+    }
     return (
         <Table>
             <TableHeader>
@@ -20,17 +28,25 @@ export function LatestOrder() {
                     <TableHead>Amount</TableHead>
                 </TableRow>
             </TableHeader>
-            <TableBody>
-                {Array.from({ length: 20 }).map((invoice, idx) => (
-                    <TableRow key={idx}>
-                        <TableCell>{`invoice${idx + 1}`}</TableCell>
-                        <TableCell>{`payment${idx + 1}`}</TableCell>
-                        <TableCell>{`total${idx + 1}`}</TableCell>
-                        <TableCell><Badge>{`status${idx + 1}`}</Badge></TableCell>
-                        <TableCell>{`amount${idx + 1}`}</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
+            {
+                latestOrderData && latestOrderData?.length > 0 ?
+                    <TableBody>
+                        {latestOrderData && latestOrderData?.length > 0 && latestOrderData?.data?.map((lOrder, idx) => (
+                            <TableRow key={idx}>
+                                <TableCell>{lOrder?.order_id}</TableCell>
+                                <TableCell>{lOrder?.payment_id}</TableCell>
+                                <TableCell>{`total${idx + 1}`}</TableCell>
+                                <TableCell><Badge>{lOrder?.status}</Badge></TableCell>
+                                <TableCell>{lOrder?.totalAmount}</TableCell>
+                            </TableRow>
+                        ))
+                        }
+                    </TableBody>
+                    :
+                    <div className="h-full w-full flex items-center justify-center">
+                        No any order yet
+                    </div>
+            }
         </Table>
     )
 }

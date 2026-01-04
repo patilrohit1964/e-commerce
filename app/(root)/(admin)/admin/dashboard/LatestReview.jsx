@@ -8,8 +8,10 @@ import {
     TableHeader,
     TableRow
 } from "../../../../../components/ui/table"
+import { useFetch } from "../../../../../hooks/useFetch"
 
 export function LatestReview() {
+    const { data: latestReviewData, loading } = useFetch(`/api/dashboard/admin/latest-review`)
     return (
         <Table>
             <TableHeader>
@@ -19,29 +21,25 @@ export function LatestReview() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {Array.from({ length: 20 }).map((invoice, idx) => (
+                {latestReviewData && latestReviewData?.data?.length > 0 ? latestReviewData?.data.map((lReview, idx) => (
                     <TableRow key={idx}>
                         <TableCell className={'flex items-center gap-3'}>
                             <Avatar>
-                                <AvatarImage src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3uUwj3--swgBp631BC-haocNy4Pr-58kB0Q&s' />
+                                <AvatarImage src={lReview?.user?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3uUwj3--swgBp631BC-haocNy4Pr-58kB0Q&s'} />
                             </Avatar>
                             <span className="truncate block w-40">
-                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
-                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
-                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
-                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
-                                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
+                                {lReview?.user?.name}
                             </span>
                         </TableCell>
                         <TableCell>
                             <div className="flex items-center">
-                                {Array.from({ length: 5 }).map((e, i) => (
+                                {Array.from({ length: lReview?.rating }).map((e, i) => (
                                     <span key={i}><Star className="text-yellow-500 fill-yellow-500" size={18} /></span>
                                 ))}
                             </div>
                         </TableCell>
                     </TableRow>
-                ))}
+                )) : 'not any review found'}
             </TableBody>
         </Table>
     )
