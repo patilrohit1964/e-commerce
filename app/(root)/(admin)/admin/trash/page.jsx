@@ -6,24 +6,11 @@ import DataTableWrapper from "../../../../../components/application/admin/DataTa
 import DeleteAction from "../../../../../components/application/admin/DeleteAction"
 import RestoreAction from "../../../../../components/application/admin/RestoreAction"
 import { Card, CardContent, CardHeader } from "../../../../../components/ui/card"
-import { DT_CATEGORY_COLUMN, DT_COUPON_VARIANT_COLUMN, DT_CUSTOMER_COLUMN, DT_PRODUCT_COLUMN, DT_PRODUCT_VARIANT_COLUMN, DT_REVIEW_COLUMN } from "../../../../../lib/column"
+import { DT_CATEGORY_COLUMN, DT_COUPON_VARIANT_COLUMN, DT_CUSTOMER_COLUMN, DT_ORDER_COLUMN, DT_PRODUCT_COLUMN, DT_PRODUCT_VARIANT_COLUMN, DT_REVIEW_COLUMN } from "../../../../../lib/column"
 import { columnConfig } from "../../../../../lib/helper"
 import { ADMIN_CATEGORY_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "../../../../../routes/adminPaneRoute"
 
-const breadCrumbData = [
-    {
-        label: "Home",
-        href: ADMIN_DASHBOARD,
-    },
-    {
-        label: "Category",
-        href: ADMIN_CATEGORY_SHOW,
-    },
-    {
-        label: "Trash",
-        href: ADMIN_TRASH,
-    },
-]
+
 const TRASH_CONFIG = {
     category: {
         title: 'Category Trash',
@@ -66,12 +53,33 @@ const TRASH_CONFIG = {
         fetchUrl: "/api/review",
         exportUrl: '/api/review/export',
         deleteUrl: '/api/review/delete'
+    },
+    orders: {
+        title: 'Orders Trash',
+        columns: DT_ORDER_COLUMN,
+        fetchUrl: "/api/orders",
+        exportUrl: '/api/orders/export',
+        deleteUrl: '/api/orders/delete'
     }
 }
 const Trash = () => {
     const searchParams = useSearchParams()
     const trashOf = searchParams.get('trashof')
     const config = TRASH_CONFIG[trashOf]
+    const breadCrumbData = [
+        {
+            label: "Home",
+            href: ADMIN_DASHBOARD,
+        },
+        {
+            label: trashOf,
+            href: ADMIN_CATEGORY_SHOW,
+        },
+        {
+            label: "Trash",
+            href: ADMIN_TRASH,
+        },
+    ]
     const columns = useMemo(() => {
         return columnConfig(config?.columns, false, false, true)
     }, [])
