@@ -8,6 +8,7 @@ import { OrderOverview } from "./OrderOverview"
 import { OrderStatus } from "./OrderStatus"
 import { LatestOrder } from "./LatestOrder"
 import { LatestReview } from "./LatestReview"
+import { ADMIN_ORDERS_SHOW, ADMIN_REVIEW_SHOW } from "../../../../../routes/adminPaneRoute"
 
 
 const AdminDashboard = () => {
@@ -22,7 +23,7 @@ const AdminDashboard = () => {
             <div className="flex justify-between items-center">
               <span>Order Overview</span>
               <Button type="button">
-                <Link href={''}>View All</Link>
+                <Link href={ADMIN_ORDERS_SHOW}>View All</Link>
               </Button>
             </div>
           </CardHeader>
@@ -37,7 +38,7 @@ const AdminDashboard = () => {
             <div className="flex justify-between items-center">
               <span>Order Status</span>
               <Button type="button">
-                <Link href={''}>View All</Link>
+                <Link href={ADMIN_ORDERS_SHOW}>View All</Link>
               </Button>
             </div>
           </CardHeader>
@@ -54,7 +55,7 @@ const AdminDashboard = () => {
             <div className="flex justify-between items-center">
               <span>Latest Order</span>
               <Button type="button">
-                <Link href={''}>View All</Link>
+                <Link href={ADMIN_ORDERS_SHOW}>View All</Link>
               </Button>
             </div>
           </CardHeader>
@@ -69,7 +70,7 @@ const AdminDashboard = () => {
             <div className="flex justify-between items-center">
               <span>Latest Review</span>
               <Button type="button">
-                <Link href={''}>View All</Link>
+                <Link href={ADMIN_REVIEW_SHOW}>View All</Link>
               </Button>
             </div>
           </CardHeader>

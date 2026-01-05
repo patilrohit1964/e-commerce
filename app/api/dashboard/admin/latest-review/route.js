@@ -2,6 +2,8 @@ import connectDb from "../../../../../lib/dbConnect";
 import { catchError, responce } from "../../../../../lib/helper";
 import { isAuthenticated } from "../../../../../lib/isAuth";
 import REVIEWModel from "../../../../../model/review.model";
+import ProducModel from "../../../../../model/product.model";
+import MediaModel from "../../../../../model/media.model";
 
 export async function GET() {
   try {
