@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { WEBSITE_HOME } from '../../../routes/websiteRoute';
-const WebsiteBreadCrumb = ({props}) => {
+import { WEBSITE_HOME } from "../../../routes/websiteRoute";
+const WebsiteBreadCrumb = ({ props }) => {
     return (
         <div className={`py-10 flex justify-center items-center bg-cover bg-center bg-[url('/page-title.png')]`}>
             <div>

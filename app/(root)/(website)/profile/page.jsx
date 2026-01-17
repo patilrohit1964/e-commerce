@@ -1,22 +1,22 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import ButtonLoading from "../../../../components/application/ButtonLoading"
-import UserPanelLayout from "../../../../components/application/website/UserPanelLayout"
-import WebsiteBreadCrumb from "../../../../components/application/website/WebsiteBreadCrumb"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../../components/ui/form"
-import { Input } from "../../../../components/ui/input"
-import { zSchmea } from "../../../../lib/zodSchema"
+import ButtonLoading from "../../../../components/application/ButtonLoading.jsx"
+import UserPanelLayout from "../../../../components/application/website/UserPanelLayout.jsx"
+import WebsiteBreadCrumb from "../../../../components/application/website/WebsiteBreadCrumb.jsx"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../../components/ui/form.jsx"
+import { Input } from "../../../../components/ui/input.jsx"
+import { zSchmea } from "../../../../lib/zodSchema.js"
 import { useEffect, useState } from "react"
-import { Textarea } from "../../../../components/ui/textarea"
-import { useFetch } from "../../../../hooks/useFetch"
-import Dropzone from "react-dropzone/"
-import { Avatar, AvatarImage } from "../../../../components/ui/avatar"
+import { Textarea } from "../../../../components/ui/textarea.jsx"
+import { useFetch } from "../../../../hooks/useFetch.js"
+import Dropzone from "react-dropzone"
+import { Avatar, AvatarImage } from "../../../../components/ui/avatar.jsx"
 import { Camera } from "lucide-react"
-import { showToast } from "../../../../lib/toast"
+import { showToast } from "../../../../lib/toast.js"
 import axios from "axios"
 import { useDispatch } from "react-redux"
-import { login } from "../../../../store/reducers/authReducer"
+import { login } from "../../../../store/reducers/authReducer.js"
 const breadCrumbData = {
   title: 'Profile',
   links: [{ label: 'Profile' }]
