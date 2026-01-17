@@ -42,7 +42,7 @@ const UploadMedia = ({ isMultiple, queryClient }) => {
     return (
         <CldUploadWidget
             signatureEndpoint={"/api/cloudinary-signature"}
-            uploadPreset={process.env.CLOUDINARY_UPLOAD_PRESET} // Must be UNSIGNED
+            uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET} // Must be UNSIGNED
             onError={handleOnError}
             onQueuesEnd={handleOnQueueEnd}
             options={{
@@ -52,8 +52,8 @@ const UploadMedia = ({ isMultiple, queryClient }) => {
             }}
             config={{
                 cloud: {
-                    cloudName: process.env.CLOUDINARY_NAME,
-                    apiKey: process.env.CLOUDINARY_API_KEY,
+                    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
+                    apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
                 }
             }}        >
             {({ open }) => (

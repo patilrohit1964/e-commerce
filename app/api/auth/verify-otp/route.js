@@ -48,9 +48,9 @@ export async function POST(request) {
     cookieStore.set({
       name: "access_token",
       value: token,
-      httpOnly: process.env.NEXT_PUBLIC_NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production",
       path: "/",
-      secure: process.env.NEXT_PUBLIC_NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
     });
 
