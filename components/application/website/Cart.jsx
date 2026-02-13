@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux'
 import CartData from './CartData'
 
 const Cart = () => {
-    const { cartItems } = useSelector(state => state?.cartStore)
+    const { authStore: { auth }, cartStore: { cartItems } } = useSelector(state => state)
     const [open, setOpen] = useState(false)
+    if (!auth) return null;
     return (
         <div className='relative'>
             <button type='button' onClick={() => setOpen(true)}>
