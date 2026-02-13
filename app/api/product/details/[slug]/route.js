@@ -42,7 +42,6 @@ export async function GET(request, { params }) {
     if (!getProduct) {
       return responce(false, 404, "Product Not Found");
     }
-
     // get product variant
     const variantFilter = {
       productId: getProduct?._id,
@@ -54,12 +53,12 @@ export async function GET(request, { params }) {
       variantFilter.color = color;
     }
 
-    const variant = await ProductVariantModal.findOne(variantFilter)
+    let variant = await ProductVariantModal.findOne(variantFilter)
       .populate("medias", "secure_url")
       .lean();
 
     if (!variant) {
-      return responce(false, 404, "Product Varaint Not Found");
+      variant = null;
     }
 
     // get color and size
@@ -88,9 +87,9 @@ export async function GET(request, { params }) {
     const productData = {
       productData: getProduct,
       productVariants: variant,
-      productColors: getColor,
+      productColors: getColor || [],
       productSizes: getSize ? getSize?.map((item) => item.size) : [],
-      productReviews: review,
+      productReviews: review || 0,
     };
     return responce(true, 200, "Product Details Found", productData);
   } catch (error) {

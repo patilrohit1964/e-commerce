@@ -11,6 +11,7 @@ import { showToast } from '../../../lib/toast'
 import Logo from '../../../public/next.svg'
 import { WEBSITE_LOGIN } from '../../../routes/websiteRoute'
 import { logout } from '../../../store/reducers/authReducer'
+import { useTheme } from 'next-themes'
 const userMenu = [
   {
     title: 'Product',
@@ -30,6 +31,7 @@ const userMenu = [
 ]
 const UserDropDown = () => {
   const dispatch = useDispatch()
+  const { setTheme } = useTheme()
   const router = useRouter()
   const { auth } = useSelector((state) => state.authStore)
   const logoutHandler = async () => {
@@ -40,6 +42,7 @@ const UserDropDown = () => {
       }
       dispatch(logout())
       showToast('success', logoutResponce?.message)
+      setTheme('light')
       router.push(WEBSITE_LOGIN)
     }
     catch (error) {
@@ -51,10 +54,10 @@ const UserDropDown = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         {/* <Button type="button" variant={'ghost'} className={'cursor-pointer'}> */}
-          <Avatar className={'cursor-pointer border border-gray-400'}>
-            <AvatarImage src={auth?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxqETGq7dg-ejdhZLas43Ad8zNvgsUGiQwQ&s'} />
-            <AvatarFallback>profile</AvatarFallback>
-          </Avatar>
+        <Avatar className={'cursor-pointer border border-gray-400'}>
+          <AvatarImage src={auth?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxqETGq7dg-ejdhZLas43Ad8zNvgsUGiQwQ&s'} />
+          <AvatarFallback>profile</AvatarFallback>
+        </Avatar>
         {/* </Button> */}
       </DropdownMenuTrigger>
       <DropdownMenuContent className={'me-5 w-44'}>

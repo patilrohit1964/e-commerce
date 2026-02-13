@@ -7,13 +7,24 @@ import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avat
 import { USER_DASHBOARD, WEBSITE_HOME, WEBSITE_LOGIN, WEBSITE_SHOP } from '../../../routes/websiteRoute'
 import Cart from './Cart'
 import ShopSearch from './ShopSearch'
+import ThemeSwitch from '../admin/ThemeSwitch'
+const navLinks = [
+    { title: 'Home', url: WEBSITE_HOME },
+    { title: 'About', url: '/about-us' },
+    { title: 'Contact', url: WEBSITE_HOME },
+    { title: 'Shop', url: WEBSITE_SHOP },
+    { title: 'T-shirt', url: `${WEBSITE_SHOP}?category=tshirts` },
+    { title: 'Hoodies', url: `${WEBSITE_SHOP}?category=odies` },
+    { title: 'Oversized', url: `${WEBSITE_SHOP}?category=oversized` }
+];
+
 const Header = () => {
     const { auth } = useSelector((state) => state.authStore)
     const [isMobile, setIsMobile] = useState(false)
     const [open, setOpen] = useState(false)
     const [showSearch, setShowSearch] = useState(false)
     return (
-        <div className='bg-white border-b lg:px-32 px-4'>
+        <div className='bg-white border-b lg:px-32 px-4 dark:bg-black dark:text-white'>
             <div className='flex justify-between items-center lg:py-5 py-3'>
                 <Link href={WEBSITE_HOME}>
                     logo
@@ -21,7 +32,7 @@ const Header = () => {
                 </Link>
                 <div className='flex justify-between gap-20'>
                     {/* all nav links ui */}
-                    <nav className={`lg:relative lg:w-auto lg:left-0 lg:h-auto lg:top-0 lg:p-0 bg-white fixed z-50 top-0 w-full h-screen ${isMobile ? 'left-0' : '-left-full'} transition-all duration-300`}>
+                    <nav className={`lg:relative lg:w-auto lg:left-0 lg:h-auto lg:top-0 lg:p-0 bg-white dark:bg-black  fixed z-50 top-0 w-full h-screen ${isMobile ? 'left-0' : '-left-full'} transition-all duration-300`}>
 
                         <div className='lg:hidden flex items-center justify-between bg-gray-50 py-3 border-b px-3'>
                             {/* image  */}
@@ -33,27 +44,13 @@ const Header = () => {
                         </div>
 
                         <ul className='lg:flex items-center justify-between px-3 gap-10'>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>Home</Link>
-                            </li>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={'/about-us'} className='block py-2'>About</Link>
-                            </li>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_HOME} className='block py-2'>Contact</Link>
-                            </li>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={WEBSITE_SHOP} className='block py-2'>Shop</Link>
-                            </li>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={`${WEBSITE_SHOP}?category=tshirts`} className='block py-2'>T-shirt</Link>
-                            </li>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={`${WEBSITE_SHOP}?category=odies`} className='block py-2'>Hoodies</Link>
-                            </li>
-                            <li className='text-gray-600 hover:text-primary hover:font-semibold'>
-                                <Link href={`${WEBSITE_SHOP}?category=oversized`} className='block py-2'>Oversized</Link>
-                            </li>
+                            {
+                                navLinks.map((el,idx) => (
+                                    <li key={idx} className='text-gray-600 dark:text-white hover:text-primary hover:font-semibold'>
+                                        <Link href={el.url} className='block py-2'>{el.title}</Link>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </nav>
 
