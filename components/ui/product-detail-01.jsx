@@ -1,16 +1,16 @@
 "use client";
 
-import { Button } from "./button";
-import { ChevronLeft, ChevronRight, Minus, Plus, Star } from "lucide-react";
-import { cn } from "../../lib/utils";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../store/reducers/cartReducer";
 import { decode, encode } from "entities";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import Link from "next/link";
-import { WEBSITE_PRODUCT_DETAILS } from "../../routes/websiteRoute";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { showToast } from "../../lib/toast";
+import { cn } from "../../lib/utils";
+import { WEBSITE_PRODUCT_DETAILS } from "../../routes/websiteRoute";
+import { addToCart } from "../../store/reducers/cartReducer";
 import ProductReview from "../application/website/ProductReview";
+import { Button } from "./button";
 
 const productData = {
 	name: "Man Black Cotton T-Shirt",
@@ -44,8 +44,6 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 		setCurrentImageIndex((prev) =>
 			(prev - 1 + productVariants.medias.length) % productVariants?.medias?.length);
 	};
-	const incrementQuantity = () => setQuantity((prev) => prev + 1);
-	const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 	const addToInCart = () => {
 		const cartData = {
 			productId: productData?._id,
@@ -62,7 +60,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 		dispatch(addToCart(cartData))
 		showToast('success', 'Product added into cart.')
 	}
-
+	console.log(productVariants, 'media')
 	return (
 		<div className="w-full max-w-6xl mx-auto not-prose">
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -100,6 +98,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 							variant="outline"
 							size="icon"
 							className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm rounded-full cursor-pointer"
+							disabled={!productVariants}
 							onClick={prevImage}>
 							<ChevronLeft className="w-4 h-4" />
 						</Button>
@@ -107,6 +106,7 @@ export function ProductDetailOne({ productData, productSizes, productColors, pro
 							variant="outline"
 							size="icon"
 							className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm rounded-full cursor-pointer"
+							disabled={!productVariants}
 							onClick={nextImage}>
 							<ChevronRight className="w-4 h-4" />
 						</Button>

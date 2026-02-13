@@ -22,7 +22,6 @@ const ProductPage = async ({ params, searchParams }) => {
         console.log(url, 'url of axios')
 
         const { data: getProduct } = await axios.get(url)
-        console.log(getProduct, 'get product fetch')
         if (!getProduct) {
             return (
                 <div>
@@ -32,6 +31,7 @@ const ProductPage = async ({ params, searchParams }) => {
                 </div>
             );
         }
+        console.log(getProduct?.data?.productVariants,'variants array')
         return (
             <ProductDetail product={getProduct?.data?.productData} productColors={getProduct?.data?.productColors} productVariants={getProduct?.data?.productVariants} productSizes={getProduct?.data?.productSizes} productReview={getProduct?.data?.productReviews} />
         )
